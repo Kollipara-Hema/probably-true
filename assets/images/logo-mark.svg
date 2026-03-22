@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+
+  <!-- Card -->
+  <rect width="400" height="400" rx="80" fill="#f5f0ff"/>
+  <rect width="400" height="400" rx="80" fill="none" stroke="#7c3aed" stroke-width="6"/>
+
+  <!-- Inner blobs -->
+  <circle cx="100" cy="100" r="130" fill="#7c3aed" opacity="0.07"/>
+  <circle cx="320" cy="330" r="150" fill="#06d6a0" opacity="0.07"/>
+  <circle cx="330" cy="90"  r="110" fill="#f9c74f" opacity="0.07"/>
+
+  <!-- ? thick arc -->
+  <path d="M148,158 C148,110 166,92 200,92 C234,92 254,110 254,136 C254,166 234,180 218,197 C206,210 202,222 202,242"
+        fill="none" stroke="#7c3aed" stroke-width="30" stroke-linecap="round"/>
+  <!-- ? inner cutout -->
+  <path d="M162,158 C162,118 178,106 200,106 C222,106 240,118 240,136 C240,162 222,175 207,191 C197,202 212,222 212,242"
+        fill="none" stroke="#f5f0ff" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Dot -->
+  <circle cx="200" cy="288" r="28" fill="#7c3aed"/>
+  <!-- Bell curve inside dot -->
+  <path d="M184,295 C186,295 188,293 191,287 C193,283 196,280 198,280 C199,280 200,280 202,281 C205,284 207,288 210,295 C213,295 215,294 216,292"
+        fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="184" y1="295" x2="216" y2="295" stroke="white" stroke-width="1.4" opacity="0.45"/>
+
+  <!-- Floating data dots — left -->
+  <circle cx="72"  cy="158" r="10" fill="#f9c74f" opacity="0.95"/>
+  <circle cx="56"  cy="218" r="8"  fill="#06d6a0" opacity="0.9"/>
+  <circle cx="68"  cy="278" r="11" fill="#f72585" opacity="0.9"/>
+  <!-- Floating data dots — right -->
+  <circle cx="330" cy="156" r="8"  fill="#4361ee" opacity="0.9"/>
+  <circle cx="346" cy="216" r="11" fill="#f72585" opacity="0.95"/>
+  <circle cx="332" cy="276" r="8"  fill="#74c417" opacity="0.9"/>
+  <!-- Top dots -->
+  <circle cx="148" cy="56"  r="7"  fill="#4361ee" opacity="0.7"/>
+  <circle cx="256" cy="54"  r="8"  fill="#74c417" opacity="0.7"/>
+
+  <!-- Mini bar chart bottom -->
+  <g transform="translate(82, 336)" opacity="0.75">
+    <rect x="0"   y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+    <rect x="18"  y="15" width="14" height="23" rx="3" fill="#4361ee"/>
+    <rect x="36"  y="5"  width="14" height="33" rx="3" fill="#7c3aed"/>
+    <rect x="54"  y="1"  width="14" height="37" rx="3" fill="#f9c74f"/>
+    <rect x="72"  y="5"  width="14" height="33" rx="3" fill="#06d6a0"/>
+    <rect x="90"  y="15" width="14" height="23" rx="3" fill="#f72585"/>
+    <rect x="108" y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+    <rect x="126" y="28" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
+    <rect x="144" y="31" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
+    <rect x="162" y="34" width="14" height="4"  rx="3" fill="#74c417" opacity="0.45"/>
+    <path d="M7,38 C14,34 24,18 61,1 C98,18 108,34 115,38 C122,34 132,18 169,1 C206,18 216,34 223,38"
+          fill="none" stroke="#1a1535" stroke-width="1.8" opacity="0.15" stroke-linecap="round"/>
+    <line x1="0" y1="38" x2="180" y2="38" stroke="#d8cfff" stroke-width="1.8"/>
+  </g>
+
+</svg>

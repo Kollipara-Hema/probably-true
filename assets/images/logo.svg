@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#faf8ff"/>
+
+  <!-- Soft blobs -->
+  <circle cx="160" cy="140" r="200" fill="#7c3aed" opacity="0.07"/>
+  <circle cx="740" cy="380" r="220" fill="#06d6a0" opacity="0.07"/>
+  <circle cx="760" cy="120" r="160" fill="#f9c74f" opacity="0.07"/>
+  <circle cx="200" cy="400" r="150" fill="#f72585" opacity="0.05"/>
+
+  <!-- ── LOGO CARD ── -->
+  <rect x="60" y="60" width="380" height="380" rx="48" fill="#f5f0ff"/>
+  <rect x="60" y="60" width="380" height="380" rx="48" fill="none" stroke="#7c3aed" stroke-width="4"/>
+
+  <!-- Card inner blobs -->
+  <circle cx="120" cy="120" r="100" fill="#7c3aed" opacity="0.07"/>
+  <circle cx="380" cy="400" r="120" fill="#06d6a0" opacity="0.07"/>
+  <circle cx="380" cy="110" r="80"  fill="#f9c74f" opacity="0.07"/>
+
+  <!-- Question mark — thick purple -->
+  <path d="M178,168 C178,130 192,114 250,114 C308,114 323,130 323,154 C323,182 304,195 286,211 C272,224 267,237 267,257"
+        fill="none" stroke="#7c3aed" stroke-width="28" stroke-linecap="round"/>
+  <!-- Question mark inner cutout -->
+  <path d="M192,168 C192,138 204,122 250,122 C296,122 309,138 309,154 C309,178 292,190 275,205 C263,217 278,237 278,257"
+        fill="none" stroke="#f5f0ff" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- Dot circle -->
+  <circle cx="250" cy="298" r="30" fill="#7c3aed"/>
+  <!-- Bell curve inside dot — white -->
+  <path d="M232,305 C234,305 237,303 241,296 C243,292 246,289 248,289 C249,289 250,289 252,290 C255,293 258,297 262,305 C265,305 267,304 269,302"
+        fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <line x1="232" y1="305" x2="269" y2="305" stroke="white" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Floating stat dots — left side -->
+  <circle cx="95"  cy="168" r="9"  fill="#f9c74f" opacity="0.95"/>
+  <circle cx="78"  cy="222" r="7"  fill="#06d6a0" opacity="0.9"/>
+  <circle cx="90"  cy="278" r="10" fill="#f72585" opacity="0.9"/>
+  <circle cx="76"  cy="332" r="7"  fill="#f9c74f" opacity="0.85"/>
+  <!-- Floating stat dots — right side -->
+  <circle cx="405" cy="166" r="7"  fill="#4361ee" opacity="0.9"/>
+  <circle cx="420" cy="220" r="10" fill="#f72585" opacity="0.95"/>
+  <circle cx="408" cy="275" r="7"  fill="#f9c74f" opacity="0.85"/>
+  <circle cx="422" cy="330" r="9"  fill="#74c417" opacity="0.9"/>
+  <!-- Top dots -->
+  <circle cx="168" cy="80"  r="7"  fill="#4361ee" opacity="0.7"/>
+  <circle cx="332" cy="78"  r="8"  fill="#74c417" opacity="0.7"/>
+  <circle cx="126" cy="92"  r="5"  fill="#f72585" opacity="0.55"/>
+  <circle cx="374" cy="90"  r="5"  fill="#f9c74f" opacity="0.55"/>
+
+  <!-- Bar chart bottom of card -->
+  <g transform="translate(98, 350)" opacity="0.8">
+    <rect x="0"   y="28" width="14" height="14" rx="3" fill="#4361ee"/>
+    <rect x="19"  y="19" width="14" height="23" rx="3" fill="#4361ee"/>
+    <rect x="38"  y="7"  width="14" height="35" rx="3" fill="#7c3aed"/>
+    <rect x="57"  y="2"  width="14" height="40" rx="3" fill="#f9c74f"/>
+    <rect x="76"  y="7"  width="14" height="35" rx="3" fill="#06d6a0"/>
+    <rect x="95"  y="19" width="14" height="23" rx="3" fill="#f72585"/>
+    <rect x="114" y="28" width="14" height="14" rx="3" fill="#4361ee"/>
+    <rect x="133" y="32" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
+    <rect x="152" y="35" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
+    <!-- bell curve -->
+    <path d="M7,42 C16,38 28,22 57,3 C86,22 98,38 108,42 C118,38 130,22 159,3 C188,22 200,38 209,42"
+          fill="none" stroke="#1a1535" stroke-width="1.8" opacity="0.18" stroke-linecap="round"/>
+    <line x1="0" y1="42" x2="170" y2="42" stroke="#d8cfff" stroke-width="2"/>
+  </g>
+
+  <!-- Wordmark inside card -->
+  <text x="250" y="416" text-anchor="middle" fill="#1a1535"
+        font-family="Georgia, serif" font-size="20" font-weight="400" letter-spacing="2">Probably</text>
+  <text x="250" y="438" text-anchor="middle" fill="#7c3aed"
+        font-family="Georgia, serif" font-size="22" font-weight="700" letter-spacing="3">TRUE</text>
+
+  <!-- ── RIGHT SIDE WORDMARK ── -->
+  <text x="540" y="200" fill="#1a1535"
+        font-family="Georgia, serif" font-size="72" font-weight="400" letter-spacing="-1">Probably</text>
+  <text x="540" y="290" fill="#7c3aed"
+        font-family="Georgia, serif" font-size="82" font-weight="700" letter-spacing="-2">True<tspan fill="#f9c74f">.</tspan></text>
+
+  <!-- Divider dots -->
+  <circle cx="540" cy="322" r="4" fill="#f9c74f" opacity="0.8"/>
+  <circle cx="700" cy="322" r="4" fill="#7c3aed" opacity="0.8"/>
+  <circle cx="860" cy="322" r="4" fill="#06d6a0" opacity="0.8"/>
+  <line x1="540" y1="322" x2="862" y2="322" stroke="#7c3aed" stroke-width="1" opacity="0.15"/>
+
+  <!-- Tagline -->
+  <text x="540" y="356" fill="#7b72a8"
+        font-family="monospace" font-size="16" letter-spacing="4" font-weight="500">STATISTICS · VISUALLY</text>
+
+  <!-- Small stat symbols floating right -->
+  <text x="548" y="420" fill="#7c3aed" font-family="Georgia,serif" font-size="22" opacity="0.25" font-style="italic">P(A|B)</text>
+  <text x="650" y="418" fill="#f9c74f" font-family="Georgia,serif" font-size="26" opacity="0.3">σ²</text>
+  <text x="730" y="420" fill="#06d6a0" font-family="Georgia,serif" font-size="22" opacity="0.25" font-style="italic">E[X]</text>
+  <text x="810" y="418" fill="#f72585" font-family="Georgia,serif" font-size="18" opacity="0.25" font-style="italic">p&lt;0.05</text>
+
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160">
+
+  <!-- transparent bg — works on any color background -->
+
+  <!-- "Probably" — dark, light weight -->
+  <text x="0" y="80"
+        fill="#1a1535"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="68" font-weight="400" letter-spacing="-1">Probably</text>
+
+  <!-- "True" — purple, bold -->
+  <text x="2" y="148"
+        fill="#7c3aed"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="72" font-weight="700" letter-spacing="-2">True<tspan fill="#f9c74f" font-size="82">.</tspan></text>
+
+</svg>

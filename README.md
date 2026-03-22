@@ -107,8 +107,5 @@ git push
 ## 🤝 Contributing
 This is an open educational project. PRs welcome!
 
-## 📄 License
-MIT License — free to use and learn from.
-
 ---
 Made with curiosity & D3.js 🎲
