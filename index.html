@@ -77,9 +77,10 @@
       background:linear-gradient(160deg, #faf8ff 0%, #f5f0ff 50%, #edfff9 100%);
     }
     #hero-canvas {
-      position:absolute; inset:0;
-      width:100%; height:100%;
-      z-index:0; pointer-events:none;
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:0; pointer-events:none;
     }
     /* Gradient shield — keeps left text readable */
     #hero::after {
@@ -102,7 +103,7 @@
       position:relative; z-index:2;
       display:flex; flex-direction:column; align-items:center;
       /* make physics canvas interactive on right side */
-      pointer-events:none;
+      pointer-events:all;
     }
 
     .hero-badge {
@@ -318,7 +319,7 @@
 
     /* MOBILE */
     @media(max-width:768px){
-      #hero { grid-template-columns:1fr; padding:88px 24px 40px; }
+      #hero { grid-template-columns:1fr; padding:88px 24px 40px;min-height:100svh; }
       .hero-right {display:flex;width:100%;height:200px;}
       #dist-canvas {width:100%;height:200px;}
       nav { padding:0 24px; }
@@ -619,8 +620,9 @@
   const LABELS = ['μ','σ','P','E','∑','~','?','σ²','x̄','n','p','β','H','∞'];
 
   function resize(){
-  W = cvs.width  = window.innerWidth;
-  H = cvs.height = window.innerHeight;
+  const hero = document.getElementById('hero');
+  W = cvs.width  = hero.offsetWidth  || window.innerWidth;
+  H = cvs.height = hero.offsetHeight || window.innerHeight;
   }
 
   class Ball {
@@ -637,6 +639,7 @@
     this.y  = -this.r - Math.random() * H; // stagger start heights
     this.vx = (Math.random() - 0.5) * 1.2; // tiny sideways drift
     this.vy = 1.5 + Math.random() * 3;     // falling speed
+    this.bounces = 0; // reset bounce counter
     }
     update(){
       // Gentle gravity
@@ -657,11 +660,14 @@
       this.x  += this.vx;
       this.y  += this.vy;
 
-      // Floor bounce
+      // Floor bounce — with good bouncing
       if(this.y+this.r > H){
-        this.y   = H-this.r;
-        this.vy *= -0.55;
-        this.vx *= 0.88;
+      this.y       = H-this.r;
+      this.bounces = (this.bounces||0) + 1;
+      this.vy     *= -0.7;           // stronger bounce back up
+      this.vx     *= 0.85;
+      // After 3 bounces, reset so new balls keep falling
+      if(this.bounces >= 3) this.reset();
       }
       // Ceiling
       if(this.y-this.r < 0){
@@ -777,8 +783,10 @@
   let bins=[], falling=[], frame=0;
 
   function resize(){
-  DW = cvs.width  = wrap.offsetWidth || window.innerWidth * 0.9;
-  DH = cvs.height = window.innerWidth < 768 ? 180 : 240;
+  DW = cvs.width  = wrap.getBoundingClientRect().width || window.innerWidth * 0.88;
+  DH = cvs.height = window.innerWidth < 768 ? 160 : 240;
+  cvs.style.width  = DW + 'px';
+  cvs.style.height = DH + 'px';
   }
 
   function randNorm(){
