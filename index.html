@@ -319,7 +319,8 @@
     /* MOBILE */
     @media(max-width:768px){
       #hero { grid-template-columns:1fr; padding:88px 24px 40px; }
-      .hero-right { display:none; }
+      .hero-right {display:flex;width:100%;height:200px;}
+      #dist-canvas {width:100%;height:200px;}
       nav { padding:0 24px; }
       .nav-links { display:none; }
       #chapters, #how, #why, #roadmap, #quote { padding:60px 24px; }
@@ -618,8 +619,8 @@
   const LABELS = ['μ','σ','P','E','∑','~','?','σ²','x̄','n','p','β','H','∞'];
 
   function resize(){
-    W = cvs.width  = cvs.offsetWidth;
-    H = cvs.height = cvs.offsetHeight;
+  W = cvs.width  = window.innerWidth;
+  H = cvs.height = window.innerHeight;
   }
 
   class Ball {
@@ -727,27 +728,29 @@
   function init(){
     resize();
     // Stagger ball creation so they arrive over time, not all at once
-    for(let i=0;i<90;i++){
-      setTimeout(()=>{ balls.push(new Ball()); }, i*100);
+    const count = window.innerWidth < 768 ? 15 : 90;
+    for(let i=0;i<count;i++){
+    setTimeout(()=>{ balls.push(new Ball()); }, i*100);
     }
     loop();
   }
 
-  const hero = document.getElementById('hero');
   hero.addEventListener('mousemove', e=>{
-    const r=cvs.getBoundingClientRect();
-    mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
   });
   hero.addEventListener('mouseleave',()=>{ mouse.x=-9999; mouse.y=-9999; });
+
+  // Touch support
   hero.addEventListener('touchmove', e=>{
-    e.preventDefault();
-    const r=cvs.getBoundingClientRect();
-    mouse.x=e.touches[0].clientX-r.left;
-    mouse.y=e.touches[0].clientY-r.top;
-  },{passive:false});
+  e.preventDefault();
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+  }, {passive:false});
+  hero.addEventListener('touchend',()=>{ mouse.x=-9999; mouse.y=-9999; });
   window.addEventListener('resize', resize);
   window.addEventListener('load', init);
-})();
+  })();
 
 
 // ═══════════════════════════════════════════════════════
@@ -774,8 +777,8 @@
   let bins=[], falling=[], frame=0;
 
   function resize(){
-    DW = cvs.width  = wrap.offsetWidth;
-    DH = cvs.height = 240;
+  DW = cvs.width  = wrap.offsetWidth || window.innerWidth * 0.9;
+  DH = cvs.height = window.innerWidth < 768 ? 180 : 240;
   }
 
   function randNorm(){
