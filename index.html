@@ -20,7 +20,8 @@
   <meta name="twitter:description" content="Watch statistics come alive through interactive animations. Free for everyone."/>
   <meta name="twitter:image" content="https://probably-true.vercel.app/assets/images/preview.png"/>
   <link rel="canonical" href="https://probably-true.vercel.app/"/>
-  <link rel="icon" type="image/png" href="assets/images/favicon.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicon.png"/>
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/images/favicon.png"/>
 
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 
@@ -340,20 +341,40 @@
 <!-- ── NAV ── -->
 <nav>
   <a href="#" class="nav-logo">
-    <svg class="logo-sm" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-      <rect width="80" height="80" rx="20" fill="#f5f0ff"/>
-      <rect width="80" height="80" rx="20" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
-      <path d="M30,30 C30,19 35,13 40,13 C45,13 52,19 52,28 C52,39 44,44 41,49 C39,52 39,56 39,59"
-            fill="none" stroke="#7c3aed" stroke-width="7.5" stroke-linecap="round"/>
-      <path d="M34,30 C34,22 37,17 40,17 C43,17 48,22 48,28 C48,37 42,41 39.5,46 C38,49 43,56 43,59"
-            fill="none" stroke="#f5f0ff" stroke-width="3.5" stroke-linecap="round"/>
-      <circle cx="40" cy="68" r="7" fill="#7c3aed"/>
-      <path d="M35.5,69.5 C36.5,69.5 37.5,68.5 39,66 C39.5,65 40,64.5 40,64.5 C40,64.5 40.5,65 41,66 C42.5,68.5 43.5,69.5 44.5,69.5"
-            fill="none" stroke="#f5f0ff" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="19" cy="26" r="3"   fill="#f9c74f" opacity=".9"/>
-      <circle cx="61" cy="30" r="2.5" fill="#06d6a0" opacity=".85"/>
-      <circle cx="15" cy="54" r="2.5" fill="#f72585" opacity=".8"/>
-      <circle cx="65" cy="56" r="3"   fill="#4361ee" opacity=".85"/>
+    <svg class="logo-sm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="400" rx="80" fill="#f5f0ff"/>
+      <rect x="5" y="5" width="390" height="390" rx="76" fill="none" stroke="#7c3aed" stroke-width="10"/>
+      <circle cx="100" cy="100" r="130" fill="#7c3aed" opacity="0.07"/>
+      <circle cx="320" cy="330" r="150" fill="#06d6a0" opacity="0.07"/>
+      <circle cx="330" cy="90"  r="110" fill="#f9c74f" opacity="0.07"/>
+      <path d="M148,158 C148,110 166,92 200,92 C234,92 254,110 254,136 C254,166 234,180 218,197 C206,210 202,222 202,242"
+        fill="none" stroke="#7c3aed" stroke-width="30" stroke-linecap="round"/>
+      <path d="M162,158 C162,118 178,106 200,106 C222,106 240,118 240,136 C240,162 222,175 207,191 C197,202 212,222 212,242"
+        fill="none" stroke="#f5f0ff" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="200" cy="288" r="28" fill="#7c3aed"/>
+      <path d="M184,295 C186,295 188,293 191,287 C193,283 196,280 198,280 C199,280 200,280 202,281 C205,284 207,288 210,295 C213,295 215,294 216,292"
+        fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="184" y1="295" x2="216" y2="295" stroke="white" stroke-width="1.4" opacity="0.45"/>
+      <circle cx="72"  cy="158" r="10" fill="#f9c74f" opacity="0.95"/>
+      <circle cx="56"  cy="218" r="8"  fill="#06d6a0" opacity="0.9"/>
+      <circle cx="68"  cy="278" r="11" fill="#f72585" opacity="0.9"/>
+      <circle cx="330" cy="156" r="8"  fill="#4361ee" opacity="0.9"/>
+      <circle cx="346" cy="216" r="11" fill="#f72585" opacity="0.95"/>
+      <circle cx="332" cy="276" r="8"  fill="#74c417" opacity="0.9"/>
+      <circle cx="148" cy="56"  r="7"  fill="#4361ee" opacity="0.7"/>
+      <circle cx="256" cy="54"  r="8"  fill="#74c417" opacity="0.7"/>
+      <g transform="translate(82,336)" opacity="0.85">
+        <rect x="0"   y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+        <rect x="18"  y="15" width="14" height="23" rx="3" fill="#4361ee"/>
+        <rect x="36"  y="5"  width="14" height="33" rx="3" fill="#7c3aed"/>
+        <rect x="54"  y="1"  width="14" height="37" rx="3" fill="#f9c74f"/>
+        <rect x="72"  y="5"  width="14" height="33" rx="3" fill="#06d6a0"/>
+        <rect x="90"  y="15" width="14" height="23" rx="3" fill="#f72585"/>
+        <rect x="108" y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+        <rect x="126" y="28" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
+        <rect x="144" y="31" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
+        <rect x="162" y="34" width="14" height="4"  rx="3" fill="#74c417" opacity="0.45"/>
+      </g>
     </svg>
     <span class="nav-wm">Probably<span>True</span></span>
   </a>
