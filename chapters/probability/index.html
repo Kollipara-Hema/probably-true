@@ -1,34 +1,1155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Probability — Probably True</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../../css/style.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Probably True — Probability</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#faf8ff;
+      --bg2:#f5f0ff;
+      --surf:#ffffff;
+      --text:#1a1535;
+      --muted:#7b72a8;
+      --border:rgba(124,58,237,0.14);
+      --purple:#7c3aed;
+      --purple-soft:rgba(124,58,237,0.08);
+      --gold:#f5c518;
+      --gold-dark:#b8860b;
+      --silver:#c0c0c0;
+      --silver-dark:#808080;
+      --teal:#06d6a0;
+      --pink:#f72585;
+      --fd:'Nunito',sans-serif;
+      --fm:'DM Mono',monospace;
+      --nav-h:64px;
+      --shadow:0 10px 28px rgba(124,58,237,.10);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:var(--fd);
+      color:var(--text);
+      background:
+        radial-gradient(circle at 18% 16%, rgba(124,58,237,.06), transparent 30%),
+        radial-gradient(circle at 82% 14%, rgba(6,214,160,.05), transparent 24%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow:hidden;
+    }
+
+    .topbar{
+      height:var(--nav-h);
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 26px;
+      background:rgba(250,248,255,.90);
+      backdrop-filter:blur(18px);
+      border-bottom:2px solid var(--border);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--text);
+    }
+
+    .brand-logo{
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      border:2px solid var(--purple);
+      background:linear-gradient(135deg,#f5f0ff,#ffffff);
+      position:relative;
+    }
+
+    .brand-logo::before{
+      content:"?";
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      color:var(--purple);
+      font-weight:900;
+      font-size:1.1rem;
+    }
+
+    .brand-name{
+      font-size:1rem;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .brand-name em{
+      font-style:normal;
+      color:var(--purple);
+    }
+
+    .chapter-tag{
+      font-family:var(--fm);
+      font-size:.72rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      padding:7px 14px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:rgba(255,255,255,.75);
+    }
+
+    .exp-layout{
+      height:100vh;
+      padding-top:var(--nav-h);
+      display:grid;
+      grid-template-columns:42% 58%;
+    }
+
+    .left-panel{
+      height:calc(100vh - var(--nav-h));
+      overflow-y:auto;
+      padding:34px 30px 40px;
+      border-right:2px solid var(--border);
+      background:rgba(255,255,255,.30);
+    }
+
+    .left-panel-inner{
+      max-width:540px;
+      margin:0 auto;
+    }
+
+    /* HOOK */
+    .left-hook-screen{
+      min-height:calc(100vh - var(--nav-h) - 60px);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding:16px 0 32px;
+    }
+
+    .hook-eyebrow{
+      font-family:var(--fm);
+      font-size:.72rem;
+      color:var(--purple);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      margin-bottom:18px;
+    }
+
+    .hook-title{
+      font-size:clamp(2.35rem,4vw,4.2rem);
+      font-weight:900;
+      letter-spacing:-.05em;
+      line-height:1;
+      margin-bottom:24px;
+      color:var(--text);
+    }
+
+    .hook-coins{
+      display:flex;
+      gap:8px;
+      justify-content:flex-start;
+      margin-bottom:28px;
+    }
+
+    .hook-coin{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      background:radial-gradient(circle at 35% 35%,#ffe066,#f5c518,#c8a000);
+      box-shadow:0 4px 0 #b8860b,0 8px 14px rgba(0,0,0,.18);
+      border:3px solid #daa520;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:var(--fm);
+      font-size:.8rem;
+      font-weight:700;
+      color:rgba(0,0,0,.28);
+      animation:coinBob var(--d,.8s) ease-in-out infinite var(--dl,0s);
+    }
+
+    @keyframes coinBob{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+    }
+
+    .hook-streak{
+      font-size:clamp(1.15rem,2vw,1.6rem);
+      font-weight:800;
+      color:var(--text);
+      margin-bottom:10px;
+      line-height:1.5;
+    }
+
+    .hook-streak em{
+      font-style:normal;
+      color:var(--gold);
+    }
+
+    .hook-question{
+      font-size:1rem;
+      font-weight:600;
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:24px;
+    }
+
+    .hook-pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:22px;
+    }
+
+    .hook-pill{
+      border:2px solid var(--border);
+      background:rgba(255,255,255,.92);
+      color:var(--text);
+      border-radius:999px;
+      padding:13px 20px;
+      font-family:var(--fd);
+      font-size:.95rem;
+      font-weight:800;
+      cursor:pointer;
+      transition:.2s ease;
+      box-shadow:0 4px 12px rgba(124,58,237,.06);
+    }
+
+    .hook-pill:hover{
+      border-color:var(--purple);
+      color:var(--purple);
+      transform:translateY(-1px);
+    }
+
+    .hook-pill.sel{
+      background:var(--purple);
+      color:#fff;
+      border-color:var(--purple);
+    }
+
+    .hook-reveal{
+      max-width:520px;
+      padding:20px 22px;
+      border-radius:18px;
+      background:rgba(255,255,255,.82);
+      border:2px solid var(--border);
+      color:var(--text);
+      font-size:.95rem;
+      line-height:1.75;
+      font-weight:700;
+      box-shadow:var(--shadow);
+      opacity:0;
+      transform:translateY(12px);
+      transition:all .5s ease;
+    }
+
+    .hook-reveal.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .start-btn{
+      margin-top:18px;
+      align-self:flex-start;
+      border:none;
+      border-radius:999px;
+      padding:15px 24px;
+      background:var(--purple);
+      color:#fff;
+      font-family:var(--fd);
+      font-size:.98rem;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(124,58,237,.22);
+      transition:.2s ease;
+      opacity:0;
+      transform:translateY(10px);
+    }
+
+    .start-btn.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .start-btn:hover{
+      transform:translateY(-2px);
+    }
+
+    /* content blocks */
+    .content-block{
+      background:rgba(255,255,255,.82);
+      border:2px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:18px;
+    }
+
+    .block-title{
+      font-size:1rem;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .block-text{
+      font-size:.92rem;
+      line-height:1.75;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .predict-row,
+    .quick-flip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .predict-btn,
+    .batch-btn,
+    .toggle-btn{
+      border:2px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      border-radius:999px;
+      padding:12px 18px;
+      font-family:var(--fd);
+      font-size:.9rem;
+      font-weight:800;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .predict-btn:hover,
+    .batch-btn:hover,
+    .toggle-btn:hover{
+      border-color:var(--purple);
+      transform:translateY(-1px);
+    }
+
+    .predict-btn.sel{
+      background:var(--purple);
+      color:#fff;
+      border-color:var(--purple);
+    }
+
+    .batch-btn.primary{
+      background:var(--purple);
+      color:#fff;
+      border-color:var(--purple);
+    }
+
+    .batch-btn.secondary{
+      color:var(--pink);
+      border-color:rgba(247,37,133,.22);
+    }
+
+    .custom-flip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top:12px;
+    }
+
+    .custom-flip-row input{
+      height:44px;
+      min-width:160px;
+      border-radius:999px;
+      border:2px solid var(--border);
+      background:#fff;
+      padding:0 16px;
+      outline:none;
+      font-family:var(--fm);
+      color:var(--text);
+    }
+
+    .custom-flip-row input:focus{
+      border-color:var(--purple);
+    }
+
+    .control-note{
+      margin-top:10px;
+      font-size:.84rem;
+      color:var(--muted);
+      line-height:1.6;
+      font-weight:700;
+    }
+
+    .insight-line{
+      font-size:1.06rem;
+      font-weight:900;
+      line-height:1.55;
+    }
+
+    .insight-line .accent{
+      color:var(--purple);
+    }
+
+    .next-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-top:12px;
+      padding:14px 22px;
+      background:var(--purple);
+      color:#fff;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:900;
+      box-shadow:0 8px 22px rgba(124,58,237,.25);
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    /* right side */
+    .right-panel{
+      height:calc(100vh - var(--nav-h));
+      display:grid;
+      grid-template-rows:auto 1fr auto auto;
+      gap:14px;
+      padding:16px 16px 16px 14px;
+      background:rgba(255,255,255,.10);
+    }
+
+    .coin-zone,
+    .physics-zone,
+    .stats-strip,
+    .prediction-zone,
+    .conv-zone{
+      background:rgba(255,255,255,.82);
+      border:2px solid var(--border);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+    }
+
+    .coin-zone{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:14px 14px 10px;
+      min-height:156px;
+    }
+
+    .coin-button{
+      width:118px;
+      height:118px;
+      border:none;
+      background:none;
+      cursor:pointer;
+    }
+
+    .coin-face{
+      width:118px;
+      height:118px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:2.7rem;
+      font-weight:900;
+      color:rgba(0,0,0,.25);
+      background:radial-gradient(circle at 35% 35%,#ffe066,#f5c518,#c8a000);
+      border:4px solid #daa520;
+      box-shadow:0 8px 0 var(--gold-dark),0 16px 24px rgba(0,0,0,.20), inset 0 2px 4px rgba(255,255,255,.35);
+    }
+
+    .coin-sub{
+      margin-top:10px;
+      font-family:var(--fm);
+      font-size:.72rem;
+      color:var(--muted);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .flip-toast{
+      margin-top:8px;
+      min-height:22px;
+      font-size:.95rem;
+      font-weight:900;
+      color:var(--purple);
+    }
+
+    .physics-zone{
+      position:relative;
+      min-height:360px;
+      overflow:hidden;
+    }
+
+    #seesaw-canvas{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    .stats-strip{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      padding:14px;
+    }
+
+    .stat-chip{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px 10px;
+      text-align:center;
+    }
+
+    .stat-label{
+      display:block;
+      font-family:var(--fm);
+      font-size:.66rem;
+      color:var(--muted);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+
+    .stat-value{
+      font-size:1.18rem;
+      font-weight:900;
+    }
+
+    .insight-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .prediction-zone,
+    .conv-zone{
+      padding:14px;
+      min-height:118px;
+    }
+
+    .insight-label{
+      display:block;
+      font-family:var(--fm);
+      font-size:.66rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--purple);
+      margin-bottom:10px;
+    }
+
+    .comparison-track{
+      position:relative;
+      height:26px;
+      border-radius:999px;
+      border:2px solid var(--border);
+      background:rgba(124,58,237,.05);
+      overflow:hidden;
+    }
+
+    .comparison-center{
+      position:absolute;
+      left:50%;
+      top:0;
+      bottom:0;
+      width:2px;
+      transform:translateX(-50%);
+      background:rgba(123,114,168,.4);
+    }
+
+    .comparison-dot{
+      position:absolute;
+      top:50%;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+    }
+
+    .comparison-dot.prediction{
+      background:var(--pink);
+      left:50%;
+    }
+
+    .comparison-dot.actual{
+      background:var(--teal);
+      left:50%;
+    }
+
+    .comparison-text,
+    .convergence-message{
+      margin-top:8px;
+      font-size:.84rem;
+      line-height:1.6;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .convergence-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .convergence-readout{
+      font-family:var(--fm);
+      font-size:.72rem;
+      color:var(--muted);
+    }
+
+    #convergence-canvas{
+      width:100%;
+      height:72px;
+      display:block;
+      border-radius:14px;
+      background:rgba(124,58,237,.05);
+      border:1px solid var(--border);
+    }
+
+    @media (max-width: 960px){
+      body{overflow:auto}
+      .exp-layout{
+        grid-template-columns:1fr;
+        height:auto;
+      }
+      .left-panel,
+      .right-panel{
+        height:auto;
+      }
+      .left-panel{
+        border-right:none;
+        border-bottom:2px solid var(--border);
+      }
+      .stats-strip{
+        grid-template-columns:repeat(2,1fr);
+      }
+      .insight-row{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-
-  <!-- NAV -->
-  <nav>
-    <a href="../../index.html" class="nav-logo">
-      <span class="nav-wordmark">Probably<span>True</span></span>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <div class="brand-logo"></div>
+      <span class="brand-name">Probably <em>True</em></span>
     </a>
-    <ul class="nav-links">
-      <li><a href="../../index.html#chapters">← All Chapters</a></li>
-    </ul>
-  </nav>
+    <div class="chapter-tag">Chapter 01 · Probability</div>
+  </header>
 
-  <!-- PAGE CONTENT — we'll build this next! -->
-  <main style="padding: 120px 48px 80px; min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center;">
-    <div style="font-family:var(--fm); font-size:0.8rem; color:var(--purple); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:16px;">Chapter 01</div>
-    <h1 style="font-size:clamp(3rem,6vw,5rem); font-weight:900; letter-spacing:-0.04em; margin-bottom:20px;">Probability</h1>
-    <p style="font-size:1.1rem; color:var(--muted); font-weight:600; max-width:520px; line-height:1.8; margin-bottom:40px;">
-      This chapter is coming soon! We're building interactive visualizations for chance events, expectation, and Bayes' theorem.
-    </p>
-    <a href="../../index.html" class="btn-primary">← Back to Home</a>
+  <main class="exp-layout">
+    <aside class="left-panel">
+      <div class="left-panel-inner">
+        <section id="hookScreen" class="left-hook-screen">
+          <div class="hook-eyebrow">Chapter 01 · Probability</div>
+          <h1 class="hook-title">The Coin Doesn't<br/>Have memory</h1>
+
+          <div class="hook-coins">
+            <div class="hook-coin" style="--d:.8s;--dl:0s">H</div>
+            <div class="hook-coin" style="--d:.9s;--dl:.1s">H</div>
+            <div class="hook-coin" style="--d:.85s;--dl:.2s">H</div>
+            <div class="hook-coin" style="--d:.95s;--dl:.3s">H</div>
+            <div class="hook-coin" style="--d:.8s;--dl:.4s">H</div>
+          </div>
+
+          <div class="hook-streak">5 heads in a row. <em>What comes next?</em></div>
+          <div class="hook-question">Trust your gut. Pick one.</div>
+
+          <div class="hook-pill-row">
+            <button class="hook-pill" data-hook="H">🟡 Heads again</button>
+            <button class="hook-pill" data-hook="?">🤷 Doesn't matter</button>
+            <button class="hook-pill" data-hook="T">⚪ Tails — it's due!</button>
+          </div>
+
+          <div class="hook-reveal" id="hookReveal"></div>
+
+          <button class="start-btn" id="startBtn" type="button">
+            Let's find out →
+          </button>
+        </section>
+
+        <section class="content-block" id="act1-block">
+          <div class="block-title">Single flip</div>
+          <p class="block-text">
+            Click the coin on the right. One flip should create one visible outcome, one coin falling into a jar, and one seesaw response.
+          </p>
+        </section>
+
+
+        <section class="content-block hidden" id="batch-panel">
+          <div class="block-title">Now flip many at once</div>
+          <div class="quick-flip-row">
+            <button class="batch-btn" data-flips="10">+10</button>
+            <button class="batch-btn" data-flips="100">+100</button>
+            <button class="batch-btn" data-flips="1000">+1,000</button>
+            <button class="batch-btn" data-flips="10000">+10,000</button>
+          </div>
+          <div class="custom-flip-row">
+            <input id="custom-flips-input" type="number" min="1" max="100000" placeholder="Custom number">
+            <button id="custom-flip-btn" class="batch-btn primary">Flip</button>
+            <button id="reset-btn" class="batch-btn secondary">Reset</button>
+          </div>
+          <p class="control-note">Try a small batch first, then compare it with a large one.</p>
+        </section>
+
+        <section class="content-block hidden" id="prediction-panel">
+          <div class="block-title">Before you flip many at once…</div>
+          <p class="block-text">Where do you think the balance will end up?</p>
+          <div class="predict-row">
+            <button class="predict-btn" data-pred="H">Mostly Heads</button>
+            <button class="predict-btn" data-pred="B">About Balanced</button>
+            <button class="predict-btn" data-pred="T">Mostly Tails</button>
+          </div>
+        </section>
+
+        <section class="content-block hidden" id="bias-panel">
+          <div class="block-title">What if the coin is biased?</div>
+          <button id="bias-toggle-btn" class="toggle-btn">Toggle biased coin (60% Heads)</button>
+          <p class="control-note" id="bias-note">Keep your data and watch the system drift.</p>
+        </section>
+
+        <section class="content-block hidden" id="insight-panel">
+          <div class="block-title">What this means</div>
+          <p class="insight-line">
+            Probability doesn’t <span class="accent">predict</span> the next flip.
+            It <span class="accent">describes</span> what happens across many flips.
+          </p>
+        </section>
+
+        <section class="content-block">
+          <div class="block-title">Next</div>
+          <p class="block-text">Once one event feels intuitive, the next step is combining events.</p>
+          <a class="next-btn" href="#">Next chapter →</a>
+        </section>
+      </div>
+    </aside>
+
+    <section class="right-panel">
+      <div class="coin-zone">
+        <button id="flip-coin-btn" class="coin-button" aria-label="Flip coin">
+          <div id="coin-visual" class="coin-face">?</div>
+        </button>
+        <div class="coin-sub">Click to flip</div>
+        <div id="flip-toast" class="flip-toast"></div>
+      </div>
+
+      <div class="physics-zone">
+        <canvas id="seesaw-canvas"></canvas>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-chip">
+          <span class="stat-label">Heads</span>
+          <span id="heads-count" class="stat-value">0</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-label">Tails</span>
+          <span id="tails-count" class="stat-value">0</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-label">Total</span>
+          <span id="total-count" class="stat-value">0</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-label">Streak</span>
+          <span id="streak-value" class="stat-value">—</span>
+        </div>
+      </div>
+
+      <div class="insight-row">
+        <div class="prediction-zone hidden" id="prediction-result">
+          <span class="insight-label">Prediction vs Actual</span>
+          <div class="comparison-track">
+            <div class="comparison-center"></div>
+            <div id="prediction-dot" class="comparison-dot prediction"></div>
+            <div id="actual-dot" class="comparison-dot actual"></div>
+          </div>
+          <p id="prediction-message" class="comparison-text">Your expectation and the observed result will appear here.</p>
+        </div>
+
+        <div class="conv-zone hidden" id="convergence-strip">
+          <div class="convergence-head">
+            <span class="insight-label">Convergence</span>
+            <span id="convergence-readout" class="convergence-readout">—</span>
+          </div>
+          <canvas id="convergence-canvas"></canvas>
+          <p id="convergence-message" class="convergence-message">As you flip more, the long-run pattern appears here.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script src="../../js/main.js"></script>
+  <script>
+    const state = {
+      heads: 0,
+      tails: 0,
+      total: 0,
+      streak: 0,
+      streakSide: null,
+      prediction: null,
+      biased: false,
+      convHistory: []
+    };
+
+    const hookMessages = {
+      H: "That feeling is common. A streak makes the coin feel hot. But the coin has no memory.",
+      "?": "Exactly. This is the statistically correct instinct. The next flip does not care about the previous five.",
+      T: "This is the classic trap: tails feels due. But randomness does not self-correct on your schedule."
+    };
+
+    const headsCount = document.getElementById('heads-count');
+    const tailsCount = document.getElementById('tails-count');
+    const totalCount = document.getElementById('total-count');
+    const streakValue = document.getElementById('streak-value');
+
+    const flipCoinBtn = document.getElementById('flip-coin-btn');
+    const coinVisual = document.getElementById('coin-visual');
+    const flipToast = document.getElementById('flip-toast');
+
+    const predictionPanel = document.getElementById('prediction-panel');
+    const batchPanel = document.getElementById('batch-panel');
+    const biasPanel = document.getElementById('bias-panel');
+    const insightPanel = document.getElementById('insight-panel');
+
+    const predictionResult = document.getElementById('prediction-result');
+    const convergenceStrip = document.getElementById('convergence-strip');
+
+    const predictionDot = document.getElementById('prediction-dot');
+    const actualDot = document.getElementById('actual-dot');
+    const predictionMessage = document.getElementById('prediction-message');
+
+    const biasNote = document.getElementById('bias-note');
+
+    document.querySelectorAll('.hook-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.hook-pill').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        const key = btn.dataset.hook;
+        const reveal = document.getElementById('hookReveal');
+        reveal.textContent = hookMessages[key];
+        reveal.classList.add('show');
+        document.getElementById('startBtn').classList.add('show');
+      });
+    });
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      predictionPanel.classList.remove('hidden');
+      batchPanel.classList.remove('hidden');
+    });
+
+    document.querySelectorAll('.predict-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.predict-btn').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        state.prediction = btn.dataset.pred;
+        const pos = state.prediction === 'H' ? 20 : state.prediction === 'T' ? 80 : 50;
+        predictionDot.style.left = pos + '%';
+      });
+    });
+
+    function flipCoin() {
+      const p = state.biased ? 0.6 : 0.5;
+      return Math.random() < p ? 'H' : 'T';
+    }
+
+    function updateStreak(side) {
+      if (state.streakSide === side) {
+        state.streak += 1;
+      } else {
+        state.streak = 1;
+        state.streakSide = side;
+      }
+    }
+
+    function updateStats() {
+      headsCount.textContent = state.heads;
+      tailsCount.textContent = state.tails;
+      totalCount.textContent = state.total;
+      streakValue.textContent = state.streak || '—';
+    }
+
+    function recordConvergence() {
+      if (!state.total) return;
+      state.convHistory.push(state.heads / state.total);
+      if (state.convHistory.length > 300) state.convHistory.shift();
+      drawConvergence();
+    }
+
+    function revealProgressively() {
+      if (state.total >= 20) predictionResult.classList.remove('hidden');
+      if (state.total >= 50) convergenceStrip.classList.remove('hidden');
+      if (state.total >= 100) biasPanel.classList.remove('hidden');
+      if (state.total >= 200) insightPanel.classList.remove('hidden');
+    }
+
+    function showPredictionResult() {
+      if (!state.prediction || !state.total) return;
+      const ratio = state.heads / state.total;
+      actualDot.style.left = (ratio * 100) + '%';
+
+      const actualClass =
+        ratio > 0.55 ? 'H' :
+        ratio < 0.45 ? 'T' : 'B';
+
+      if (actualClass === state.prediction) {
+        predictionMessage.textContent = 'Your prediction matched this result.';
+      } else {
+        predictionMessage.textContent = `Observed ${Math.round(ratio * 100)}% heads. The system didn’t land where you expected.`;
+      }
+    }
+
+    flipCoinBtn.addEventListener('click', () => {
+      const result = flipCoin();
+
+      if (result === 'H') {
+        state.heads += 1;
+        coinVisual.textContent = 'H';
+        flipToast.textContent = '🟡 Heads';
+      } else {
+        state.tails += 1;
+        coinVisual.textContent = 'T';
+        flipToast.textContent = '⚪ Tails';
+      }
+
+      state.total += 1;
+      updateStreak(result);
+      updateStats();
+      recordConvergence();
+      drawSeesaw();
+      revealProgressively();
+      showPredictionResult();
+    });
+
+    document.querySelectorAll('.batch-btn[data-flips]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const n = Number(btn.dataset.flips);
+        for (let i = 0; i < n; i++) {
+          const result = flipCoin();
+          if (result === 'H') state.heads += 1;
+          else state.tails += 1;
+          state.total += 1;
+          updateStreak(result);
+          recordConvergence();
+        }
+        updateStats();
+        drawSeesaw();
+        revealProgressively();
+        showPredictionResult();
+      });
+    });
+
+    document.getElementById('custom-flip-btn').addEventListener('click', () => {
+      const input = document.getElementById('custom-flips-input');
+      const n = Number(input.value);
+      if (!n || n < 1) return;
+      for (let i = 0; i < n; i++) {
+        const result = flipCoin();
+        if (result === 'H') state.heads += 1;
+        else state.tails += 1;
+        state.total += 1;
+        updateStreak(result);
+        recordConvergence();
+      }
+      input.value = '';
+      updateStats();
+      drawSeesaw();
+      revealProgressively();
+      showPredictionResult();
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      state.heads = 0;
+      state.tails = 0;
+      state.total = 0;
+      state.streak = 0;
+      state.streakSide = null;
+      state.prediction = null;
+      state.biased = false;
+      state.convHistory = [];
+      document.querySelectorAll('.predict-btn').forEach(b => b.classList.remove('sel'));
+      predictionDot.style.left = '50%';
+      actualDot.style.left = '50%';
+      predictionMessage.textContent = 'Your expectation and the observed result will appear here.';
+      convergenceStrip.classList.add('hidden');
+      predictionResult.classList.add('hidden');
+      biasPanel.classList.add('hidden');
+      insightPanel.classList.add('hidden');
+      biasNote.textContent = 'Keep your data and watch the system drift.';
+      coinVisual.textContent = '?';
+      flipToast.textContent = '';
+      updateStats();
+      drawSeesaw();
+      drawConvergence();
+    });
+
+    document.getElementById('bias-toggle-btn').addEventListener('click', () => {
+      state.biased = !state.biased;
+      biasNote.textContent = state.biased
+        ? 'Biased mode on. Heads now has a 60% chance.'
+        : 'Back to fair mode. Keep your current data.';
+    });
+
+    // Seesaw
+    const seesawCanvas = document.getElementById('seesaw-canvas');
+    const sctx = seesawCanvas.getContext('2d');
+
+    function resizeSeesawCanvas() {
+      seesawCanvas.width = seesawCanvas.clientWidth;
+      seesawCanvas.height = seesawCanvas.clientHeight;
+      drawSeesaw();
+    }
+
+    function drawSeesaw() {
+      const w = seesawCanvas.width;
+      const h = seesawCanvas.height;
+      sctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h * 0.72;
+
+      const total = state.total || 1;
+      const ratio = state.heads / total;
+      const angle = (0.5 - ratio) * 0.6;
+
+      sctx.save();
+      sctx.translate(cx, cy);
+
+      // fulcrum
+      sctx.fillStyle = 'rgba(124,58,237,.45)';
+      sctx.beginPath();
+      sctx.moveTo(0, -6);
+      sctx.lineTo(-32, 50);
+      sctx.lineTo(32, 50);
+      sctx.closePath();
+      sctx.fill();
+
+      // beam
+      sctx.rotate(angle);
+      sctx.fillStyle = '#c4b5fd';
+      roundRect(sctx, -230, -10, 460, 20, 10);
+      sctx.fill();
+
+      // jars
+      drawJar(sctx, -170, -105, state.heads, '#f5c518', '#b8860b', 'H');
+      drawJar(sctx, 170, -105, state.tails, '#c0c0c0', '#808080', 'T');
+
+      sctx.restore();
+    }
+
+    function drawJar(ctx, x, y, count, fill, edge, label) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.strokeStyle = edge;
+      ctx.lineWidth = 2;
+      ctx.fillStyle = 'rgba(255,255,255,.18)';
+      roundRect(ctx, -42, 0, 84, 90, 10);
+      ctx.fill();
+      ctx.stroke();
+
+      const maxFillH = 68;
+      const fillH = Math.min(maxFillH, count * 4);
+      ctx.fillStyle = fill;
+      roundRect(ctx, -38, 90 - fillH, 76, fillH, 8);
+      ctx.fill();
+
+      ctx.fillStyle = edge;
+      ctx.font = '700 14px "DM Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, 0, 48);
+
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    // Convergence
+    const convCanvas = document.getElementById('convergence-canvas');
+    const cctx = convCanvas.getContext('2d');
+
+    function resizeConvCanvas() {
+      convCanvas.width = convCanvas.clientWidth;
+      convCanvas.height = convCanvas.clientHeight;
+      drawConvergence();
+    }
+
+    function drawConvergence() {
+      const w = convCanvas.width;
+      const h = convCanvas.height;
+      cctx.clearRect(0, 0, w, h);
+
+      // 50% line
+      cctx.strokeStyle = 'rgba(124,58,237,.22)';
+      cctx.setLineDash([4, 4]);
+      cctx.beginPath();
+      cctx.moveTo(0, h / 2);
+      cctx.lineTo(w, h / 2);
+      cctx.stroke();
+      cctx.setLineDash([]);
+
+      if (state.convHistory.length < 2) {
+        document.getElementById('convergence-readout').textContent = '—';
+        document.getElementById('convergence-message').textContent = 'As you flip more, the long-run pattern appears here.';
+        return;
+      }
+
+      cctx.beginPath();
+      state.convHistory.forEach((r, i) => {
+        const x = (i / (state.convHistory.length - 1)) * w;
+        const y = h - (r * h);
+        if (i === 0) cctx.moveTo(x, y);
+        else cctx.lineTo(x, y);
+      });
+      cctx.strokeStyle = state.biased ? '#f72585' : '#7c3aed';
+      cctx.lineWidth = 2.5;
+      cctx.stroke();
+
+      const last = state.convHistory[state.convHistory.length - 1];
+      document.getElementById('convergence-readout').textContent = `${Math.round(last * 100)}% heads`;
+
+      if (state.total < 30) {
+        document.getElementById('convergence-message').textContent = 'Still very unstable.';
+      } else if (state.total < 200) {
+        document.getElementById('convergence-message').textContent = 'Small samples still swing a lot.';
+      } else if (state.total < 1000) {
+        document.getElementById('convergence-message').textContent = 'Now the long-run pattern is becoming visible.';
+      } else {
+        document.getElementById('convergence-message').textContent = 'This is the slow pull toward long-run frequency.';
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      resizeSeesawCanvas();
+      resizeConvCanvas();
+    });
+
+    updateStats();
+    resizeSeesawCanvas();
+    resizeConvCanvas();
+  </script>
 </body>
 </html>
