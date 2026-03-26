@@ -50,6 +50,8 @@
       border-bottom:2px solid var(--border);
     }
     .logo {  height: 40px;width: auto;}
+    .nav-links {display: flex;      gap: 16px;      margin: 0 20px;    }
+    .nav-links a {      text-decoration: none;      color: #333;      font-weight: 500;}
     .brand{display:flex;align-items:center;gap:12px}
     .brand-logo{width:36px;height:36px;border-radius:12px;border:2px solid var(--purple);display:grid;place-items:center;font-weight:900;color:var(--purple);background:linear-gradient(135deg,#fff,#f3e8ff)}
     .brand-name{font-weight:900;letter-spacing:-.03em;font-size:1rem}
@@ -273,6 +275,13 @@
         <div class="brand-name">Probably <em>True</em></div>
       </div>
     </div>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/#chapters">Chapters</a>
+      <a href="/#why">About</a>
+      <!-- <a href="/book">Book</a> -->
+      <a href="https://youtube.com/@probablytruestats" target="_blank">YouTube</a>
+    </nav>
     <div class="top-controls">
       <div class="chip">Chapter 01 · Chance & Probability</div>
       <button class="sound-toggle active" id="soundToggle">🔊 Sound On</button>
