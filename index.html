@@ -106,10 +106,6 @@
       background: rgba(124,58,237,0.06);
       color: var(--purple);
     }
-
-    .dropdown:hover .dropdown-menu {
-      display: block;
-    }
     .dropdown.open .dropdown-menu {display: block;}
 
     .dropdown-menu a.disabled {
@@ -1029,16 +1025,27 @@
   document.querySelectorAll('.cc:not(.dim), .how-step').forEach((el,i)=>{
     el.dataset.d=i*100; co.observe(el);
   });
-})();
-document.querySelectorAll('.dropdown > a').forEach(el => {
-  el.addEventListener('click', function(e) {
-    if (window.innerWidth < 768) {
+  })();
+
+  document.querySelectorAll('.dropdown > a').forEach(el => {
+    el.addEventListener('click', function(e) {
       e.preventDefault();
-      this.nextElementSibling.style.display =
-        this.nextElementSibling.style.display === 'block' ? 'none' : 'block';
-    }
+      const parent = this.parentElement;
+
+      document.querySelectorAll('.dropdown').forEach(d => {
+        if (d !== parent) d.classList.remove('open');
+      });
+
+      parent.classList.toggle('open');
+    });
   });
-});
+
+  document.addEventListener('click', function(e) {
+    document.querySelectorAll('.dropdown').forEach(d => {
+      if (!d.contains(e.target)) d.classList.remove('open');
+    });
+  });
+
 
 </script>
 </body>

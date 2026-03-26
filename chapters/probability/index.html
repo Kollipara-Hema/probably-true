@@ -49,7 +49,29 @@
       padding:0 24px; background:rgba(250,248,255,.90); backdrop-filter:blur(18px);
       border-bottom:2px solid var(--border);
     }
-    .logo {  height: 40px;width: auto;}
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-sm {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+
+    .nav-wm {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .nav-wm span {
+      color: var(--purple);
+    }
     .nav-links {
       display: flex;
       gap: 20px;
@@ -122,8 +144,6 @@
       display: block;
     }
     .brand{display:flex;align-items:center;gap:12px}
-    .brand-logo{width:36px;height:36px;border-radius:12px;border:2px solid var(--purple);display:grid;place-items:center;font-weight:900;color:var(--purple);background:linear-gradient(135deg,#fff,#f3e8ff)}
-    .brand-name{font-weight:900;letter-spacing:-.03em;font-size:1rem}
     .brand-name em{font-style:normal;color:var(--purple)}
     .top-controls{display:flex;align-items:center;gap:12px}
     .chip{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.8);color:var(--muted)}
@@ -341,13 +361,42 @@
     <div class="brand">
       <a href="https://probably-true.vercel.app/" class="nav-logo">
         <svg class="logo-sm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-          <!-- paste full SVG content from homepage here -->
+          <rect width="400" height="400" rx="80" fill="#f5f0ff"/>
+          <rect x="5" y="5" width="390" height="390" rx="76" fill="none" stroke="#7c3aed" stroke-width="10"/>
+          <circle cx="100" cy="100" r="130" fill="#7c3aed" opacity="0.07"/>
+          <circle cx="320" cy="330" r="150" fill="#06d6a0" opacity="0.07"/>
+          <circle cx="330" cy="90"  r="110" fill="#f9c74f" opacity="0.07"/>
+          <path d="M148,158 C148,110 166,92 200,92 C234,92 254,110 254,136 C254,166 234,180 218,197 C206,210 202,222 202,242"
+            fill="none" stroke="#7c3aed" stroke-width="30" stroke-linecap="round"/>
+          <path d="M162,158 C162,118 178,106 200,106 C222,106 240,118 240,136 C240,162 222,175 207,191 C197,202 212,222 212,242"
+            fill="none" stroke="#f5f0ff" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="200" cy="288" r="28" fill="#7c3aed"/>
+          <path d="M184,295 C186,295 188,293 191,287 C193,283 196,280 198,280 C199,280 200,280 202,281 C205,284 207,288 210,295 C213,295 215,294 216,292"
+            fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="184" y1="295" x2="216" y2="295" stroke="white" stroke-width="1.4" opacity="0.45"/>
+          <circle cx="72"  cy="158" r="10" fill="#f9c74f" opacity="0.95"/>
+          <circle cx="56"  cy="218" r="8"  fill="#06d6a0" opacity="0.9"/>
+          <circle cx="68"  cy="278" r="11" fill="#f72585" opacity="0.9"/>
+          <circle cx="330" cy="156" r="8"  fill="#4361ee" opacity="0.9"/>
+          <circle cx="346" cy="216" r="11" fill="#f72585" opacity="0.95"/>
+          <circle cx="332" cy="276" r="8"  fill="#74c417" opacity="0.9"/>
+          <circle cx="148" cy="56"  r="7"  fill="#4361ee" opacity="0.7"/>
+          <circle cx="256" cy="54"  r="8"  fill="#74c417" opacity="0.7"/>
+          <g transform="translate(82,336)" opacity="0.85">
+            <rect x="0"   y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+            <rect x="18"  y="15" width="14" height="23" rx="3" fill="#4361ee"/>
+            <rect x="36"  y="5"  width="14" height="33" rx="3" fill="#7c3aed"/>
+            <rect x="54"  y="1"  width="14" height="37" rx="3" fill="#f9c74f"/>
+            <rect x="72"  y="5"  width="14" height="33" rx="3" fill="#06d6a0"/>
+            <rect x="90"  y="15" width="14" height="23" rx="3" fill="#f72585"/>
+            <rect x="108" y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+            <rect x="126" y="28" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
+            <rect x="144" y="31" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
+            <rect x="162" y="34" width="14" height="4"  rx="3" fill="#74c417" opacity="0.45"/>
+          </g> <!-- FULL SVG CONTENT FROM HOMEPAGE -->
         </svg>
         <span class="nav-wm">Probably<span>True</span></span>
       </a>
-      <div>
-        <div class="brand-name">Probably <em>True</em></div>
-      </div>
     </div>
     <nav class="nav-links">
       <a href="/">Home</a>
