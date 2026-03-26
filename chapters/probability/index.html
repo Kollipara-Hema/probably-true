@@ -50,8 +50,77 @@
       border-bottom:2px solid var(--border);
     }
     .logo {  height: 40px;width: auto;}
-    .nav-links {display: flex;      gap: 16px;      margin: 0 20px;    }
-    .nav-links a {      text-decoration: none;      color: #333;      font-weight: 500;}
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      margin: 0 20px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links li {
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+    .dropdown {
+      position: relative;
+      list-style: none;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      min-width: 260px;
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 10px 0;
+      margin: 0;
+      list-style: none;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+      z-index: 300;
+    }
+
+    .dropdown-menu li {
+      list-style: none;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 16px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .dropdown-menu a:hover {
+      background: rgba(124,58,237,0.06);
+      color: var(--purple);
+    }
+
+    .dropdown-menu a.disabled {
+      color: #aaa;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .dropdown.open .dropdown-menu {
+      display: block;
+    }
     .brand{display:flex;align-items:center;gap:12px}
     .brand-logo{width:36px;height:36px;border-radius:12px;border:2px solid var(--purple);display:grid;place-items:center;font-weight:900;color:var(--purple);background:linear-gradient(135deg,#fff,#f3e8ff)}
     .brand-name{font-weight:900;letter-spacing:-.03em;font-size:1rem}
@@ -270,17 +339,30 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <img src="../../assets/images/logo-mark.svg" class="logo" />
+      <a href="https://probably-true.vercel.app/" class="nav-logo">
+        <svg class="logo-sm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- paste full SVG content from homepage here -->
+        </svg>
+        <span class="nav-wm">Probably<span>True</span></span>
+      </a>
       <div>
         <div class="brand-name">Probably <em>True</em></div>
       </div>
     </div>
     <nav class="nav-links">
       <a href="/">Home</a>
-      <a href="/#chapters">Chapters</a>
+      
+      <li class="dropdown">
+        <a href="#">Chapters ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="/chapters/probability/">Chapter 1 · Probability</a></li>
+          <li><a href="#" class="disabled">Chapter 2 · Coming Soon</a></li>
+          <li><a href="#" class="disabled">Chapter 2 · Coming Soon</a></li>
+        </ul>
+      </li>
       <a href="/#why">About</a>
       <!-- <a href="/book">Book</a> -->
-      <a href="https://youtube.com/@probablytruestats" target="_blank">YouTube</a>
+      <a href="https://youtube.com/@probablytruestats" target="_blank" rel="noopener noreferrer">YouTube</a>
     </nav>
     <div class="top-controls">
       <div class="chip">Chapter 01 · Chance & Probability</div>
@@ -1105,8 +1187,24 @@
       drawSampleBars(sp, lp);
       coinSound();
     }
-    document.getElementById('compareSamples').addEventListener('click', compareSamples);
-    compareSamples();
+    document.querySelectorAll('.dropdown > a').forEach(el => {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        const parent = this.parentElement;
+
+        document.querySelectorAll('.dropdown').forEach(d => {
+          if (d !== parent) d.classList.remove('open');
+        });
+
+        parent.classList.toggle('open');       
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      document.querySelectorAll('.dropdown').forEach(d => {
+        if (!d.contains(e.target)) d.classList.remove('open');
+      });
+    });
   </script>
 </body>
 </html>
