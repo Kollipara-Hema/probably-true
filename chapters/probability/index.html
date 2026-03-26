@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Probably True — Probability</title>
-
+  <title>Chapter 1 — Chance & Probability</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --bg:#faf8ff;
@@ -14,1142 +12,1091 @@
       --surf:#ffffff;
       --text:#1a1535;
       --muted:#7b72a8;
-      --border:rgba(124,58,237,0.14);
+      --border:rgba(124,58,237,0.16);
       --purple:#7c3aed;
       --purple-soft:rgba(124,58,237,0.08);
+      --purple-pale:#ede9fe;
       --gold:#f5c518;
       --gold-dark:#b8860b;
-      --silver:#c0c0c0;
-      --silver-dark:#808080;
+      --silver:#d6d6d6;
+      --silver-dark:#8f8f8f;
       --teal:#06d6a0;
       --pink:#f72585;
+      --blue:#4f46e5;
+      --red:#ef4444;
+      --card-red:#e11d48;
+      --card-black:#111827;
       --fd:'Nunito',sans-serif;
       --fm:'DM Mono',monospace;
-      --nav-h:64px;
-      --shadow:0 10px 28px rgba(124,58,237,.10);
+      --nav-h:68px;
+      --shadow:0 16px 38px rgba(124,58,237,.10);
+      --radius:28px;
     }
-
     *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+    html{scroll-behavior:smooth}
     body{
       font-family:var(--fd);
       color:var(--text);
       background:
-        radial-gradient(circle at 18% 16%, rgba(124,58,237,.06), transparent 30%),
-        radial-gradient(circle at 82% 14%, rgba(6,214,160,.05), transparent 24%),
+        radial-gradient(circle at 15% 12%, rgba(124,58,237,.07), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(6,214,160,.06), transparent 26%),
         linear-gradient(180deg,var(--bg),var(--bg2));
-      overflow:hidden;
+      overflow-x:hidden;
     }
-
     .topbar{
-      height:var(--nav-h);
-      position:fixed;
-      inset:0 0 auto 0;
-      z-index:20;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 26px;
-      background:rgba(250,248,255,.90);
-      backdrop-filter:blur(18px);
+      position:fixed; inset:0 0 auto 0; height:var(--nav-h); z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 24px; background:rgba(250,248,255,.90); backdrop-filter:blur(18px);
       border-bottom:2px solid var(--border);
     }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:var(--text);
-    }
-
-    .brand-logo{
-      width:34px;
-      height:34px;
-      border-radius:10px;
-      border:2px solid var(--purple);
-      background:linear-gradient(135deg,#f5f0ff,#ffffff);
-      position:relative;
-    }
-
-    .brand-logo::before{
-      content:"?";
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
-      color:var(--purple);
-      font-weight:900;
-      font-size:1.1rem;
-    }
-
-    .brand-name{
-      font-size:1rem;
-      font-weight:900;
-      letter-spacing:-.02em;
-    }
-
-    .brand-name em{
-      font-style:normal;
-      color:var(--purple);
-    }
-
-    .chapter-tag{
-      font-family:var(--fm);
-      font-size:.72rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:var(--muted);
-      padding:7px 14px;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:rgba(255,255,255,.75);
-    }
-
-    .exp-layout{
-      height:100vh;
-      padding-top:var(--nav-h);
-      display:grid;
-      grid-template-columns:42% 58%;
-    }
-
-    .left-panel{
-      height:calc(100vh - var(--nav-h));
-      overflow-y:auto;
-      padding:34px 30px 40px;
-      border-right:2px solid var(--border);
-      background:rgba(255,255,255,.30);
-    }
-
-    .left-panel-inner{
-      max-width:540px;
-      margin:0 auto;
-    }
-
-    /* HOOK */
-    .left-hook-screen{
-      min-height:calc(100vh - var(--nav-h) - 60px);
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      padding:16px 0 32px;
-    }
-
-    .hook-eyebrow{
-      font-family:var(--fm);
-      font-size:.72rem;
-      color:var(--purple);
-      letter-spacing:.2em;
-      text-transform:uppercase;
-      margin-bottom:18px;
-    }
-
-    .hook-title{
-      font-size:clamp(2.35rem,4vw,4.2rem);
-      font-weight:900;
-      letter-spacing:-.05em;
-      line-height:1;
-      margin-bottom:24px;
-      color:var(--text);
-    }
-
-    .hook-coins{
-      display:flex;
-      gap:8px;
-      justify-content:flex-start;
-      margin-bottom:28px;
-    }
-
-    .hook-coin{
-      width:46px;
-      height:46px;
-      border-radius:50%;
-      background:radial-gradient(circle at 35% 35%,#ffe066,#f5c518,#c8a000);
-      box-shadow:0 4px 0 #b8860b,0 8px 14px rgba(0,0,0,.18);
-      border:3px solid #daa520;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family:var(--fm);
-      font-size:.8rem;
-      font-weight:700;
-      color:rgba(0,0,0,.28);
-      animation:coinBob var(--d,.8s) ease-in-out infinite var(--dl,0s);
-    }
-
-    @keyframes coinBob{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-6px)}
-    }
-
-    .hook-streak{
-      font-size:clamp(1.15rem,2vw,1.6rem);
-      font-weight:800;
-      color:var(--text);
-      margin-bottom:10px;
-      line-height:1.5;
-    }
-
-    .hook-streak em{
-      font-style:normal;
-      color:var(--gold);
-    }
-
-    .hook-question{
-      font-size:1rem;
-      font-weight:600;
-      color:var(--muted);
-      line-height:1.7;
-      margin-bottom:24px;
-    }
-
-    .hook-pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-bottom:22px;
-    }
-
-    .hook-pill{
-      border:2px solid var(--border);
-      background:rgba(255,255,255,.92);
-      color:var(--text);
-      border-radius:999px;
-      padding:13px 20px;
-      font-family:var(--fd);
-      font-size:.95rem;
-      font-weight:800;
-      cursor:pointer;
-      transition:.2s ease;
-      box-shadow:0 4px 12px rgba(124,58,237,.06);
-    }
-
-    .hook-pill:hover{
-      border-color:var(--purple);
-      color:var(--purple);
-      transform:translateY(-1px);
-    }
-
-    .hook-pill.sel{
-      background:var(--purple);
-      color:#fff;
-      border-color:var(--purple);
-    }
-
-    .hook-reveal{
-      max-width:520px;
-      padding:20px 22px;
-      border-radius:18px;
-      background:rgba(255,255,255,.82);
-      border:2px solid var(--border);
-      color:var(--text);
-      font-size:.95rem;
-      line-height:1.75;
-      font-weight:700;
-      box-shadow:var(--shadow);
-      opacity:0;
-      transform:translateY(12px);
-      transition:all .5s ease;
-    }
-
-    .hook-reveal.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    .start-btn{
-      margin-top:18px;
-      align-self:flex-start;
-      border:none;
-      border-radius:999px;
-      padding:15px 24px;
-      background:var(--purple);
-      color:#fff;
-      font-family:var(--fd);
-      font-size:.98rem;
-      font-weight:900;
-      cursor:pointer;
-      box-shadow:0 10px 24px rgba(124,58,237,.22);
-      transition:.2s ease;
-      opacity:0;
-      transform:translateY(10px);
-    }
-
-    .start-btn.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    .start-btn:hover{
-      transform:translateY(-2px);
-    }
-
-    /* content blocks */
-    .content-block{
-      background:rgba(255,255,255,.82);
-      border:2px solid var(--border);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      padding:22px;
-      margin-bottom:18px;
-    }
-
-    .block-title{
-      font-size:1rem;
-      font-weight:900;
-      margin-bottom:8px;
-    }
-
-    .block-text{
-      font-size:.92rem;
-      line-height:1.75;
-      color:var(--muted);
-      font-weight:600;
-    }
-
-    .predict-row,
-    .quick-flip-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .predict-btn,
-    .batch-btn,
-    .toggle-btn{
-      border:2px solid var(--border);
-      background:#fff;
-      color:var(--text);
-      border-radius:999px;
-      padding:12px 18px;
-      font-family:var(--fd);
-      font-size:.9rem;
-      font-weight:800;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .predict-btn:hover,
-    .batch-btn:hover,
-    .toggle-btn:hover{
-      border-color:var(--purple);
-      transform:translateY(-1px);
-    }
-
-    .predict-btn.sel{
-      background:var(--purple);
-      color:#fff;
-      border-color:var(--purple);
-    }
-
-    .batch-btn.primary{
-      background:var(--purple);
-      color:#fff;
-      border-color:var(--purple);
-    }
-
-    .batch-btn.secondary{
-      color:var(--pink);
-      border-color:rgba(247,37,133,.22);
-    }
-
-    .custom-flip-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      margin-top:12px;
-    }
-
-    .custom-flip-row input{
-      height:44px;
-      min-width:160px;
-      border-radius:999px;
-      border:2px solid var(--border);
-      background:#fff;
-      padding:0 16px;
-      outline:none;
-      font-family:var(--fm);
-      color:var(--text);
-    }
-
-    .custom-flip-row input:focus{
-      border-color:var(--purple);
-    }
-
-    .control-note{
-      margin-top:10px;
-      font-size:.84rem;
-      color:var(--muted);
-      line-height:1.6;
-      font-weight:700;
-    }
-
-    .insight-line{
-      font-size:1.06rem;
-      font-weight:900;
-      line-height:1.55;
-    }
-
-    .insight-line .accent{
-      color:var(--purple);
-    }
-
-    .next-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin-top:12px;
-      padding:14px 22px;
-      background:var(--purple);
-      color:#fff;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:900;
-      box-shadow:0 8px 22px rgba(124,58,237,.25);
-    }
-
-    .hidden{
-      display:none !important;
-    }
-
-    /* right side */
-    .right-panel{
-      height:calc(100vh - var(--nav-h));
-      display:grid;
-      grid-template-rows:auto 1fr auto auto;
-      gap:14px;
-      padding:16px 16px 16px 14px;
-      background:rgba(255,255,255,.10);
-    }
-
-    .coin-zone,
-    .physics-zone,
-    .stats-strip,
-    .prediction-zone,
-    .conv-zone{
-      background:rgba(255,255,255,.82);
-      border:2px solid var(--border);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-    }
-
-    .coin-zone{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      padding:14px 14px 10px;
-      min-height:156px;
-    }
-
-    .coin-button{
-      width:118px;
-      height:118px;
-      border:none;
-      background:none;
-      cursor:pointer;
-    }
-
-    .coin-face{
-      width:118px;
-      height:118px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      font-size:2.7rem;
-      font-weight:900;
-      color:rgba(0,0,0,.25);
-      background:radial-gradient(circle at 35% 35%,#ffe066,#f5c518,#c8a000);
-      border:4px solid #daa520;
-      box-shadow:0 8px 0 var(--gold-dark),0 16px 24px rgba(0,0,0,.20), inset 0 2px 4px rgba(255,255,255,.35);
-    }
-
-    .coin-sub{
-      margin-top:10px;
-      font-family:var(--fm);
-      font-size:.72rem;
-      color:var(--muted);
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .flip-toast{
-      margin-top:8px;
-      min-height:22px;
-      font-size:.95rem;
-      font-weight:900;
-      color:var(--purple);
-    }
-
-    .physics-zone{
-      position:relative;
-      min-height:360px;
-      overflow:hidden;
-    }
-
-    #seesaw-canvas{
-      width:100%;
-      height:100%;
-      display:block;
-    }
-
-    .stats-strip{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
-      padding:14px;
-    }
-
-    .stat-chip{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:12px 10px;
-      text-align:center;
-    }
-
-    .stat-label{
-      display:block;
-      font-family:var(--fm);
-      font-size:.66rem;
-      color:var(--muted);
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      margin-bottom:6px;
-    }
-
-    .stat-value{
-      font-size:1.18rem;
-      font-weight:900;
-    }
-
-    .insight-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .prediction-zone,
-    .conv-zone{
-      padding:14px;
-      min-height:118px;
-    }
-
-    .insight-label{
-      display:block;
-      font-family:var(--fm);
-      font-size:.66rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--purple);
-      margin-bottom:10px;
-    }
-
-    .comparison-track{
-      position:relative;
-      height:26px;
-      border-radius:999px;
-      border:2px solid var(--border);
-      background:rgba(124,58,237,.05);
-      overflow:hidden;
-    }
-
-    .comparison-center{
-      position:absolute;
-      left:50%;
-      top:0;
-      bottom:0;
-      width:2px;
-      transform:translateX(-50%);
-      background:rgba(123,114,168,.4);
-    }
-
-    .comparison-dot{
-      position:absolute;
-      top:50%;
-      width:14px;
-      height:14px;
-      border-radius:50%;
-      transform:translate(-50%,-50%);
-    }
-
-    .comparison-dot.prediction{
-      background:var(--pink);
-      left:50%;
-    }
-
-    .comparison-dot.actual{
-      background:var(--teal);
-      left:50%;
-    }
-
-    .comparison-text,
-    .convergence-message{
-      margin-top:8px;
-      font-size:.84rem;
-      line-height:1.6;
-      color:var(--muted);
-      font-weight:700;
-    }
-
-    .convergence-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-      margin-bottom:8px;
-    }
-
-    .convergence-readout{
-      font-family:var(--fm);
-      font-size:.72rem;
-      color:var(--muted);
-    }
-
-    #convergence-canvas{
-      width:100%;
-      height:72px;
-      display:block;
-      border-radius:14px;
-      background:rgba(124,58,237,.05);
-      border:1px solid var(--border);
-    }
-
-    @media (max-width: 960px){
-      body{overflow:auto}
-      .exp-layout{
-        grid-template-columns:1fr;
-        height:auto;
-      }
-      .left-panel,
-      .right-panel{
-        height:auto;
-      }
-      .left-panel{
-        border-right:none;
-        border-bottom:2px solid var(--border);
-      }
-      .stats-strip{
-        grid-template-columns:repeat(2,1fr);
-      }
-      .insight-row{
-        grid-template-columns:1fr;
-      }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-logo{width:36px;height:36px;border-radius:12px;border:2px solid var(--purple);display:grid;place-items:center;font-weight:900;color:var(--purple);background:linear-gradient(135deg,#fff,#f3e8ff)}
+    .brand-name{font-weight:900;letter-spacing:-.03em;font-size:1rem}
+    .brand-name em{font-style:normal;color:var(--purple)}
+    .top-controls{display:flex;align-items:center;gap:12px}
+    .chip{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.8);color:var(--muted)}
+    .sound-toggle,.next-mini{
+      border:none;border-radius:999px;padding:10px 16px;font-weight:800;cursor:pointer;
+      background:#fff; color:var(--text); border:2px solid var(--border); box-shadow:var(--shadow);
+    }
+    .sound-toggle.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+    .progress-bar{position:fixed;top:var(--nav-h);left:0;right:0;height:4px;background:rgba(124,58,237,.10);z-index:90}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),#a78bfa)}
+    .dot-nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:10px}
+    .dot{width:11px;height:11px;border-radius:50%;background:transparent;border:2px solid rgba(124,58,237,.25);cursor:pointer;transition:.2s}
+    .dot.active,.dot:hover{background:var(--purple);border-color:var(--purple);transform:scale(1.08)}
+
+    main{padding-top:var(--nav-h)}
+    .panel{
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:34px 24px; position:relative;
+    }
+    .wrap{width:min(1180px,100%); display:grid; grid-template-columns:1.05fr .95fr; gap:26px; align-items:center}
+    .card{
+      background:rgba(255,255,255,.82); border:2px solid var(--border); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:28px;
+    }
+    .eyebrow{font-family:var(--fm);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+    h1,h2{letter-spacing:-.04em;line-height:1.02}
+    h1{font-size:clamp(2.4rem,5vw,4.5rem);margin-bottom:18px}
+    h2{font-size:clamp(1.9rem,4vw,3.2rem);margin-bottom:14px}
+    .lead{font-size:1.05rem;line-height:1.8;color:var(--muted);font-weight:700;max-width:58ch}
+    .note{margin-top:16px;padding:14px 16px;border-radius:18px;background:var(--purple-pale);border:1px solid #ddd6fe;color:var(--purple);font-weight:800;line-height:1.6}
+    .question{margin:18px 0 14px;font-size:1.1rem;font-weight:900}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    button.primary, button.secondary, .ghost{
+      border:none;border-radius:999px;padding:13px 18px;font-family:var(--fd);font-weight:900;cursor:pointer;transition:.2s;
+    }
+    button.primary{background:var(--purple);color:#fff;box-shadow:0 12px 24px rgba(124,58,237,.22)}
+    button.secondary{background:#fff;border:2px solid var(--border);color:var(--text)}
+    .ghost{background:rgba(124,58,237,.06);color:var(--purple);border:2px solid transparent}
+    button:hover,.ghost:hover{transform:translateY(-1px)}
+    .choice.sel{background:var(--purple);color:#fff;border-color:var(--purple)}
+    .reveal{margin-top:16px;opacity:0;transform:translateY(10px);transition:.35s;padding:16px 18px;border-radius:20px;background:#fff;border:2px solid var(--border);font-weight:800;line-height:1.7;color:var(--text)}
+    .reveal.show{opacity:1;transform:translateY(0)}
+
+    /* Hook visuals */
+    .sequence-board{display:grid;gap:16px}
+    .sequence{
+      padding:18px;border-radius:24px;border:2px solid var(--border);background:linear-gradient(180deg,#fff,rgba(124,58,237,.03));
+      cursor:pointer; transition:.2s;
+    }
+    .sequence:hover{transform:translateY(-2px)}
+    .sequence.active{border-color:var(--purple); box-shadow:0 14px 30px rgba(124,58,237,.12)}
+    .seq-label{font-family:var(--fm);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+    .coins-row{display:flex;gap:10px;flex-wrap:wrap}
+    .coin-small{
+      width:54px;height:54px;border-radius:50%; display:grid;place-items:center; font-family:var(--fm);font-weight:900;
+      background:radial-gradient(circle at 35% 35%,#ffe066,var(--gold),#c59b00);
+      border:3px solid #daa520; box-shadow:0 5px 0 var(--gold-dark), 0 10px 18px rgba(0,0,0,.16); color:rgba(0,0,0,.28);
+      transition:transform .2s;
+    }
+    .coin-small.alt{background:radial-gradient(circle at 35% 35%, #f6f7fb, var(--silver), #afafaf); border-color:#bdbdbd; box-shadow:0 5px 0 var(--silver-dark), 0 10px 18px rgba(0,0,0,.12)}
+    .sequence.active .coin-small:nth-child(odd){transform:translateY(-3px)}
+
+    /* Randomness strip */
+    .strip-grid{display:grid;gap:18px}
+    .flip-strip{display:grid;grid-template-columns:repeat(20,1fr);gap:8px}
+    .flip-dot{aspect-ratio:1;border-radius:14px;display:grid;place-items:center;font-family:var(--fm);font-size:.82rem;font-weight:900;border:2px solid rgba(255,255,255,.55);box-shadow:0 8px 12px rgba(124,58,237,.10)}
+    .flip-dot.h{background:linear-gradient(180deg,#8b5cf6,#7c3aed);color:#fff}
+    .flip-dot.t{background:linear-gradient(180deg,#fb7185,#f43f5e);color:#fff}
+    .strip-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-weight:800}
+    .legend-chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--border)}
+
+    /* Memory section */
+    .memory-stage{display:grid;gap:18px}
+    .hero-streak{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:6px 0}
+    .meter{padding:20px;border-radius:24px;background:#fff;border:2px solid var(--border)}
+    .meter-track{height:16px;border-radius:999px;background:rgba(124,58,237,.08);position:relative;overflow:hidden;margin:10px 0}
+    .meter-fill{position:absolute;left:0;top:0;bottom:0;width:50%;background:linear-gradient(90deg,var(--purple),#a78bfa)}
+    .meter-center{position:absolute;left:50%;top:-6px;bottom:-6px;width:3px;background:rgba(26,21,53,.2);transform:translateX(-50%)}
+    .meter-labels{display:flex;justify-content:space-between;font-family:var(--fm);font-size:.8rem;color:var(--muted)}
+    .coin-large-wrap{display:flex;align-items:center;justify-content:center;min-height:250px}
+    .coin-button{width:168px;height:168px;border:none;background:none;cursor:pointer;perspective:800px}
+    .coin-large{width:168px;height:168px;border-radius:50%;position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+    .coin-face{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden;display:grid;place-items:center;font-size:3rem;font-weight:900;font-family:var(--fm);border:5px solid #dca826;box-shadow:0 10px 0 var(--gold-dark), 0 20px 28px rgba(0,0,0,.18)}
+    .coin-face.head{background:radial-gradient(circle at 35% 35%,#ffe066,var(--gold),#c59b00);color:rgba(0,0,0,.28)}
+    .coin-face.tail{background:radial-gradient(circle at 35% 35%,#f6f7fb,var(--silver),#afafaf);border-color:#bdbdbd;box-shadow:0 10px 0 var(--silver-dark), 0 20px 28px rgba(0,0,0,.14);color:rgba(0,0,0,.30);transform:rotateY(180deg)}
+    .coin-large.flipping{animation:spinCoin .8s ease-in-out}
+    @keyframes spinCoin{0%{transform:rotateY(0)}100%{transform:rotateY(900deg)}}
+    .result-toast{font-weight:900;text-align:center;color:var(--purple);min-height:24px;margin-top:8px}
+
+    /* Formal mathematics */
+    .lab-shell{display:grid;grid-template-columns:250px 1fr;gap:16px}
+    .lab-tabs{display:grid;gap:10px}
+    .lab-tab{padding:14px 16px;border-radius:18px;border:2px solid var(--border);background:#fff;cursor:pointer;font-weight:900;display:flex;justify-content:space-between;align-items:center}
+    .lab-tab.active{background:var(--purple);border-color:var(--purple);color:#fff}
+    .lab-main{display:grid;gap:16px}
+    .pillset{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{padding:10px 14px;border-radius:999px;background:#fff;border:2px solid var(--border);font-weight:800;cursor:pointer}
+    .pill.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+    .outcome-grid{display:grid;gap:12px}
+    .outcome-grid.coin{grid-template-columns:repeat(2,1fr)}
+    .outcome-grid.die{grid-template-columns:repeat(3,1fr)}
+    .outcome-grid.card{grid-template-columns:repeat(4,1fr)}
+    .outcome{
+      min-height:92px; border-radius:22px; display:flex; align-items:center; justify-content:center; position:relative;
+      border:2px solid var(--border); background:#fff; font-weight:900; font-size:1.2rem; transition:.2s;
+    }
+    .outcome.selected{border-color:var(--purple);background:rgba(124,58,237,.08);transform:translateY(-2px)}
+    .outcome.muted{opacity:.28}
+    .die-face{width:74px;height:74px;border-radius:18px;background:#fff;box-shadow:inset 0 0 0 2px rgba(124,58,237,.08), 0 12px 24px rgba(124,58,237,.06);position:relative}
+    .pip{width:12px;height:12px;border-radius:50%;background:var(--text);position:absolute}
+    .card-mini{width:70px;height:92px;border-radius:16px;background:#fff;border:2px solid rgba(17,24,39,.08);padding:8px 10px;display:flex;flex-direction:column;justify-content:space-between;font-weight:900;box-shadow:0 12px 24px rgba(17,24,39,.08)}
+    .card-mini.red{color:var(--card-red)} .card-mini.black{color:var(--card-black)}
+    .math-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .math-box{padding:16px;border-radius:20px;background:#fff;border:2px solid var(--border)}
+    .math-box .k{font-family:var(--fm);font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+    .math-box .v{font-size:1.1rem;font-weight:900}
+    .axioms{display:grid;gap:10px}
+    .axiom{padding:14px 16px;border-radius:18px;background:rgba(124,58,237,.06);border:1px solid var(--border);font-weight:800;line-height:1.6}
+
+    /* Convergence */
+    .sim-shell{display:grid;gap:16px}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .stat{padding:14px;border-radius:18px;background:#fff;border:2px solid var(--border);text-align:center}
+    .stat .s1{display:block;font-family:var(--fm);font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+    .stat .s2{font-size:1.18rem;font-weight:900}
+    .chart-card{padding:18px;border-radius:24px;background:#fff;border:2px solid var(--border)}
+    canvas{display:block;width:100%}
+    #lineChart{height:280px}
+    #sampleChart{height:220px}
+    .stream{display:grid;grid-template-columns:repeat(25,1fr);gap:7px}
+    .stream .flip-dot{aspect-ratio:1;border-radius:12px}
+
+
+    .count-pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .count-pill{padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--border);font-weight:900;color:var(--text)}
+    .count-pill span{color:var(--purple)}
+
+    .memory-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mini-stat{padding:16px;border-radius:18px;background:#fff;border:2px solid var(--border)}
+    .mini-stat .k{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .mini-stat .v{font-size:1.16rem;font-weight:900}
+    .formula-line{margin-top:8px;font-size:.95rem;color:var(--muted);font-weight:800}
+
+    .context-card{display:grid;gap:16px}
+    .context-stage{padding:18px;border-radius:24px;background:#fff;border:2px solid var(--border);min-height:260px;display:grid;align-content:start;gap:14px}
+    .context-title{font-size:1.25rem;font-weight:900}
+    .context-sub{color:var(--muted);font-weight:800;line-height:1.7}
+    .roll-stage{display:flex;justify-content:center;align-items:center;min-height:120px}
+    .die-large{width:132px;height:132px;border-radius:28px;background:#fff;box-shadow:inset 0 0 0 2px rgba(124,58,237,.08),0 14px 28px rgba(124,58,237,.10);position:relative}
+    .die-large.rolling{animation:dieShake .55s ease-in-out}
+    @keyframes dieShake{
+      0%,100%{transform:rotate(0deg) scale(1)}
+      20%{transform:rotate(-10deg) translateX(-3px)}
+      40%{transform:rotate(8deg) translateX(4px)}
+      60%{transform:rotate(-7deg) translateX(-4px)}
+      80%{transform:rotate(5deg) translateX(3px)}
+    }
+    .deck-stack{display:flex;justify-content:center;align-items:center;min-height:140px;position:relative}
+    .deck-card{position:absolute;width:94px;height:126px;border-radius:18px;background:#fff;border:2px solid rgba(17,24,39,.08);box-shadow:0 14px 28px rgba(17,24,39,.10);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.35rem}
+    .deck-card.red{color:var(--card-red)} .deck-card.black{color:var(--card-black)}
+    .deck-card:nth-child(1){transform:translate(-18px,10px) rotate(-8deg)}
+    .deck-card:nth-child(2){transform:translate(0px,0px) rotate(0deg)}
+    .deck-card:nth-child(3){transform:translate(18px,10px) rotate(8deg)}
+    .deck-card.drawn{outline:3px solid rgba(124,58,237,.22)}
+
+    .jar-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .sample-panel{padding:16px;border-radius:22px;background:#fff;border:2px solid var(--border)}
+    .sample-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .sample-top .lbl{font-family:var(--fm);font-size:.72rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+    .sample-top .val{font-size:1.06rem;font-weight:900}
+    .jar-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .jar{position:relative;height:220px;border-radius:24px 24px 18px 18px;border:3px solid rgba(124,58,237,.22);background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(124,58,237,.04));overflow:hidden;padding:14px;display:flex;align-items:flex-end;justify-content:center}
+    .jar::before{content:'';position:absolute;top:-10px;left:12%;right:12%;height:18px;border:3px solid rgba(124,58,237,.22);border-bottom:none;border-radius:18px 18px 0 0;background:rgba(255,255,255,.55)}
+    .jar-fill{position:absolute;left:0;right:0;bottom:0;height:0;transition:height .7s ease}
+    .jar-fill.h{background:linear-gradient(180deg,rgba(139,92,246,.72),rgba(124,58,237,.92))}
+    .jar-fill.t{background:linear-gradient(180deg,rgba(251,113,133,.72),rgba(244,63,94,.92))}
+    .jar-content{position:relative;z-index:1;width:100%}
+    .jar-label{font-family:var(--fm);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;text-align:center;margin-bottom:10px}
+    .jar-count{font-size:1.3rem;font-weight:900;color:#fff;text-align:center}
+    .jar-frac{font-size:.92rem;font-weight:800;color:rgba(255,255,255,.92);text-align:center;margin-top:6px}
+    .jar-coins{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+    .jar-token{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.68rem;font-family:var(--fm);font-weight:900;background:rgba(255,255,255,.92);color:var(--text);justify-self:center}
+    .jar-summary{margin-top:12px;font-weight:800;color:var(--muted);line-height:1.6}
+
+    .summary-list{display:grid;gap:12px;margin-top:18px}
+    .summary-item{padding:16px 18px;border-radius:20px;background:#fff;border:2px solid var(--border);font-weight:900;display:flex;gap:12px;align-items:flex-start}
+    .num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;background:var(--purple);color:#fff;font-family:var(--fm);font-size:.8rem}
+
+    .fade-up{opacity:0;transform:translateY(22px);transition:all .6s ease}
+    .fade-up.in{opacity:1;transform:translateY(0)}
+
+    @media (max-width: 980px){
+      .wrap{grid-template-columns:1fr}
+      .panel{padding:28px 18px}
+      .lab-shell{grid-template-columns:1fr}
+      .stats-bar,.math-strip,.memory-stats,.jar-layout{grid-template-columns:1fr 1fr}
+      .dot-nav{display:none}
+    }
+    @media (max-width: 640px){
+      .topbar{padding:0 14px}
+      .chip{display:none}
+      .coins-row{gap:8px}
+      .coin-small{width:44px;height:44px}
+      .flip-strip{grid-template-columns:repeat(10,1fr)}
+      .stats-bar,.math-strip,.memory-stats,.jar-layout{grid-template-columns:1fr}
+      .jar-row{grid-template-columns:1fr}
+      .outcome-grid.card{grid-template-columns:repeat(2,1fr)}
+      .stream{grid-template-columns:repeat(10,1fr)}
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#">
-      <div class="brand-logo"></div>
-      <span class="brand-name">Probably <em>True</em></span>
-    </a>
-    <div class="chapter-tag">Chapter 01 · Probability</div>
+    <div class="brand">
+      <img src="../../assets/images/logo.png" class="logo" />
+      <div>
+        <div class="brand-name">Probably <em>True</em></div>
+      </div>
+    </div>
+    <div class="top-controls">
+      <div class="chip">Chapter 01 · Chance & Probability</div>
+      <button class="sound-toggle active" id="soundToggle">🔊 Sound On</button>
+    </div>
   </header>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <nav class="dot-nav" id="dotNav"></nav>
 
-  <main class="exp-layout">
-    <aside class="left-panel">
-      <div class="left-panel-inner">
-        <section id="hookScreen" class="left-hook-screen">
-          <div class="hook-eyebrow">Chapter 01 · Probability</div>
-          <h1 class="hook-title">The Coin Doesn't<br/>Have memory</h1>
-
-          <div class="hook-coins">
-            <div class="hook-coin" style="--d:.8s;--dl:0s">H</div>
-            <div class="hook-coin" style="--d:.9s;--dl:.1s">H</div>
-            <div class="hook-coin" style="--d:.85s;--dl:.2s">H</div>
-            <div class="hook-coin" style="--d:.95s;--dl:.3s">H</div>
-            <div class="hook-coin" style="--d:.8s;--dl:.4s">H</div>
+  <main>
+    <section class="panel fade-up" id="hook" data-title="Hook">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Chapter 1 · Break the intuition</div>
+          <h1>What does random really look like?</h1>
+          <p class="lead">Random does not mean neat, balanced, or alternating. Real randomness can look messy, streaky, and uneven in the short run.</p>
+          <div class="question">Which sequence feels more random?</div>
+          <div class="button-row">
+            <button class="secondary choice" data-choice="A">Sequence A</button>
+            <button class="secondary choice" data-choice="B">Sequence B</button>
           </div>
-
-          <div class="hook-streak">5 heads in a row. <em>What comes next?</em></div>
-          <div class="hook-question">Trust your gut. Pick one.</div>
-
-          <div class="hook-pill-row">
-            <button class="hook-pill" data-hook="H">🟡 Heads again</button>
-            <button class="hook-pill" data-hook="?">🤷 Doesn't matter</button>
-            <button class="hook-pill" data-hook="T">⚪ Tails — it's due!</button>
+          <div class="reveal" id="hookReveal">
+            <strong>Reveal:</strong> both exact sequences are equally likely for a fair coin. Random does <em>not</em> mean perfectly mixed. It often includes clusters and streaks.
           </div>
-
-          <div class="hook-reveal" id="hookReveal"></div>
-
-          <button class="start-btn" id="startBtn" type="button">
-            Let's find out →
-          </button>
-        </section>
-
-        <section class="content-block" id="act1-block">
-          <div class="block-title">Single flip</div>
-          <p class="block-text">
-            Click the coin on the right. One flip should create one visible outcome, one coin falling into a jar, and one seesaw response.
-          </p>
-        </section>
-
-
-        <section class="content-block hidden" id="batch-panel">
-          <div class="block-title">Now flip many at once</div>
-          <div class="quick-flip-row">
-            <button class="batch-btn" data-flips="10">+10</button>
-            <button class="batch-btn" data-flips="100">+100</button>
-            <button class="batch-btn" data-flips="1000">+1,000</button>
-            <button class="batch-btn" data-flips="10000">+10,000</button>
-          </div>
-          <div class="custom-flip-row">
-            <input id="custom-flips-input" type="number" min="1" max="100000" placeholder="Custom number">
-            <button id="custom-flip-btn" class="batch-btn primary">Flip</button>
-            <button id="reset-btn" class="batch-btn secondary">Reset</button>
-          </div>
-          <p class="control-note">Try a small batch first, then compare it with a large one.</p>
-        </section>
-
-        <section class="content-block hidden" id="prediction-panel">
-          <div class="block-title">Before you flip many at once…</div>
-          <p class="block-text">Where do you think the balance will end up?</p>
-          <div class="predict-row">
-            <button class="predict-btn" data-pred="H">Mostly Heads</button>
-            <button class="predict-btn" data-pred="B">About Balanced</button>
-            <button class="predict-btn" data-pred="T">Mostly Tails</button>
-          </div>
-        </section>
-
-        <section class="content-block hidden" id="bias-panel">
-          <div class="block-title">What if the coin is biased?</div>
-          <button id="bias-toggle-btn" class="toggle-btn">Toggle biased coin (60% Heads)</button>
-          <p class="control-note" id="bias-note">Keep your data and watch the system drift.</p>
-        </section>
-
-        <section class="content-block hidden" id="insight-panel">
-          <div class="block-title">What this means</div>
-          <p class="insight-line">
-            Probability doesn’t <span class="accent">predict</span> the next flip.
-            It <span class="accent">describes</span> what happens across many flips.
-          </p>
-        </section>
-
-        <section class="content-block">
-          <div class="block-title">Next</div>
-          <p class="block-text">Once one event feels intuitive, the next step is combining events.</p>
-          <a class="next-btn" href="#">Next chapter →</a>
-        </section>
-      </div>
-    </aside>
-
-    <section class="right-panel">
-      <div class="coin-zone">
-        <button id="flip-coin-btn" class="coin-button" aria-label="Flip coin">
-          <div id="coin-visual" class="coin-face">?</div>
-        </button>
-        <div class="coin-sub">Click to flip</div>
-        <div id="flip-toast" class="flip-toast"></div>
-      </div>
-
-      <div class="physics-zone">
-        <canvas id="seesaw-canvas"></canvas>
-      </div>
-
-      <div class="stats-strip">
-        <div class="stat-chip">
-          <span class="stat-label">Heads</span>
-          <span id="heads-count" class="stat-value">0</span>
         </div>
-        <div class="stat-chip">
-          <span class="stat-label">Tails</span>
-          <span id="tails-count" class="stat-value">0</span>
-        </div>
-        <div class="stat-chip">
-          <span class="stat-label">Total</span>
-          <span id="total-count" class="stat-value">0</span>
-        </div>
-        <div class="stat-chip">
-          <span class="stat-label">Streak</span>
-          <span id="streak-value" class="stat-value">—</span>
+        <div class="sequence-board">
+          <div class="sequence" data-seq="A">
+            <div class="seq-label">Sequence A · perfect alternation</div>
+            <div class="coins-row">
+              <div class="coin-small">H</div><div class="coin-small alt">T</div><div class="coin-small">H</div><div class="coin-small alt">T</div><div class="coin-small">H</div><div class="coin-small alt">T</div><div class="coin-small">H</div><div class="coin-small alt">T</div>
+            </div>
+          </div>
+          <div class="sequence" data-seq="B">
+            <div class="seq-label">Sequence B · uneven and streaky</div>
+            <div class="coins-row">
+              <div class="coin-small">H</div><div class="coin-small">H</div><div class="coin-small">H</div><div class="coin-small alt">T</div><div class="coin-small alt">T</div><div class="coin-small">H</div><div class="coin-small">H</div><div class="coin-small alt">T</div>
+            </div>
+          </div>
+          <div class="note">Big idea: <strong>random ≠ evenly mixed.</strong> Our brains expect patterns. Chance does not promise them.</div>
         </div>
       </div>
+    </section>
 
-      <div class="insight-row">
-        <div class="prediction-zone hidden" id="prediction-result">
-          <span class="insight-label">Prediction vs Actual</span>
-          <div class="comparison-track">
-            <div class="comparison-center"></div>
-            <div id="prediction-dot" class="comparison-dot prediction"></div>
-            <div id="actual-dot" class="comparison-dot actual"></div>
+    <section class="panel fade-up" id="pattern" data-title="Pattern">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Misconception 1</div>
+          <h2>Random does not mean balanced</h2>
+          <p class="lead">A short run can look clumpy. That is not a mistake. That is exactly what randomness often looks like.</p>
+          <div class="button-row">
+            <button class="primary" id="rerollStrip">Generate 20 flips</button>
           </div>
-          <p id="prediction-message" class="comparison-text">Your expectation and the observed result will appear here.</p>
+          <div class="count-pills">
+            <div class="count-pill">Flips, n = <span id="stripN">20</span></div>
+            <div class="count-pill">Heads = <span id="stripHeads">0</span></div>
+            <div class="count-pill">Tails = <span id="stripTails">0</span></div>
+          </div>
+          <div class="note">Look for streaks. A streak is not evidence of cheating. It is part of random behavior.</div>
         </div>
-
-        <div class="conv-zone hidden" id="convergence-strip">
-          <div class="convergence-head">
-            <span class="insight-label">Convergence</span>
-            <span id="convergence-readout" class="convergence-readout">—</span>
+        <div class="card strip-grid">
+          <div class="flip-strip" id="randomStrip"></div>
+          <div class="strip-legend">
+            <div class="legend-chip">Purple = Heads</div>
+            <div class="legend-chip">Pink = Tails</div>
+            <div class="legend-chip" id="streakInfo">Longest streak: —</div>
           </div>
-          <canvas id="convergence-canvas"></canvas>
-          <p id="convergence-message" class="convergence-message">As you flip more, the long-run pattern appears here.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel fade-up" id="memory" data-title="Memory">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Misconception 2</div>
+          <h2>The coin has no memory</h2>
+          <p class="lead">After a long streak, many people feel the opposite side is “due.” It is not. Each flip is a new trial.</p>
+          <div class="memory-stage">
+            <div class="hero-streak">
+              <div class="coin-small">H</div><div class="coin-small">H</div><div class="coin-small">H</div><div class="coin-small">H</div><div class="coin-small">H</div>
+            </div>
+            <div class="meter">
+              <div style="font-weight:900;margin-bottom:6px">Probability of heads on the next flip</div>
+              <div class="meter-track">
+                <div class="meter-fill"></div>
+                <div class="meter-center"></div>
+              </div>
+              <div class="meter-labels"><span>0</span><span>0.5</span><span>1</span></div>
+            </div>
+            <div class="memory-stats">
+              <div class="mini-stat">
+                <div class="k">Observed heads / total flips</div>
+                <div class="v" id="memoryFrac">5 / 5 = 1.000</div>
+                <div class="formula-line">This one changes as you keep flipping.</div>
+              </div>
+              <div class="mini-stat">
+                <div class="k">Total flips, n</div>
+                <div class="v" id="memoryN">5</div>
+                <div class="formula-line">The next-flip probability above stays fixed at 0.5.</div>
+              </div>
+            </div>
+            <div class="button-row">
+              <button class="primary" id="flipNext">Flip next</button>
+              <button class="secondary" id="resetMemory">Reset</button>
+            </div>
+            <div class="result-toast" id="memoryToast">The meter stays at 0.5 because the next flip is still a fair flip.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="coin-large-wrap">
+            <button class="coin-button" aria-label="Flip coin">
+              <div class="coin-large" id="bigCoin">
+                <div class="coin-face head">H</div>
+                <div class="coin-face tail">T</div>
+              </div>
+            </button>
+          </div>
+          <div class="note">This is <strong>independence</strong>: earlier outcomes do not change the probability of the next outcome for a fair coin.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel fade-up" id="math" data-title="Math">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">From intuition to mathematics</div>
+          <h2>How do we describe chance mathematically?</h2>
+          <p class="lead">Now we organize chance using three simple ideas: sample space, events, and probability. Use the tabs to switch between a coin, a die, and a deck example.</p>
+          <div class="lab-shell">
+            <div class="lab-tabs">
+              <button class="lab-tab active" data-object="coin">Coin <span>2 outcomes</span></button>
+              <button class="lab-tab" data-object="die">Die <span>6 outcomes</span></button>
+              <button class="lab-tab" data-object="card">Cards <span>8 sample cards</span></button>
+            </div>
+            <div class="lab-main">
+              <div class="math-strip">
+                <div class="math-box"><div class="k">Sample space</div><div class="v" id="sampleSpaceText">{H, T}</div></div>
+                <div class="math-box"><div class="k">Chosen event</div><div class="v" id="eventText">{H}</div></div>
+                <div class="math-box"><div class="k">Probability</div><div class="v" id="probText">1 / 2</div></div>
+              </div>
+              <div class="pillset" id="eventPills"></div>
+              <div class="outcome-grid coin" id="outcomeGrid"></div>
+              <div class="axioms">
+                <div class="axiom"><strong>Rule 1.</strong> Probability stays between 0 and 1: <span id="axiomRange">0 ≤ P(A) = 1/2 ≤ 1</span></div>
+                <div class="axiom"><strong>Rule 2.</strong> The whole sample space has probability 1: <span id="axiomWhole">P(S) = 1</span></div>
+                <div class="axiom"><strong>Rule 3.</strong> For non-overlapping events, we add probabilities: <span id="axiomAdd">P(H or T) = 1</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card context-card">
+          <div class="eyebrow">Context interaction</div>
+          <h2 style="font-size:2rem" id="contextHeading">Coin example</h2>
+          <p class="lead" id="contextLead">This panel changes with the object you choose on the left, so the visual always matches the mathematics.</p>
+          <div class="button-row">
+            <button class="primary" id="contextPrimary">Flip coin</button>
+            <button class="secondary" id="contextSecondary">Reset</button>
+          </div>
+          <div class="context-stage" id="contextStage"></div>
+          <div class="result-toast" id="contextToast">Choose a tab on the left to change this interaction.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel fade-up" id="frequency" data-title="Frequency">
+      <div class="wrap">
+        <div class="card sim-shell">
+          <div class="eyebrow">Experience</div>
+          <h2>What happens when we repeat?</h2>
+          <p class="lead">Probability becomes easier to understand when we repeat the same random experiment many times. The line graph shows how the proportion of heads changes as the flips accumulate.</p>
+          <div class="toolbar">
+            <button class="primary simBtn" data-n="10">Flip 10</button>
+            <button class="secondary simBtn" data-n="100">Flip 100</button>
+            <button class="secondary simBtn" data-n="500">Flip 500</button>
+            <button class="secondary simBtn" data-n="1000">Flip 1000</button>
+            <button class="ghost" id="resetSim">Reset</button>
+          </div>
+          <div class="stats-bar">
+            <div class="stat"><span class="s1">Flips</span><span class="s2" id="flipCount">0</span></div>
+            <div class="stat"><span class="s1">Heads</span><span class="s2" id="headsCount">0</span></div>
+            <div class="stat"><span class="s1">Tails</span><span class="s2" id="tailsCount">0</span></div>
+            <div class="stat"><span class="s1">Proportion of heads</span><span class="s2" id="propHeads">0.000</span></div>
+          </div>
+          <div class="chart-card">
+            <canvas id="lineChart" width="900" height="280"></canvas>
+            <div class="formula-line" style="margin-top:10px">This line uses the same trial sequence you generate on this page.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Big idea</div>
+          <h2 style="font-size:2rem">More trials, more stability</h2>
+          <p class="lead">The bars on the right compare the expected proportion 0.5 with the observed proportions after 10, 100, 500, and 1000 flips from the same trial sequence.</p>
+          <div class="chart-card" style="margin-top:18px">
+            <canvas id="sampleChart" width="900" height="220"></canvas>
+          </div>
+          <div class="note">As the number of trials increases, the observed frequency gets closer to the true probability.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel fade-up" id="small" data-title="Samples">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Misconception 3</div>
+          <h2>Small samples can mislead</h2>
+          <p class="lead">A fair coin can look very uneven in only a few flips. That does not mean the probability changed.</p>
+          <div class="button-row">
+            <button class="primary" id="compareSamples">Run comparison</button>
+          </div>
+          <div class="note">A tiny sample is noisy. A large sample is steadier.</div>
+        </div>
+        <div class="card">
+          <div class="jar-layout">
+            <div class="sample-panel">
+              <div class="sample-top">
+                <div class="lbl">10 flips</div>
+                <div class="val" id="smallReadout">—</div>
+              </div>
+              <div class="jar-row">
+                <div class="jar">
+                  <div class="jar-fill h" id="smallHeadsFill"></div>
+                  <div class="jar-content">
+                    <div class="jar-label">Heads</div>
+                    <div class="jar-count" id="smallHeads">—</div>
+                    <div class="jar-frac" id="smallHeadsFrac">—</div>
+                    <div class="jar-coins" id="smallHeadsCoins"></div>
+                  </div>
+                </div>
+                <div class="jar">
+                  <div class="jar-fill t" id="smallTailsFill"></div>
+                  <div class="jar-content">
+                    <div class="jar-label">Tails</div>
+                    <div class="jar-count" id="smallTails">—</div>
+                    <div class="jar-frac" id="smallTailsFrac">—</div>
+                    <div class="jar-coins" id="smallTailsCoins"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="jar-summary" id="smallJarSummary">Run the comparison to see where the 10 flips land.</div>
+            </div>
+            <div class="sample-panel">
+              <div class="sample-top">
+                <div class="lbl">1000 flips</div>
+                <div class="val" id="largeReadout">—</div>
+              </div>
+              <div class="jar-row">
+                <div class="jar">
+                  <div class="jar-fill h" id="largeHeadsFill"></div>
+                  <div class="jar-content">
+                    <div class="jar-label">Heads</div>
+                    <div class="jar-count" id="largeHeads">—</div>
+                    <div class="jar-frac" id="largeHeadsFrac">—</div>
+                    <div class="jar-coins" id="largeHeadsCoins"></div>
+                  </div>
+                </div>
+                <div class="jar">
+                  <div class="jar-fill t" id="largeTailsFill"></div>
+                  <div class="jar-content">
+                    <div class="jar-label">Tails</div>
+                    <div class="jar-count" id="largeTails">—</div>
+                    <div class="jar-frac" id="largeTailsFrac">—</div>
+                    <div class="jar-coins" id="largeTailsCoins"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="jar-summary" id="largeJarSummary">Large samples usually split much closer to 50–50.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel fade-up" id="summary" data-title="Summary">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Final synthesis</div>
+          <h2>What probability really means</h2>
+          <p class="lead">Chapter 1 builds the right mental model before moving to later topics.</p>
+          <div class="summary-list">
+            <div class="summary-item"><div class="num">1</div><div>Random <strong>does not</strong> mean neat or alternating. It often looks streaky.</div></div>
+            <div class="summary-item"><div class="num">2</div><div>Independent events have no memory. A previous streak does not force the next result.</div></div>
+            <div class="summary-item"><div class="num">3</div><div>An <strong>event</strong> is a set of outcomes from the <strong>sample space</strong>.</div></div>
+            <div class="summary-item"><div class="num">4</div><div>Probability measures how likely an event is, and in repeated trials it appears as long-run frequency.</div></div>
+            <div class="summary-item"><div class="num">5</div><div>Small samples can look misleading. Large samples usually stabilize around the true probability.</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Ready for Chapter 2</div>
+          <h2 style="font-size:2rem">What comes next?</h2>
+          <p class="lead">Once this intuition is secure, later chapters can introduce expectation, variance, distributions, and conditional probability without confusion.</p>
+          <div class="note">This page intentionally stops before advanced topics. It builds the foundation first.</div>
         </div>
       </div>
     </section>
   </main>
 
   <script>
-    const state = {
-      heads: 0,
-      tails: 0,
-      total: 0,
-      streak: 0,
-      streakSide: null,
-      prediction: null,
-      biased: false,
-      convHistory: []
-    };
+    const audioState = { enabled: true, ctx: null };
+    const soundToggle = document.getElementById('soundToggle');
+    soundToggle.addEventListener('click', () => {
+      audioState.enabled = !audioState.enabled;
+      soundToggle.classList.toggle('active', audioState.enabled);
+      soundToggle.textContent = audioState.enabled ? '🔊 Sound On' : '🔇 Sound Off';
+    });
+    function getCtx(){
+      if (!audioState.enabled) return null;
+      if (!audioState.ctx) audioState.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioState.ctx;
+    }
+    function tone(freq=440, dur=.08, type='sine', vol=.03, when=0){
+      const ctx = getCtx(); if (!ctx) return;
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.type = type; o.frequency.value = freq; g.gain.value = vol;
+      o.connect(g); g.connect(ctx.destination);
+      const now = ctx.currentTime + when;
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(vol, now + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      o.start(now); o.stop(now + dur + 0.01);
+    }
+    function coinSound(){ tone(850,.03,'square',.018); tone(620,.06,'triangle',.02,.03); }
+    function diceSound(){ tone(240,.04,'square',.015); tone(180,.06,'triangle',.017,.02); tone(260,.04,'square',.012,.05); }
+    function shuffleSound(){ tone(260,.03,'sawtooth',.009); tone(320,.03,'sawtooth',.009,.03); tone(210,.03,'sawtooth',.009,.06); tone(360,.04,'triangle',.01,.09); }
 
-    const hookMessages = {
-      H: "That feeling is common. A streak makes the coin feel hot. But the coin has no memory.",
-      "?": "Exactly. This is the statistically correct instinct. The next flip does not care about the previous five.",
-      T: "This is the classic trap: tails feels due. But randomness does not self-correct on your schedule."
-    };
-
-    const headsCount = document.getElementById('heads-count');
-    const tailsCount = document.getElementById('tails-count');
-    const totalCount = document.getElementById('total-count');
-    const streakValue = document.getElementById('streak-value');
-
-    const flipCoinBtn = document.getElementById('flip-coin-btn');
-    const coinVisual = document.getElementById('coin-visual');
-    const flipToast = document.getElementById('flip-toast');
-
-    const predictionPanel = document.getElementById('prediction-panel');
-    const batchPanel = document.getElementById('batch-panel');
-    const biasPanel = document.getElementById('bias-panel');
-    const insightPanel = document.getElementById('insight-panel');
-
-    const predictionResult = document.getElementById('prediction-result');
-    const convergenceStrip = document.getElementById('convergence-strip');
-
-    const predictionDot = document.getElementById('prediction-dot');
-    const actualDot = document.getElementById('actual-dot');
-    const predictionMessage = document.getElementById('prediction-message');
-
-    const biasNote = document.getElementById('bias-note');
-
-    document.querySelectorAll('.hook-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.hook-pill').forEach(b => b.classList.remove('sel'));
-        btn.classList.add('sel');
-        const key = btn.dataset.hook;
-        const reveal = document.getElementById('hookReveal');
-        reveal.textContent = hookMessages[key];
-        reveal.classList.add('show');
-        document.getElementById('startBtn').classList.add('show');
+    // nav / progress / reveals
+    const sections = [...document.querySelectorAll('.panel')];
+    const dotNav = document.getElementById('dotNav');
+    sections.forEach((s, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot'; dot.title = s.dataset.title || `Section ${i+1}`;
+      dot.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+      dotNav.appendChild(dot);
+    });
+    const dots = [...document.querySelectorAll('.dot')];
+    function updateProgress(){
+      const max = document.body.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? window.scrollY / max : 0;
+      document.getElementById('progressFill').style.width = `${pct*100}%`;
+      let active = 0;
+      sections.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        if (r.top < innerHeight * 0.45 && r.bottom > innerHeight * 0.45) active = i;
       });
-    });
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, {threshold: .18});
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+    addEventListener('scroll', updateProgress, {passive:true}); updateProgress();
 
-    document.getElementById('startBtn').addEventListener('click', () => {
-      predictionPanel.classList.remove('hidden');
-      batchPanel.classList.remove('hidden');
-    });
+    // Hook
+    const choiceBtns = [...document.querySelectorAll('.choice')];
+    const sequences = [...document.querySelectorAll('.sequence')];
+    const hookReveal = document.getElementById('hookReveal');
+    function setChoice(which){
+      choiceBtns.forEach(b => b.classList.toggle('sel', b.dataset.choice === which));
+      sequences.forEach(s => s.classList.toggle('active', s.dataset.seq === which));
+      hookReveal.classList.add('show');
+      coinSound();
+    }
+    choiceBtns.forEach(btn => btn.addEventListener('click', ()=>setChoice(btn.dataset.choice)));
+    sequences.forEach(seq => seq.addEventListener('click', ()=>setChoice(seq.dataset.seq)));
 
-    document.querySelectorAll('.predict-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.predict-btn').forEach(b => b.classList.remove('sel'));
-        btn.classList.add('sel');
-        state.prediction = btn.dataset.pred;
-        const pos = state.prediction === 'H' ? 20 : state.prediction === 'T' ? 80 : 50;
-        predictionDot.style.left = pos + '%';
+    // Random strip
+    function randomHT(){ return Math.random() < 0.5 ? 'H' : 'T'; }
+    function longestStreak(arr){
+      let best=1, cur=1;
+      for(let i=1;i<arr.length;i++){
+        if(arr[i]===arr[i-1]){cur++; best=Math.max(best,cur)} else cur=1;
+      }
+      return best;
+    }
+    const randomStrip = document.getElementById('randomStrip');
+    function renderRandomStrip(){
+      randomStrip.innerHTML='';
+      const arr = Array.from({length:20}, randomHT);
+      let hCount = 0;
+      arr.forEach(v => {
+        if(v === 'H') hCount += 1;
+        const d = document.createElement('div');
+        d.className = `flip-dot ${v.toLowerCase()}`;
+        d.textContent = v;
+        randomStrip.appendChild(d);
       });
+      const tCount = arr.length - hCount;
+      document.getElementById('streakInfo').textContent = `Longest streak: ${longestStreak(arr)}`;
+      document.getElementById('stripN').textContent = arr.length;
+      document.getElementById('stripHeads').textContent = hCount;
+      document.getElementById('stripTails').textContent = tCount;
+      coinSound();
+    }
+    document.getElementById('rerollStrip').addEventListener('click', renderRandomStrip);
+    renderRandomStrip();
+
+    // Memory coin
+    let memoryState = 'H';
+    let memoryHeads = 5;
+    let memoryFlips = 5;
+    const bigCoin = document.getElementById('bigCoin');
+    const memoryToast = document.getElementById('memoryToast');
+    function setBigCoin(side){
+      memoryState = side;
+      bigCoin.style.transform = side === 'H' ? 'rotateY(0deg)' : 'rotateY(180deg)';
+    }
+    function updateMemoryStats(){
+      document.getElementById('memoryFrac').textContent = `${memoryHeads} / ${memoryFlips} = ${(memoryHeads / memoryFlips).toFixed(3)}`;
+      document.getElementById('memoryN').textContent = memoryFlips;
+    }
+    document.getElementById('flipNext').addEventListener('click', ()=>{
+      coinSound();
+      bigCoin.classList.add('flipping');
+      setTimeout(()=>bigCoin.classList.remove('flipping'), 820);
+      const next = randomHT();
+      setTimeout(()=>{
+        setBigCoin(next);
+        memoryFlips += 1;
+        if(next === 'H') memoryHeads += 1;
+        updateMemoryStats();
+        memoryToast.textContent = `Result: ${next}. The next-flip probability stayed at 0.5, but heads / total flips changed to reflect the data so far.`;
+      }, 520);
     });
-
-    function flipCoin() {
-      const p = state.biased ? 0.6 : 0.5;
-      return Math.random() < p ? 'H' : 'T';
-    }
-
-    function updateStreak(side) {
-      if (state.streakSide === side) {
-        state.streak += 1;
-      } else {
-        state.streak = 1;
-        state.streakSide = side;
-      }
-    }
-
-    function updateStats() {
-      headsCount.textContent = state.heads;
-      tailsCount.textContent = state.tails;
-      totalCount.textContent = state.total;
-      streakValue.textContent = state.streak || '—';
-    }
-
-    function recordConvergence() {
-      if (!state.total) return;
-      state.convHistory.push(state.heads / state.total);
-      if (state.convHistory.length > 300) state.convHistory.shift();
-      drawConvergence();
-    }
-
-    function revealProgressively() {
-      if (state.total >= 20) predictionResult.classList.remove('hidden');
-      if (state.total >= 50) convergenceStrip.classList.remove('hidden');
-      if (state.total >= 100) biasPanel.classList.remove('hidden');
-      if (state.total >= 200) insightPanel.classList.remove('hidden');
-    }
-
-    function showPredictionResult() {
-      if (!state.prediction || !state.total) return;
-      const ratio = state.heads / state.total;
-      actualDot.style.left = (ratio * 100) + '%';
-
-      const actualClass =
-        ratio > 0.55 ? 'H' :
-        ratio < 0.45 ? 'T' : 'B';
-
-      if (actualClass === state.prediction) {
-        predictionMessage.textContent = 'Your prediction matched this result.';
-      } else {
-        predictionMessage.textContent = `Observed ${Math.round(ratio * 100)}% heads. The system didn’t land where you expected.`;
-      }
-    }
-
-    flipCoinBtn.addEventListener('click', () => {
-      const result = flipCoin();
-
-      if (result === 'H') {
-        state.heads += 1;
-        coinVisual.textContent = 'H';
-        flipToast.textContent = '🟡 Heads';
-      } else {
-        state.tails += 1;
-        coinVisual.textContent = 'T';
-        flipToast.textContent = '⚪ Tails';
-      }
-
-      state.total += 1;
-      updateStreak(result);
-      updateStats();
-      recordConvergence();
-      drawSeesaw();
-      revealProgressively();
-      showPredictionResult();
+    document.getElementById('resetMemory').addEventListener('click', ()=>{
+      memoryHeads = 5;
+      memoryFlips = 5;
+      setBigCoin('H');
+      updateMemoryStats();
+      memoryToast.textContent = 'The meter stays at 0.5 because the next flip is still a fair flip.';
     });
+    updateMemoryStats();
 
-    document.querySelectorAll('.batch-btn[data-flips]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const n = Number(btn.dataset.flips);
-        for (let i = 0; i < n; i++) {
-          const result = flipCoin();
-          if (result === 'H') state.heads += 1;
-          else state.tails += 1;
-          state.total += 1;
-          updateStreak(result);
-          recordConvergence();
+    // Sample space lab
+    const LAB = {
+      coin: {
+        sample: '{H, T}',
+        pills: [
+          {label:'Heads', event:'{H}', p:'1 / 2', add:'P(H or T) = 1', select:[0]},
+          {label:'Tails', event:'{T}', p:'1 / 2', add:'P(H or T) = 1', select:[1]},
+          {label:'Whole space', event:'{H, T}', p:'1', add:'P(H or T) = 1', select:[0,1]}
+        ],
+        builder(grid){
+          grid.className = 'outcome-grid coin';
+          ['H','T'].forEach((v,i)=>{
+            const d=document.createElement('div'); d.className='outcome'; d.textContent=v; d.dataset.index=i; grid.appendChild(d);
+          });
         }
-        updateStats();
-        drawSeesaw();
-        revealProgressively();
-        showPredictionResult();
-      });
-    });
-
-    document.getElementById('custom-flip-btn').addEventListener('click', () => {
-      const input = document.getElementById('custom-flips-input');
-      const n = Number(input.value);
-      if (!n || n < 1) return;
-      for (let i = 0; i < n; i++) {
-        const result = flipCoin();
-        if (result === 'H') state.heads += 1;
-        else state.tails += 1;
-        state.total += 1;
-        updateStreak(result);
-        recordConvergence();
+      },
+      die: {
+        sample: '{1, 2, 3, 4, 5, 6}',
+        pills: [
+          {label:'Even', event:'{2, 4, 6}', p:'3 / 6 = 1 / 2', add:'P(2 or 4) = 2/6', select:[1,3,5]},
+          {label:'Prime', event:'{2, 3, 5}', p:'3 / 6 = 1 / 2', add:'P(2 or 3) = 2/6', select:[1,2,4]},
+          {label:'Greater than 4', event:'{5, 6}', p:'2 / 6 = 1 / 3', add:'P(5 or 6) = 2/6', select:[4,5]}
+        ],
+        builder(grid){
+          grid.className = 'outcome-grid die';
+          for(let i=1;i<=6;i++){
+            const d=document.createElement('div'); d.className='outcome'; d.dataset.index=i-1;
+            const face=document.createElement('div'); face.className='die-face';
+            addPips(face, i);
+            d.appendChild(face); grid.appendChild(d);
+          }
+        }
+      },
+      card: {
+        sample: '{A♥, Q♥, 7♥, 9♦, A♣, Q♣, 7♠, K♠}',
+        pills: [
+          {label:'Red cards', event:'{A♥, Q♥, 7♥, 9♦}', p:'4 / 8 = 1 / 2', add:'P(red or black) = 1', select:[0,1,2,3]},
+          {label:'Queens', event:'{Q♥, Q♣}', p:'2 / 8 = 1 / 4', add:'P(Q♥ or Q♣) = 2/8', select:[1,5]},
+          {label:'Aces', event:'{A♥, A♣}', p:'2 / 8 = 1 / 4', add:'P(A♥ or A♣) = 2/8', select:[0,4]}
+        ],
+        builder(grid){
+          grid.className = 'outcome-grid card';
+          const cards = [
+            ['A','♥','red'],['Q','♥','red'],['7','♥','red'],['9','♦','red'],['A','♣','black'],['Q','♣','black'],['7','♠','black'],['K','♠','black']
+          ];
+          cards.forEach((c,idx)=>{
+            const d=document.createElement('div'); d.className='outcome'; d.dataset.index=idx;
+            d.innerHTML = `<div class="card-mini ${c[2]}"><span>${c[0]}${c[1]}</span><span style="align-self:flex-end">${c[1]}</span></div>`;
+            grid.appendChild(d);
+          });
+        }
       }
-      input.value = '';
-      updateStats();
-      drawSeesaw();
-      revealProgressively();
-      showPredictionResult();
-    });
-
-    document.getElementById('reset-btn').addEventListener('click', () => {
-      state.heads = 0;
-      state.tails = 0;
-      state.total = 0;
-      state.streak = 0;
-      state.streakSide = null;
-      state.prediction = null;
-      state.biased = false;
-      state.convHistory = [];
-      document.querySelectorAll('.predict-btn').forEach(b => b.classList.remove('sel'));
-      predictionDot.style.left = '50%';
-      actualDot.style.left = '50%';
-      predictionMessage.textContent = 'Your expectation and the observed result will appear here.';
-      convergenceStrip.classList.add('hidden');
-      predictionResult.classList.add('hidden');
-      biasPanel.classList.add('hidden');
-      insightPanel.classList.add('hidden');
-      biasNote.textContent = 'Keep your data and watch the system drift.';
-      coinVisual.textContent = '?';
-      flipToast.textContent = '';
-      updateStats();
-      drawSeesaw();
-      drawConvergence();
-    });
-
-    document.getElementById('bias-toggle-btn').addEventListener('click', () => {
-      state.biased = !state.biased;
-      biasNote.textContent = state.biased
-        ? 'Biased mode on. Heads now has a 60% chance.'
-        : 'Back to fair mode. Keep your current data.';
-    });
-
-    // Seesaw
-    const seesawCanvas = document.getElementById('seesaw-canvas');
-    const sctx = seesawCanvas.getContext('2d');
-
-    function resizeSeesawCanvas() {
-      seesawCanvas.width = seesawCanvas.clientWidth;
-      seesawCanvas.height = seesawCanvas.clientHeight;
-      drawSeesaw();
-    }
-
-    function drawSeesaw() {
-      const w = seesawCanvas.width;
-      const h = seesawCanvas.height;
-      sctx.clearRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h * 0.72;
-
-      const total = state.total || 1;
-      const ratio = state.heads / total;
-      const angle = (0.5 - ratio) * 0.6;
-
-      sctx.save();
-      sctx.translate(cx, cy);
-
-      // fulcrum
-      sctx.fillStyle = 'rgba(124,58,237,.45)';
-      sctx.beginPath();
-      sctx.moveTo(0, -6);
-      sctx.lineTo(-32, 50);
-      sctx.lineTo(32, 50);
-      sctx.closePath();
-      sctx.fill();
-
-      // beam
-      sctx.rotate(angle);
-      sctx.fillStyle = '#c4b5fd';
-      roundRect(sctx, -230, -10, 460, 20, 10);
-      sctx.fill();
-
-      // jars
-      drawJar(sctx, -170, -105, state.heads, '#f5c518', '#b8860b', 'H');
-      drawJar(sctx, 170, -105, state.tails, '#c0c0c0', '#808080', 'T');
-
-      sctx.restore();
-    }
-
-    function drawJar(ctx, x, y, count, fill, edge, label) {
-      ctx.save();
-      ctx.translate(x, y);
-
-      ctx.strokeStyle = edge;
-      ctx.lineWidth = 2;
-      ctx.fillStyle = 'rgba(255,255,255,.18)';
-      roundRect(ctx, -42, 0, 84, 90, 10);
-      ctx.fill();
-      ctx.stroke();
-
-      const maxFillH = 68;
-      const fillH = Math.min(maxFillH, count * 4);
-      ctx.fillStyle = fill;
-      roundRect(ctx, -38, 90 - fillH, 76, fillH, 8);
-      ctx.fill();
-
-      ctx.fillStyle = edge;
-      ctx.font = '700 14px "DM Mono"';
-      ctx.textAlign = 'center';
-      ctx.fillText(label, 0, 48);
-
-      ctx.restore();
-    }
-
-    function roundRect(ctx, x, y, w, h, r) {
-      ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.lineTo(x + w - r, y);
-      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-      ctx.lineTo(x + w, y + h - r);
-      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-      ctx.lineTo(x + r, y + h);
-      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-      ctx.lineTo(x, y + r);
-      ctx.quadraticCurveTo(x, y, x + r, y);
-      ctx.closePath();
-    }
-
-    // Convergence
-    const convCanvas = document.getElementById('convergence-canvas');
-    const cctx = convCanvas.getContext('2d');
-
-    function resizeConvCanvas() {
-      convCanvas.width = convCanvas.clientWidth;
-      convCanvas.height = convCanvas.clientHeight;
-      drawConvergence();
-    }
-
-    function drawConvergence() {
-      const w = convCanvas.width;
-      const h = convCanvas.height;
-      cctx.clearRect(0, 0, w, h);
-
-      // 50% line
-      cctx.strokeStyle = 'rgba(124,58,237,.22)';
-      cctx.setLineDash([4, 4]);
-      cctx.beginPath();
-      cctx.moveTo(0, h / 2);
-      cctx.lineTo(w, h / 2);
-      cctx.stroke();
-      cctx.setLineDash([]);
-
-      if (state.convHistory.length < 2) {
-        document.getElementById('convergence-readout').textContent = '—';
-        document.getElementById('convergence-message').textContent = 'As you flip more, the long-run pattern appears here.';
-        return;
-      }
-
-      cctx.beginPath();
-      state.convHistory.forEach((r, i) => {
-        const x = (i / (state.convHistory.length - 1)) * w;
-        const y = h - (r * h);
-        if (i === 0) cctx.moveTo(x, y);
-        else cctx.lineTo(x, y);
+    };
+    function addPips(el, n){
+      const coords = {
+        1:[[50,50]],
+        2:[[25,25],[75,75]],
+        3:[[25,25],[50,50],[75,75]],
+        4:[[25,25],[75,25],[25,75],[75,75]],
+        5:[[25,25],[75,25],[50,50],[25,75],[75,75]],
+        6:[[25,20],[75,20],[25,50],[75,50],[25,80],[75,80]]
+      };
+      coords[n].forEach(([x,y])=>{
+        const p=document.createElement('span'); p.className='pip'; p.style.left=`calc(${x}% - 6px)`; p.style.top=`calc(${y}% - 6px)`; el.appendChild(p);
       });
-      cctx.strokeStyle = state.biased ? '#f72585' : '#7c3aed';
-      cctx.lineWidth = 2.5;
-      cctx.stroke();
+    }
+    const labTabs = [...document.querySelectorAll('.lab-tab')];
+    const eventPills = document.getElementById('eventPills');
+    const outcomeGrid = document.getElementById('outcomeGrid');
+    let currentObject = 'coin'; let currentPill = 0;
+    function renderLab(objectKey){
+      currentObject = objectKey; currentPill = 0;
+      labTabs.forEach(t => t.classList.toggle('active', t.dataset.object === objectKey));
+      const obj = LAB[objectKey];
+      document.getElementById('sampleSpaceText').textContent = obj.sample;
+      outcomeGrid.innerHTML=''; obj.builder(outcomeGrid);
+      eventPills.innerHTML='';
+      obj.pills.forEach((p, idx)=>{
+        const b=document.createElement('button'); b.className='pill'; b.textContent=p.label;
+        b.addEventListener('click', ()=>selectEvent(idx)); eventPills.appendChild(b);
+      });
+      selectEvent(0, false);
+      syncContext();
+      if (objectKey === 'card') shuffleSound(); else if (objectKey === 'die') diceSound(); else coinSound();
+    }
+    function selectEvent(idx, withSound=true){
+      currentPill = idx;
+      const obj = LAB[currentObject]; const pill = obj.pills[idx];
+      [...eventPills.children].forEach((b,i)=>b.classList.toggle('active', i===idx));
+      [...outcomeGrid.children].forEach((el,i)=>{
+        el.classList.toggle('selected', pill.select.includes(i));
+        el.classList.toggle('muted', !pill.select.includes(i));
+      });
+      document.getElementById('eventText').textContent = pill.event;
+      document.getElementById('probText').textContent = pill.p;
+      document.getElementById('axiomRange').textContent = `0 ≤ P(A) = ${pill.p} ≤ 1`;
+      document.getElementById('axiomWhole').textContent = 'P(S) = 1';
+      document.getElementById('axiomAdd').textContent = pill.add;
+      if(withSound){ if (currentObject==='card') shuffleSound(); else if(currentObject==='die') diceSound(); else coinSound(); }
+    }
+    labTabs.forEach(t => t.addEventListener('click', ()=>renderLab(t.dataset.object)));
 
-      const last = state.convHistory[state.convHistory.length - 1];
-      document.getElementById('convergence-readout').textContent = `${Math.round(last * 100)}% heads`;
-
-      if (state.total < 30) {
-        document.getElementById('convergence-message').textContent = 'Still very unstable.';
-      } else if (state.total < 200) {
-        document.getElementById('convergence-message').textContent = 'Small samples still swing a lot.';
-      } else if (state.total < 1000) {
-        document.getElementById('convergence-message').textContent = 'Now the long-run pattern is becoming visible.';
+    // context interaction linked to selected object
+    const contextHeading = document.getElementById('contextHeading');
+    const contextLead = document.getElementById('contextLead');
+    const contextPrimary = document.getElementById('contextPrimary');
+    const contextSecondary = document.getElementById('contextSecondary');
+    const contextStage = document.getElementById('contextStage');
+    const contextToast = document.getElementById('contextToast');
+    const deckCards = [
+      ['A','♥','red'],['Q','♥','red'],['7','♥','red'],['9','♦','red'],['A','♣','black'],['Q','♣','black'],['7','♠','black'],['K','♠','black']
+    ];
+    let contextDieValue = 1;
+    let contextCoinHeads = 0;
+    let contextCoinFlips = 0;
+    function renderContextCoin(){
+      contextHeading.textContent = 'Coin example';
+      contextLead.textContent = 'A coin has two outcomes in its sample space. Try flipping and track heads as a proportion of all coin flips in this mini-example.';
+      contextPrimary.textContent = 'Flip coin';
+      contextSecondary.textContent = 'Reset';
+      contextStage.innerHTML = `
+        <div class="context-title">Sample space: {H, T}</div>
+        <div class="coin-large-wrap" style="min-height:170px">
+          <div class="coin-large" id="contextCoin">
+            <div class="coin-face head">H</div>
+            <div class="coin-face tail">T</div>
+          </div>
+        </div>
+        <div class="memory-stats">
+          <div class="mini-stat"><div class="k">Heads / total</div><div class="v" id="contextCoinFrac">${contextCoinHeads} / ${contextCoinFlips || 0}</div></div>
+          <div class="mini-stat"><div class="k">Observed proportion</div><div class="v" id="contextCoinProp">${contextCoinFlips ? (contextCoinHeads/contextCoinFlips).toFixed(3) : '—'}</div></div>
+        </div>`;
+      contextToast.textContent = 'Flip the coin to build an event count from the sample space.';
+    }
+    function renderContextDie(){
+      contextHeading.textContent = 'Die example';
+      contextLead.textContent = 'A die has six possible outcomes. Roll it to connect one observed outcome to the full sample space shown on the left.';
+      contextPrimary.textContent = 'Roll die';
+      contextSecondary.textContent = 'Reset';
+      contextStage.innerHTML = `
+        <div class="context-title">Sample space: {1, 2, 3, 4, 5, 6}</div>
+        <div class="roll-stage"><div class="die-large" id="contextDie"></div></div>
+        <div class="mini-stat"><div class="k">Current outcome</div><div class="v" id="contextDieValue">${contextDieValue}</div><div class="formula-line">Every roll lands on one of the six sample-space values.</div></div>`;
+      const die = document.getElementById('contextDie');
+      addPips(die, contextDieValue);
+      contextToast.textContent = 'Rolling picks one outcome from the six possible outcomes.';
+    }
+    function renderContextCard(selected = -1){
+      contextHeading.textContent = 'Card example';
+      contextLead.textContent = 'The card visual now appears only when the card tab is active, so the right-side interaction matches the mathematics on the left.';
+      contextPrimary.textContent = 'Shuffle';
+      contextSecondary.textContent = 'Draw card';
+      contextStage.innerHTML = `
+        <div class="context-title">Sample sample-space deck</div>
+        <div class="deck-stack" id="contextDeck"></div>
+        <div class="mini-stat"><div class="k">Current draw</div><div class="v" id="contextCardValue">—</div><div class="formula-line">Try red cards, queens, or aces on the left and compare with the deck here.</div></div>`;
+      const deck = document.getElementById('contextDeck');
+      deck.innerHTML = '';
+      deckCards.slice(0,3).forEach((c, idx) => {
+        const card = document.createElement('div');
+        card.className = `deck-card ${c[2]} ${selected === idx ? 'drawn' : ''}`;
+        card.textContent = `${c[0]}${c[1]}`;
+        deck.appendChild(card);
+      });
+      if(selected >= 0 && deckCards[selected]){
+        document.getElementById('contextCardValue').textContent = `${deckCards[selected][0]}${deckCards[selected][1]}`;
+        contextToast.textContent = `You drew ${deckCards[selected][0]}${deckCards[selected][1]}.`;
       } else {
-        document.getElementById('convergence-message').textContent = 'This is the slow pull toward long-run frequency.';
+        contextToast.textContent = 'Shuffle, then draw one card from this sample deck.';
       }
     }
-
-    window.addEventListener('resize', () => {
-      resizeSeesawCanvas();
-      resizeConvCanvas();
+    function syncContext(){
+      if(currentObject === 'coin') renderContextCoin();
+      else if(currentObject === 'die') renderContextDie();
+      else renderContextCard();
+    }
+    contextPrimary.addEventListener('click', ()=>{
+      if(currentObject === 'coin'){
+        coinSound();
+        const coin = document.getElementById('contextCoin');
+        coin.classList.add('flipping');
+        const next = randomHT();
+        setTimeout(()=>coin.classList.remove('flipping'), 820);
+        setTimeout(()=>{
+          coin.style.transform = next === 'H' ? 'rotateY(0deg)' : 'rotateY(180deg)';
+          contextCoinFlips += 1;
+          if(next === 'H') contextCoinHeads += 1;
+          document.getElementById('contextCoinFrac').textContent = `${contextCoinHeads} / ${contextCoinFlips}`;
+          document.getElementById('contextCoinProp').textContent = (contextCoinHeads / contextCoinFlips).toFixed(3);
+          contextToast.textContent = `Observed event count updated after a ${next}.`;
+        }, 520);
+      } else if(currentObject === 'die'){
+        diceSound();
+        contextDieValue = 1 + Math.floor(Math.random() * 6);
+        const die = document.getElementById('contextDie');
+        die.classList.add('rolling');
+        setTimeout(()=>{
+          die.classList.remove('rolling');
+          die.innerHTML = '';
+          addPips(die, contextDieValue);
+          document.getElementById('contextDieValue').textContent = contextDieValue;
+          contextToast.textContent = `The die landed on ${contextDieValue}.`;
+        }, 420);
+      } else {
+        shuffleSound();
+        deckCards.sort(()=>Math.random()-.5);
+        renderContextCard();
+      }
     });
+    contextSecondary.addEventListener('click', ()=>{
+      if(currentObject === 'coin'){
+        contextCoinHeads = 0;
+        contextCoinFlips = 0;
+        renderContextCoin();
+      } else if(currentObject === 'die'){
+        contextDieValue = 1;
+        renderContextDie();
+      } else {
+        shuffleSound();
+        const idx = Math.floor(Math.random()*deckCards.length);
+        renderContextCard(Math.min(idx,2));
+      }
+    });
+    renderLab('coin');
 
-    updateStats();
-    resizeSeesawCanvas();
-    resizeConvCanvas();
+    // frequency simulation
+    const flipCount = document.getElementById('flipCount');
+    const headsCount = document.getElementById('headsCount');
+    const tailsCount = document.getElementById('tailsCount');
+    const propHeads = document.getElementById('propHeads');
+    const lineCanvas = document.getElementById('lineChart');
+    const sampleCanvas = document.getElementById('sampleChart');
+    let series = []; let total=0, heads=0, tails=0;
+    function drawLineChart(){
+      const c = lineCanvas, ctx = c.getContext('2d'), w=c.width, h=c.height;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle='rgba(124,58,237,.04)'; ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle='rgba(123,114,168,.25)'; ctx.lineWidth=1;
+      for(let i=0;i<=4;i++){
+        const y = 20 + (h-40)*i/4;
+        ctx.beginPath(); ctx.moveTo(50,y); ctx.lineTo(w-20,y); ctx.stroke();
+      }
+      ctx.strokeStyle='rgba(26,21,53,.35)';
+      ctx.beginPath(); ctx.moveTo(50,h-20); ctx.lineTo(50,20); ctx.lineTo(w-20,20); ctx.stroke();
+      const yHalf = 20 + (h-40)*(1-0.5);
+      ctx.strokeStyle='rgba(247,37,133,.45)'; ctx.setLineDash([6,6]); ctx.beginPath(); ctx.moveTo(50,yHalf); ctx.lineTo(w-20,yHalf); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle='rgba(247,37,133,.9)'; ctx.font='12px DM Mono'; ctx.fillText('0.5', w-48, yHalf-8);
+      if(series.length>0){
+        ctx.strokeStyle='#7c3aed'; ctx.lineWidth=3; ctx.beginPath();
+        series.forEach((v,i)=>{
+          const x = 50 + (w-70) * (i/(Math.max(series.length-1,1)));
+          const y = 20 + (h-40)*(1-v);
+          if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        });
+        ctx.stroke();
+      }
+      ctx.fillStyle='rgba(26,21,53,.7)'; ctx.font='13px DM Mono';
+      ctx.fillText('proportion of heads', 56, 16);
+      ctx.fillText('trials', w-58, h-4);
+    }
+    function drawSampleBars(){
+      const c = sampleCanvas, ctx=c.getContext('2d'), w=c.width, h=c.height;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle='rgba(124,58,237,.04)'; ctx.fillRect(0,0,w,h);
+      const bars = [
+        {label:'Expected', value:0.5},
+        {label:'10', value: series[9]},
+        {label:'100', value: series[99]},
+        {label:'500', value: series[499]},
+        {label:'1000', value: series[999]}
+      ];
+      const left=60, top=20, bottom=h-42, right=w-24;
+      const chartH = bottom-top;
+      ctx.strokeStyle='rgba(123,114,168,.25)'; ctx.lineWidth=1;
+      for(let i=0;i<=4;i++){
+        const y = top + chartH*i/4;
+        ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(right,y); ctx.stroke();
+        const tick = (1 - i/4).toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
+        ctx.fillStyle='rgba(26,21,53,.52)'; ctx.font='12px DM Mono'; ctx.fillText(tick, 24, y+4);
+      }
+      const yHalf = top + chartH*(1-0.5);
+      ctx.strokeStyle='rgba(247,37,133,.45)'; ctx.setLineDash([6,6]); ctx.beginPath(); ctx.moveTo(left,yHalf); ctx.lineTo(right,yHalf); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle='rgba(247,37,133,.9)'; ctx.font='12px DM Mono'; ctx.fillText('0.5 expected', right-92, yHalf-8);
+      const slotW = (right-left)/bars.length;
+      bars.forEach((b,i)=>{
+        const x = left + i*slotW + slotW*0.18;
+        const bw = slotW*0.58;
+        const hasValue = typeof b.value === 'number';
+        const value = hasValue ? b.value : 0;
+        const bh = chartH*value;
+        const y = bottom - bh;
+        if(i===0){
+          ctx.fillStyle = 'rgba(247,37,133,.82)';
+          ctx.fillRect(x,y,bw,bh);
+        } else if(hasValue){
+          ctx.fillStyle = 'rgba(124,58,237,.82)';
+          ctx.fillRect(x,y,bw,bh);
+        } else {
+          ctx.strokeStyle = 'rgba(124,58,237,.3)';
+          ctx.setLineDash([7,5]);
+          ctx.strokeRect(x, top + chartH*0.35, bw, bottom-(top + chartH*0.35));
+          ctx.setLineDash([]);
+        }
+        ctx.fillStyle='rgba(26,21,53,.88)'; ctx.font='14px Nunito';
+        ctx.textAlign='center';
+        ctx.fillText(b.label, x+bw/2, h-14);
+        ctx.font='12px DM Mono';
+        if(hasValue) ctx.fillText(value.toFixed(3), x+bw/2, y-8);
+        else ctx.fillText('—', x+bw/2, top + chartH*0.3);
+        ctx.textAlign='start';
+      });
+    }
+    function updateCounts(){
+      flipCount.textContent = total;
+      headsCount.textContent = heads;
+      tailsCount.textContent = tails;
+      propHeads.textContent = total ? (heads/total).toFixed(3) : '0.000';
+    }
+    function addFlips(n){
+      if(n <= 0) return;
+      const batch = [];
+      const headsBefore = heads;
+      const totalBefore = total;
+      let runningHeads = headsBefore;
+      for(let i=0;i<n;i++){
+        const r = Math.random() < 0.5 ? 1 : 0;
+        batch.push(r);
+        if(r) runningHeads += 1;
+        series.push(runningHeads / (totalBefore + i + 1));
+      }
+      const localHeads = batch.reduce((a,b)=>a+b,0);
+      heads += localHeads;
+      tails += (n-localHeads);
+      total += n;
+      updateCounts();
+      drawLineChart();
+      drawSampleBars();
+      coinSound();
+    }
+    document.querySelectorAll('.simBtn').forEach(btn => btn.addEventListener('click', ()=> addFlips(Number(btn.dataset.n))));
+    document.getElementById('resetSim').addEventListener('click', ()=>{
+      total=0; heads=0; tails=0; series=[];
+      updateCounts(); drawLineChart(); drawSampleBars();
+    });
+    updateCounts(); drawLineChart(); drawSampleBars();
+
+    // compare samples
+    function fillJar(fillId, frac){
+      document.getElementById(fillId).style.height = `${Math.max(8, frac * 100)}%`;
+    }
+    function renderJarTokens(elId, count, type, limit){
+      const el = document.getElementById(elId);
+      el.innerHTML = '';
+      const t = document.createElement('div');
+      t.className = 'jar-token';
+      t.textContent = type;
+      el.appendChild(t);
+    }
+    function compareSamples(){
+      const small = Array.from({length:10}, ()=>Math.random()<.5?1:0);
+      const large = Array.from({length:1000}, ()=>Math.random()<.5?1:0);
+      const sh = small.reduce((a,b)=>a+b,0), lh = large.reduce((a,b)=>a+b,0);
+      const st = 10 - sh, lt = 1000 - lh;
+      const sp = sh/10, lp = lh/1000;
+
+      document.getElementById('smallReadout').textContent = `Heads proportion = ${sp.toFixed(3)}`;
+      document.getElementById('largeReadout').textContent = `Heads proportion = ${lp.toFixed(3)}`;
+
+      document.getElementById('smallHeads').textContent = sh;
+      document.getElementById('smallTails').textContent = st;
+      document.getElementById('largeHeads').textContent = lh;
+      document.getElementById('largeTails').textContent = lt;
+
+      document.getElementById('smallHeadsFrac').textContent = `${sh} / 10`;
+      document.getElementById('smallTailsFrac').textContent = `${st} / 10`;
+      document.getElementById('largeHeadsFrac').textContent = `${lh} / 1000`;
+      document.getElementById('largeTailsFrac').textContent = `${lt} / 1000`;
+
+      fillJar('smallHeadsFill', sh/10);
+      fillJar('smallTailsFill', st/10);
+      fillJar('largeHeadsFill', lh/1000);
+      fillJar('largeTailsFill', lt/1000);
+
+      renderJarTokens('smallHeadsCoins', sh, 'H', 10);
+      renderJarTokens('smallTailsCoins', st, 'T', 10);
+      renderJarTokens('largeHeadsCoins', lh, 'H', 20);
+      renderJarTokens('largeTailsCoins', lt, 'T', 20);
+
+      document.getElementById('smallJarSummary').textContent = `In a short run, ${sh} heads and ${st} tails can look quite uneven.`;
+      document.getElementById('largeJarSummary').textContent = `Across 1000 flips, ${lh} heads and ${lt} tails sit much closer to the long-run 50–50 split.`;
+
+      drawSampleBars(sp, lp);
+      coinSound();
+    }
+    document.getElementById('compareSamples').addEventListener('click', compareSamples);
+    compareSamples();
   </script>
 </body>
 </html>
