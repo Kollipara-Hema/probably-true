@@ -1236,6 +1236,8 @@
       drawSampleBars(sp, lp);
       coinSound();
     }
+    document.getElementById('compareSamples').addEventListener('click', compareSamples);
+    compareSamples();
     document.querySelectorAll('.dropdown > a').forEach(el => {
       el.addEventListener('click', function(e) {
         e.preventDefault();
