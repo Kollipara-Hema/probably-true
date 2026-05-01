@@ -1,102 +1,16 @@
 // ============================================
-//  PROBABLY TRUE — Shared JavaScript
+//  PROBABLY TRUE — Shared JavaScript utilities
 //  js/main.js
 // ============================================
+//  Pure utility functions — no auto-init, no DOM hooks.
+//  Import where needed: <script src="/js/main.js"></script>
+//  Then call functions explicitly from your page's own scripts.
+// ============================================
 
-// ── SCROLL REVEAL ──
-// Add class="reveal" to any element you want to animate in on scroll
-// Optional: add class="delay-1", "delay-2", "delay-3" for staggered timing
-function initScrollReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.12 });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-
-// ── CHAPTER CARD STAGGER ──
-// Animates chapter cards in one by one
-function initCardReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const delay = Number(entry.target.dataset.delay) || 0;
-        setTimeout(() => entry.target.classList.add('visible'), delay);
-      }
-    });
-  }, { threshold: 0.08 });
-
-  document.querySelectorAll('.chapter-card:not(.disabled)').forEach((el, i) => {
-    el.dataset.delay = i * 120;
-    observer.observe(el);
-  });
-}
-
-// ── ACTIVE NAV LINK ──
-// Highlights the correct nav item based on scroll position
-function initActiveNav() {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 80) {
-        current = s.getAttribute('id');
-      }
-    });
-    navLinks.forEach(a => {
-      a.classList.remove('active');
-      if (a.getAttribute('href') === `#${current}`) {
-        a.classList.add('active');
-      }
-    });
-  });
-}
-
-// ── TOOLTIP HELPER ──
-// Usage: addTooltip(element, "Your tooltip text")
-function addTooltip(el, text) {
-  el.setAttribute('title', text);
-  el.style.cursor = 'help';
-}
-
-// ── NUMBER FORMATTER ──
-// Usage: formatNum(1234567) → "1,234,567"
-function formatNum(n) {
-  return n.toLocaleString();
-}
-
-// ── GAUSSIAN RANDOM (Box-Muller) ──
-// Generates a standard normal random number
-// Usage: const z = randNorm(); → number around 0, std dev 1
-function randNorm() {
-  let u = 0, v = 0;
-  while (u === 0) u = Math.random();
-  while (v === 0) v = Math.random();
-  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-}
-
-// ── CLAMP ──
-// Keeps a number between min and max
-// Usage: clamp(value, 0, 100)
-function clamp(val, min, max) {
-  return Math.max(min, Math.min(max, val));
-}
-
-// ── LERP (Linear Interpolation) ──
-// Smoothly moves a value toward a target
-// Usage in animation loops: x = lerp(x, targetX, 0.1)
-function lerp(a, b, t) {
-  return a + (b - a) * t;
-}
 
 // ── BRAND COLORS ──
-// Import these wherever you need consistent colors in D3 or canvas
+// Use these in D3 charts, canvas drawings, or anywhere you'd
+// otherwise hard-code a hex value. Matches the CSS palette in style.css.
 const BRAND_COLORS = {
   purple: '#7c3aed',
   yellow: '#f9c74f',
@@ -106,12 +20,56 @@ const BRAND_COLORS = {
   lime:   '#74c417',
   violet: '#a78bfa',
 };
-
 const COLOR_ARRAY = Object.values(BRAND_COLORS);
 
-// ── INIT ON DOM READY ──
-document.addEventListener('DOMContentLoaded', () => {
-  initScrollReveal();
-  initCardReveal();
-  initActiveNav();
-});
+
+// ── GAUSSIAN RANDOM (Box-Muller) ──
+// Standard normal random number — mean 0, stddev 1.
+// Use for: CLT animations, normal distribution chapters, sampling
+// distribution simulations, regression noise generation.
+//   const z = randNorm();         → ~N(0, 1)
+//   const x = 100 + 15*randNorm();→ ~N(100, 15)
+function randNorm() {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+
+// ── CLAMP ──
+// Keep a value between min and max. Used everywhere sliders are involved.
+//   clamp(150, 0, 100)  → 100
+//   clamp(-5, 0, 100)   → 0
+function clamp(val, min, max) {
+  return Math.max(min, Math.min(max, val));
+}
+
+
+// ── LERP (linear interpolation) ──
+// Smoothly move toward a target. Used in animation loops:
+//   x = lerp(x, targetX, 0.1);   // approaches targetX over many frames
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+
+// ── NUMBER FORMATTER ──
+// 1234567 → "1,234,567" using the user's locale.
+function formatNum(n) {
+  return n.toLocaleString();
+}
+
+
+// ── TOOLTIP HELPER ──
+// Adds a native hover tooltip. Use sparingly — for D3 elements that
+// aren't rich enough for a full tooltip system.
+function addTooltip(el, text) {
+  el.setAttribute('title', text);
+  el.style.cursor = 'help';
+}
+
+
+// ── EXPORT TO WINDOW ──
+// So inline <script> blocks in chapter pages can use these without imports.
+window.PT_UTIL = { randNorm, clamp, lerp, formatNum, addTooltip, BRAND_COLORS, COLOR_ARRAY };
