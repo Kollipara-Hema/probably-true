@@ -104,7 +104,9 @@
       position: absolute;
       top: calc(100% + 10px);
       left: 0;
-      min-width: 260px;
+      min-width: 280px;
+      max-height: 70vh;
+      overflow-y: auto;
       background: #fff;
       border: 2px solid var(--border);
       border-radius: 18px;
@@ -354,6 +356,37 @@
       .outcome-grid.card{grid-template-columns:repeat(2,1fr)}
       .stream{grid-template-columns:repeat(10,1fr)}
     }
+
+    /* ── Sibling-page button (jump between interactive and notebook) ── */
+    .pt-sib-btn {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 14px 20px; border-radius: 18px;
+      background: var(--purple-pale); border: 2px solid #ddd6fe;
+      color: var(--purple); text-decoration: none;
+      font-family: var(--fd); transition: .2s;
+    }
+    .pt-sib-btn:hover { background: var(--purple); color: #fff; transform: translateY(-1px); border-color: var(--purple); }
+    .pt-sib-btn:hover .pt-sib-sub { color: rgba(255,255,255,.85); }
+    .pt-sib-label { font-weight: 900; font-size: 1.05rem; }
+    .pt-sib-sub { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+    .pt-sib-soon { opacity: .55; cursor: default; pointer-events: none; }
+    .pt-sib-soon:hover { background: var(--purple-pale); color: var(--purple); transform: none; }
+
+    /* ── Dropdown section headers (Book I/II/III inside menus) ── */
+    .dropdown-menu { min-width: 320px; }
+    .dropdown-menu .dd-section {
+      padding: 12px 16px 6px; pointer-events: none;
+      border-top: 1px solid var(--border); margin-top: 6px;
+    }
+    .dropdown-menu li.dd-section:first-child { border-top: none; margin-top: 0; }
+    .dropdown-menu .dd-section-label {
+      font-family: var(--fm); font-size: 0.65rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--purple); font-weight: 600;
+    }
+    .dropdown-menu .dd-section-name {
+      font-size: 0.78rem; font-weight: 800; color: var(--muted); margin-left: 4px;
+    }
   </style>
 </head>
 <body>
@@ -361,40 +394,40 @@
     <div class="brand">
       <a href="https://probably-true.vercel.app/" class="nav-logo">
         <svg class="logo-sm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="400" rx="80" fill="#f5f0ff"/>
-          <rect x="5" y="5" width="390" height="390" rx="76" fill="none" stroke="#7c3aed" stroke-width="10"/>
-          <circle cx="100" cy="100" r="130" fill="#7c3aed" opacity="0.07"/>
-          <circle cx="320" cy="330" r="150" fill="#06d6a0" opacity="0.07"/>
-          <circle cx="330" cy="90"  r="110" fill="#f9c74f" opacity="0.07"/>
-          <path d="M148,158 C148,110 166,92 200,92 C234,92 254,110 254,136 C254,166 234,180 218,197 C206,210 202,222 202,242"
-            fill="none" stroke="#7c3aed" stroke-width="30" stroke-linecap="round"/>
-          <path d="M162,158 C162,118 178,106 200,106 C222,106 240,118 240,136 C240,162 222,175 207,191 C197,202 212,222 212,242"
-            fill="none" stroke="#f5f0ff" stroke-width="14" stroke-linecap="round"/>
-          <circle cx="200" cy="288" r="28" fill="#7c3aed"/>
-          <path d="M184,295 C186,295 188,293 191,287 C193,283 196,280 198,280 C199,280 200,280 202,281 C205,284 207,288 210,295 C213,295 215,294 216,292"
-            fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
-          <line x1="184" y1="295" x2="216" y2="295" stroke="white" stroke-width="1.4" opacity="0.45"/>
-          <circle cx="72"  cy="158" r="10" fill="#f9c74f" opacity="0.95"/>
-          <circle cx="56"  cy="218" r="8"  fill="#06d6a0" opacity="0.9"/>
-          <circle cx="68"  cy="278" r="11" fill="#f72585" opacity="0.9"/>
-          <circle cx="330" cy="156" r="8"  fill="#4361ee" opacity="0.9"/>
-          <circle cx="346" cy="216" r="11" fill="#f72585" opacity="0.95"/>
-          <circle cx="332" cy="276" r="8"  fill="#74c417" opacity="0.9"/>
-          <circle cx="148" cy="56"  r="7"  fill="#4361ee" opacity="0.7"/>
-          <circle cx="256" cy="54"  r="8"  fill="#74c417" opacity="0.7"/>
-          <g transform="translate(82,336)" opacity="0.85">
-            <rect x="0"   y="24" width="14" height="14" rx="3" fill="#4361ee"/>
-            <rect x="18"  y="15" width="14" height="23" rx="3" fill="#4361ee"/>
-            <rect x="36"  y="5"  width="14" height="33" rx="3" fill="#7c3aed"/>
-            <rect x="54"  y="1"  width="14" height="37" rx="3" fill="#f9c74f"/>
-            <rect x="72"  y="5"  width="14" height="33" rx="3" fill="#06d6a0"/>
-            <rect x="90"  y="15" width="14" height="23" rx="3" fill="#f72585"/>
-            <rect x="108" y="24" width="14" height="14" rx="3" fill="#4361ee"/>
-            <rect x="126" y="28" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
-            <rect x="144" y="31" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
-            <rect x="162" y="34" width="14" height="4"  rx="3" fill="#74c417" opacity="0.45"/>
-          </g> <!-- FULL SVG CONTENT FROM HOMEPAGE -->
-        </svg>
+      <rect width="400" height="400" rx="80" fill="#f5f0ff"/>
+      <rect x="5" y="5" width="390" height="390" rx="76" fill="none" stroke="#7c3aed" stroke-width="10"/>
+      <circle cx="100" cy="100" r="130" fill="#7c3aed" opacity="0.07"/>
+      <circle cx="320" cy="330" r="150" fill="#06d6a0" opacity="0.07"/>
+      <circle cx="330" cy="90"  r="110" fill="#f9c74f" opacity="0.07"/>
+      <path d="M148,158 C148,110 166,92 200,92 C234,92 254,110 254,136 C254,166 234,180 218,197 C206,210 202,222 202,242"
+        fill="none" stroke="#7c3aed" stroke-width="30" stroke-linecap="round"/>
+      <path d="M162,158 C162,118 178,106 200,106 C222,106 240,118 240,136 C240,162 222,175 207,191 C197,202 212,222 212,242"
+        fill="none" stroke="#f5f0ff" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="200" cy="288" r="28" fill="#7c3aed"/>
+      <path d="M184,295 C186,295 188,293 191,287 C193,283 196,280 198,280 C199,280 200,280 202,281 C205,284 207,288 210,295 C213,295 215,294 216,292"
+        fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="184" y1="295" x2="216" y2="295" stroke="white" stroke-width="1.4" opacity="0.45"/>
+      <circle cx="72"  cy="158" r="10" fill="#f9c74f" opacity="0.95"/>
+      <circle cx="56"  cy="218" r="8"  fill="#06d6a0" opacity="0.9"/>
+      <circle cx="68"  cy="278" r="11" fill="#f72585" opacity="0.9"/>
+      <circle cx="330" cy="156" r="8"  fill="#4361ee" opacity="0.9"/>
+      <circle cx="346" cy="216" r="11" fill="#f72585" opacity="0.95"/>
+      <circle cx="332" cy="276" r="8"  fill="#74c417" opacity="0.9"/>
+      <circle cx="148" cy="56"  r="7"  fill="#4361ee" opacity="0.7"/>
+      <circle cx="256" cy="54"  r="8"  fill="#74c417" opacity="0.7"/>
+      <g transform="translate(82,336)" opacity="0.85">
+        <rect x="0"   y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+        <rect x="18"  y="15" width="14" height="23" rx="3" fill="#4361ee"/>
+        <rect x="36"  y="5"  width="14" height="33" rx="3" fill="#7c3aed"/>
+        <rect x="54"  y="1"  width="14" height="37" rx="3" fill="#f9c74f"/>
+        <rect x="72"  y="5"  width="14" height="33" rx="3" fill="#06d6a0"/>
+        <rect x="90"  y="15" width="14" height="23" rx="3" fill="#f72585"/>
+        <rect x="108" y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+        <rect x="126" y="28" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
+        <rect x="144" y="31" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
+        <rect x="162" y="34" width="14" height="4"  rx="3" fill="#74c417" opacity="0.45"/>
+      </g>
+    </svg>
         <span class="nav-wm">Probably<span>True</span></span>
       </a>
     </div>
@@ -403,12 +436,13 @@
       
       <li class="dropdown">
         <a href="#">Chapters ▾</a>
-        <ul class="dropdown-menu">
-          <li><a href="/chapters/probability/">Chapter 1 · Probability</a></li>
-          <li><a href="#" class="disabled">Chapter 2 · Coming Soon</a></li>
-          <li><a href="#" class="disabled">Chapter 2 · Coming Soon</a></li>
-        </ul>
+        <ul class="dropdown-menu" data-pt-dropdown-chapters></ul>
       </li>
+      <li class="dropdown">
+        <a href="#">Notebooks ▾</a>
+        <ul class="dropdown-menu" data-pt-dropdown-notebooks></ul>
+      </li>
+      <a href="/#how">How it works</a>
       <a href="/#why">About</a>
       <!-- <a href="/book">Book</a> -->
       <a href="https://youtube.com/@probablytruestats" target="_blank" rel="noopener noreferrer">YouTube</a>
@@ -702,6 +736,7 @@
           <h2 style="font-size:2rem">What comes next?</h2>
           <p class="lead">Once this intuition is secure, later chapters can introduce expectation, variance, distributions, and conditional probability without confusion.</p>
           <div class="note">This page intentionally stops before advanced topics. It builds the foundation first.</div>
+          <div data-pt-sibling-button="probability" data-pt-surface="interactive" style="margin-top:24px"></div>
         </div>
       </div>
     </section>
@@ -1257,5 +1292,9 @@
       });
     });
   </script>
+
+  <!-- Auto-nav: chapters.js is the source of truth, nav.js renders the dropdown -->
+  <script src="/js/chapters.js"></script>
+  <script src="/js/nav.js"></script>
 </body>
 </html>
