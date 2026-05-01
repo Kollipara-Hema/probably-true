@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 2 — Compound Probability & Bayes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#faf8ff;
+      --bg2:#f5f0ff;
+      --surf:#ffffff;
+      --text:#1a1535;
+      --muted:#7b72a8;
+      --border:rgba(124,58,237,0.16);
+      --purple:#7c3aed;
+      --purple-soft:rgba(124,58,237,0.08);
+      --purple-pale:#ede9fe;
+      --gold:#f5c518;
+      --gold-dark:#b8860b;
+      --teal:#06d6a0;
+      --pink:#f72585;
+      --blue:#4f46e5;
+      --red:#ef4444;
+      --orange:#f97316;
+      --green:#22c55e;
+      --fd:'Nunito',sans-serif;
+      --fm:'DM Mono',monospace;
+      --nav-h:68px;
+      --shadow:0 16px 38px rgba(124,58,237,.10);
+      --radius:28px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:var(--fd);
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 12%, rgba(124,58,237,.07), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(6,214,160,.06), transparent 26%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow-x:hidden;
+    }
+    .topbar{
+      position:fixed; inset:0 0 auto 0; height:var(--nav-h); z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 24px; background:rgba(250,248,255,.90); backdrop-filter:blur(18px);
+      border-bottom:2px solid var(--border);
+    }
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-sm{width:36px;height:36px;flex-shrink:0}
+    .nav-wm{font-size:1.05rem;font-weight:900;letter-spacing:-0.02em;color:var(--text)}
+    .nav-wm span{color:var(--purple)}
+    .nav-links{display:flex;gap:20px;margin:0 20px;list-style:none;align-items:center}
+    .nav-links li{list-style:none}
+    .nav-links a{text-decoration:none;color:var(--muted);font-weight:700;font-size:.95rem}
+    .nav-links a:hover{color:var(--text)}
+    .dropdown{position:relative;list-style:none}
+    .dropdown-menu{display:none;position:absolute;top:calc(100% + 10px);left:0;min-width:260px;background:#fff;border:2px solid var(--border);border-radius:18px;padding:10px 0;margin:0;list-style:none;box-shadow:0 14px 30px rgba(0,0,0,0.08);z-index:300}
+    .dropdown-menu li{list-style:none}
+    .dropdown-menu a{display:block;padding:10px 16px;text-decoration:none;color:var(--text);font-size:.86rem;font-weight:700;white-space:nowrap}
+    .dropdown-menu a:hover{background:rgba(124,58,237,0.06);color:var(--purple)}
+    .dropdown-menu a.disabled{color:#aaa;pointer-events:none;cursor:default}
+    .dropdown.open .dropdown-menu{display:block}
+    .brand{display:flex;align-items:center;gap:12px}
+    .top-controls{display:flex;align-items:center;gap:12px}
+    .chip{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.8);color:var(--muted)}
+    .progress-bar{position:fixed;top:var(--nav-h);left:0;right:0;height:4px;background:rgba(124,58,237,.10);z-index:90}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),#a78bfa)}
+    .dot-nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:10px}
+    .dot{width:11px;height:11px;border-radius:50%;background:transparent;border:2px solid rgba(124,58,237,.25);cursor:pointer;transition:.2s}
+    .dot.active,.dot:hover{background:var(--purple);border-color:var(--purple);transform:scale(1.08)}
+
+    main{padding-top:var(--nav-h)}
+    .panel{
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:34px 24px; position:relative;
+    }
+    .wrap{width:min(1180px,100%); display:grid; grid-template-columns:1.05fr .95fr; gap:26px; align-items:center}
+    .card{
+      background:rgba(255,255,255,.82); border:2px solid var(--border); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:28px;
+    }
+    .eyebrow{font-family:var(--fm);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+    h1,h2{letter-spacing:-.04em;line-height:1.02}
+    h1{font-size:clamp(2.4rem,5vw,4.5rem);margin-bottom:18px}
+    h2{font-size:clamp(1.9rem,4vw,3.2rem);margin-bottom:14px}
+    h3{font-size:1.4rem;letter-spacing:-.02em;margin-bottom:8px}
+    .lead{font-size:1.05rem;line-height:1.8;color:var(--muted);font-weight:700;max-width:58ch}
+    .note{margin-top:16px;padding:14px 16px;border-radius:18px;background:var(--purple-pale);border:1px solid #ddd6fe;color:var(--purple);font-weight:800;line-height:1.6}
+    .note.gold{background:#fef3c7;border-color:#fde68a;color:#92400e}
+    .note.gold strong{color:#78350f}
+    .question{margin:18px 0 14px;font-size:1.1rem;font-weight:900}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    button.primary, button.secondary, .ghost{
+      border:none;border-radius:999px;padding:13px 18px;font-family:var(--fd);font-weight:900;cursor:pointer;transition:.2s;
+    }
+    button.primary{background:var(--purple);color:#fff;box-shadow:0 12px 24px rgba(124,58,237,.22)}
+    button.secondary{background:#fff;border:2px solid var(--border);color:var(--text)}
+    .ghost{background:rgba(124,58,237,.06);color:var(--purple);border:2px solid transparent}
+    button:hover,.ghost:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .reveal{margin-top:16px;opacity:0;transform:translateY(10px);transition:.35s;padding:16px 18px;border-radius:20px;background:#fff;border:2px solid var(--border);font-weight:800;line-height:1.7;color:var(--text)}
+    .reveal.show{opacity:1;transform:translateY(0)}
+
+    /* Generic right-side visual card */
+    .visual-card{padding:22px;border-radius:var(--radius);background:#fff;border:2px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+
+    /* Hook scenario */
+    .scenario-line{font-size:1.05rem;font-weight:800;line-height:1.7;margin-bottom:10px}
+    .scenario-line .hl{color:var(--purple)}
+    .guess-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+    .guess-btn{padding:14px 10px;border-radius:18px;background:#fff;border:2px solid var(--border);font-family:var(--fd);font-weight:900;cursor:pointer;font-size:.95rem;transition:.2s}
+    .guess-btn:hover{transform:translateY(-2px);border-color:var(--purple)}
+    .guess-btn.sel{background:var(--purple);color:#fff;border-color:var(--purple)}
+    .guess-btn.correct{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+    /* Bayes grid - controls compact for right column */
+    .ctrl-card{padding:12px 14px;border-radius:14px;background:#faf8ff;border:1px solid var(--border)}
+    .ctrl-card label{display:block;font-family:var(--fm);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .ctrl-row{display:flex;align-items:center;gap:10px}
+    .ctrl-row input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;background:rgba(124,58,237,.15);outline:none}
+    .ctrl-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--purple);cursor:pointer;border:3px solid #fff;box-shadow:0 4px 8px rgba(124,58,237,.3)}
+    .ctrl-row input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--purple);cursor:pointer;border:3px solid #fff;box-shadow:0 4px 8px rgba(124,58,237,.3)}
+    .ctrl-row .val{font-family:var(--fm);font-weight:900;min-width:54px;text-align:right;color:var(--text);font-size:.95rem}
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .stat{padding:10px 8px;border-radius:14px;background:#faf8ff;border:1px solid var(--border);text-align:center}
+    .stat .s1{display:block;font-family:var(--fm);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+    .stat .s2{font-size:1rem;font-weight:900;font-variant-numeric:tabular-nums}
+    .stat.hl .s2{color:var(--purple)}
+    .legend-row{display:flex;flex-wrap:wrap;gap:6px;font-size:.74rem;color:var(--muted);font-weight:800}
+    .legend-row .lg{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:999px;background:#fff;border:1px solid var(--border)}
+    .legend-row .lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+    .headline{padding:12px 14px;border-radius:14px;background:var(--purple-pale);border:1px solid #ddd6fe;color:var(--purple);font-weight:800;line-height:1.6;font-size:.88rem}
+    .headline b{color:var(--text)}
+    .formula-pill{font-family:var(--fm);font-size:.9rem;color:var(--muted);font-weight:600;padding:11px 14px;background:#fff;border:2px solid var(--border);border-radius:14px;line-height:1.5;text-align:center}
+    .formula-pill .hl{color:var(--text);font-weight:900}
+
+    /* Three-doors header card */
+    .three-doors{display:grid;gap:10px;margin-top:14px}
+    .door{padding:12px 14px;border-radius:14px;background:#fff;border:2px solid var(--border);display:flex;flex-direction:column;gap:3px}
+    .door .num{font-family:var(--fm);font-size:.66rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+    .door .ttl{font-weight:900;font-size:.92rem;color:var(--text)}
+    .door .sub{font-size:.78rem;color:var(--muted);font-weight:700;line-height:1.5}
+
+    /* Snail */
+    .sn-h2{font-family:var(--fm);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .sn-status{font-weight:800;font-size:.86rem;color:var(--text);min-height:20px;margin-top:6px;text-align:center}
+    /* IMPORTANT FIX: position is on wrapper group, animation on inner snail */
+    #sn-snail-pos{transition:transform .45s cubic-bezier(.4,1.6,.6,1)}
+    .sn-snail{transform-origin:center;transform-box:fill-box}
+    .sn-snail.bounce{animation:snbounce .45s ease-out}
+    .sn-snail.gone{animation:sngone .55s forwards}
+    @keyframes snbounce{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+    @keyframes sngone{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(40px,-80px) rotate(45deg)}}
+    .sn-bird-g{transition:transform .35s ease-out}
+    .sn-bird-g.swoop{animation:snswoop .55s ease-in-out}
+    /* swoop now goes down then back up, capped so it doesn't reach the snail's actual y */
+    @keyframes snswoop{0%{transform:translate(0,0)}40%{transform:translate(0,70px) scale(1.05)}60%{transform:translate(0,70px) scale(1.05)}100%{transform:translate(0,0)}}
+    .sn-feather{animation:snfeather 1s ease-out forwards}
+    @keyframes snfeather{0%{opacity:.95;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(40px) rotate(60deg)}}
+    .sn-spark{animation:snspark .6s ease-out forwards}
+    @keyframes snspark{0%{opacity:1;transform:scale(.4)}100%{opacity:0;transform:scale(2)}}
+    .sn-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .sn-btns button{padding:8px 12px;border-radius:999px;font-family:var(--fd);font-weight:800;font-size:.82rem;border:2px solid var(--border);background:#fff;cursor:pointer;color:var(--text)}
+    .sn-btns button.primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+    .mini-stat{padding:8px 10px;background:#faf8ff;border-radius:10px;border:1px solid var(--border);margin-top:6px}
+    .mini-stat .k{font-family:var(--fm);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+    .mini-stat .v{font-size:1rem;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums}
+    .mini-stat.hl .v{color:var(--purple)}
+
+    /* Gumball - stacked vertically in right column */
+    .gm-stack{display:grid;gap:14px}
+    .gm-machine-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:8px}
+    .gm-rolling .gm-handle{animation:gmcrank .35s ease-in-out;transform-origin:26px 36px}
+    @keyframes gmcrank{0%{transform:rotate(0deg)}50%{transform:rotate(75deg)}100%{transform:rotate(0deg)}}
+
+    /* Venn */
+    circle.event{cursor:grab;transition:stroke-width .15s}
+    circle.event:active{cursor:grabbing}
+    .venn-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .hint{font-size:.78rem;color:var(--muted);font-weight:700;text-align:center}
+
+    /* Bayes formula card */
+    .formula-card{padding:18px;border-radius:18px;background:#fff;border:2px solid var(--border);text-align:center}
+    .formula-big{font-family:var(--fm);font-size:1rem;font-weight:600;color:var(--text);margin:10px 0;line-height:1.8}
+    .formula-big .num{color:var(--purple)}
+    .formula-big .den{color:var(--pink)}
+    .formula-meaning{display:grid;gap:8px;margin-top:12px}
+    .meaning{padding:10px 12px;border-radius:14px;background:var(--purple-pale);border:1px solid #ddd6fe;color:var(--purple);font-weight:800;line-height:1.5;font-size:.82rem;text-align:left}
+    .meaning.pink{background:#fce7f3;border-color:#fbcfe8;color:#9d174d}
+
+    /* Takeaways */
+    .takeaways{display:grid;gap:8px}
+    .takeaway{padding:12px 14px;border-radius:14px;background:#fff;border:2px solid var(--border);font-weight:800;line-height:1.6;display:flex;gap:10px;align-items:flex-start;font-size:.88rem}
+    .takeaway .num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font-family:var(--fm);font-weight:900;font-size:.8rem}
+
+    @media (max-width: 980px){
+      .wrap{grid-template-columns:1fr}
+      .nav-links{display:none}
+      .panel{padding:28px 18px}
+      .dot-nav{display:none}
+    }
+    @media (max-width: 640px){
+      .topbar{padding:0 14px}
+      .chip{display:none}
+      .stats-row{grid-template-columns:1fr 1fr}
+    }
+
+    .fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s, transform .6s}
+    .fade-up.in{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="https://probably-true.vercel.app/" class="nav-logo">
+        <svg class="logo-sm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="400" rx="80" fill="#f5f0ff"/>
+          <rect x="5" y="5" width="390" height="390" rx="76" fill="none" stroke="#7c3aed" stroke-width="10"/>
+          <circle cx="100" cy="100" r="130" fill="#7c3aed" opacity="0.07"/>
+          <circle cx="320" cy="330" r="150" fill="#06d6a0" opacity="0.07"/>
+          <circle cx="330" cy="90"  r="110" fill="#f9c74f" opacity="0.07"/>
+          <path d="M148,158 C148,110 166,92 200,92 C234,92 254,110 254,136 C254,166 234,180 218,197 C206,210 202,222 202,242"
+            fill="none" stroke="#7c3aed" stroke-width="30" stroke-linecap="round"/>
+          <path d="M162,158 C162,118 178,106 200,106 C222,106 240,118 240,136 C240,162 222,175 207,191 C197,202 212,222 212,242"
+            fill="none" stroke="#f5f0ff" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="200" cy="288" r="28" fill="#7c3aed"/>
+          <path d="M184,295 C186,295 188,293 191,287 C193,283 196,280 198,280 C199,280 200,280 202,281 C205,284 207,288 210,295 C213,295 215,294 216,292"
+            fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="184" y1="295" x2="216" y2="295" stroke="white" stroke-width="1.4" opacity="0.45"/>
+          <circle cx="72"  cy="158" r="10" fill="#f9c74f" opacity="0.95"/>
+          <circle cx="56"  cy="218" r="8"  fill="#06d6a0" opacity="0.9"/>
+          <circle cx="68"  cy="278" r="11" fill="#f72585" opacity="0.9"/>
+          <circle cx="330" cy="156" r="8"  fill="#4361ee" opacity="0.9"/>
+          <circle cx="346" cy="216" r="11" fill="#f72585" opacity="0.95"/>
+          <circle cx="332" cy="276" r="8"  fill="#74c417" opacity="0.9"/>
+          <circle cx="148" cy="56"  r="7"  fill="#4361ee" opacity="0.7"/>
+          <circle cx="256" cy="54"  r="8"  fill="#74c417" opacity="0.7"/>
+          <g transform="translate(82,336)" opacity="0.85">
+            <rect x="0"   y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+            <rect x="18"  y="15" width="14" height="23" rx="3" fill="#4361ee"/>
+            <rect x="36"  y="5"  width="14" height="33" rx="3" fill="#7c3aed"/>
+            <rect x="54"  y="1"  width="14" height="37" rx="3" fill="#f9c74f"/>
+            <rect x="72"  y="5"  width="14" height="33" rx="3" fill="#06d6a0"/>
+            <rect x="90"  y="15" width="14" height="23" rx="3" fill="#f72585"/>
+            <rect x="108" y="24" width="14" height="14" rx="3" fill="#4361ee"/>
+            <rect x="126" y="28" width="14" height="10" rx="3" fill="#f72585" opacity="0.6"/>
+            <rect x="144" y="31" width="14" height="7"  rx="3" fill="#06d6a0" opacity="0.5"/>
+            <rect x="162" y="34" width="14" height="4"  rx="3" fill="#74c417" opacity="0.45"/>
+          </g>
+        </svg>
+        <span class="nav-wm">Probably<span>True</span></span>
+      </a>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <li class="dropdown">
+        <a href="#">Chapters ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="/chapters/probability/">Chapter 1 · Probability</a></li>
+          <li><a href="/chapters/compound-probability/">Chapter 2 · Compound &amp; Bayes</a></li>
+          <li><a href="#" class="disabled">Chapter 3 · Coming Soon</a></li>
+        </ul>
+      </li>
+      <a href="/#why">About</a>
+      <a href="https://youtube.com/@probablytruestats" target="_blank" rel="noopener noreferrer">YouTube</a>
+    </nav>
+    <div class="top-controls">
+      <div class="chip">Chapter 02 · Compound &amp; Bayes</div>
+    </div>
+  </header>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <nav class="dot-nav" id="dotNav"></nav>
+
+  <main>
+
+    <!-- HOOK -->
+    <section class="panel fade-up" id="hook" data-title="Hook">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Chapter 2 · The trick of conditional thinking</div>
+          <h1>Why does spam end up in your inbox?</h1>
+          <p class="lead">Your spam filter is 95% accurate — that sounds great. Yet real emails still get flagged, and real spam still gets through. How? The math has a twist most people miss.</p>
+          <div class="note">Big idea: <strong>most people answer the wrong question.</strong> "How accurate is the filter?" and "Is this message actually spam?" sound like the same question. They are not.</div>
+        </div>
+        <div class="visual-card">
+          <div class="scenario-line">Real spam in your inbox: <span class="hl">about 1 in 100</span> messages.</div>
+          <div class="scenario-line">Filter accuracy: <span class="hl">95%</span>.</div>
+          <div class="scenario-line">A message gets flagged: <span class="hl">should you trust it?</span></div>
+          <div class="question">A message just got flagged as spam. How likely is it that it actually is spam?</div>
+          <div class="guess-row" id="guessRow">
+            <button class="guess-btn" data-g="95">Around 95%</button>
+            <button class="guess-btn" data-g="80">Around 80%</button>
+            <button class="guess-btn" data-g="50">Around 50%</button>
+            <button class="guess-btn" data-g="16">Under 20%</button>
+          </div>
+          <div class="reveal" id="hookReveal">
+            <strong>Reveal:</strong> if real spam is rare in your inbox, the answer can be as low as <strong>16%</strong>. A 95%-accurate filter is wrong about most of what it flags. The next section shows you why — visually, before any math.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAYES GRID -->
+    <section class="panel fade-up" id="bayes" data-title="Bayes">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">The hero visual · See it before you compute it</div>
+          <h2>10,000 emails, two sliders, one shock</h2>
+          <p class="lead">Each tile is one email. Pink = real, red = spam. A dark border means the filter flagged it. Drag the sliders and watch the bordered group. Most of it is <em>pink</em> — even when the filter is "95% accurate."</p>
+          <div class="note gold">
+            Try it: <strong>1% spam</strong> + <strong>95% accuracy</strong> ≈ only <strong>16%</strong> of flagged emails are real spam. Now slide spam to <strong>30%</strong>. Watch the bordered group flip from mostly-pink to mostly-red. <em>The base rate matters more than accuracy.</em>
+          </div>
+        </div>
+        <div class="visual-card">
+          <div class="ctrl-card">
+            <label>Spam in your inbox</label>
+            <div class="ctrl-row">
+              <input type="range" id="bay-prev" min="0.1" max="40" value="1" step="0.1">
+              <span class="val" id="bay-prev-out">1.0%</span>
+            </div>
+          </div>
+          <div class="ctrl-card">
+            <label>Filter accuracy</label>
+            <div class="ctrl-row">
+              <input type="range" id="bay-acc" min="80" max="99.9" value="95" step="0.1">
+              <span class="val" id="bay-acc-out">95.0%</span>
+            </div>
+          </div>
+          <svg id="bay-svg" width="100%" viewBox="0 0 656 328" preserveAspectRatio="none" role="img" style="display:block;border-radius:12px;background:#fafafa">
+            <title>Grid of 10000 emails</title>
+            <desc>Pink real, red spam, border means flagged</desc>
+          </svg>
+          <div class="legend-row">
+            <span class="lg"><i style="background:#fbcfe8"></i>Real, not flagged</span>
+            <span class="lg"><i style="background:#f472b6"></i>Real, flagged</span>
+            <span class="lg"><i style="background:#fee2e2;border:1.5px solid #7f1d1d"></i>Spam, missed</span>
+            <span class="lg"><i style="background:#dc2626"></i>Spam, flagged</span>
+          </div>
+          <div class="stats-row">
+            <div class="stat"><span class="s1">Flagged</span><span class="s2" id="bay-pos">—</span></div>
+            <div class="stat"><span class="s1">Real spam</span><span class="s2" id="bay-tp">—</span></div>
+            <div class="stat hl"><span class="s1">P(spam | flagged)</span><span class="s2" id="bay-ppv">—</span></div>
+          </div>
+          <div class="headline" id="bay-headline">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AT LEAST ONE INTRO -->
+    <section class="panel fade-up" id="atleast-intro" data-title="At Least One">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Multiplication · The trick of "at least one"</div>
+          <h2>Tiny chances compound faster than you'd guess</h2>
+          <p class="lead">Roll a die four times — chance of at least one six? Most people guess "around four out of six." The real answer is 52%. The trick: don't compute "at least one" directly. Compute the chance of <em>none</em> and subtract from 1.</p>
+          <p class="lead" style="margin-top:14px">We'll explore this through three doors — same idea, three different ways of <em>seeing</em> it.</p>
+        </div>
+        <div class="visual-card">
+          <div class="sn-h2">Three doors into one idea</div>
+          <div class="three-doors">
+            <div class="door"><div class="num">Door 1 · Story</div><div class="ttl">A snail walks a rope</div><div class="sub">Each step, a bird might swoop. Watch the survival probability decay step by step.</div></div>
+            <div class="door"><div class="num">Door 2 · Physical</div><div class="ttl">A gumball machine</div><div class="sub">Crank until you get a red. Watch the chute fill — and how often it fills past five.</div></div>
+            <div class="door"><div class="num">Door 3 · Mathematical</div><div class="ttl">Rings collapsing inward</div><div class="sub">Each trial peels an outer ring. The gray center is the surviving "no hit" probability.</div></div>
+          </div>
+          <div class="note">Same math. Three different feels. Pick the one that clicks for you — they all teach the same trick.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOOR 1: SNAIL -->
+    <section class="panel fade-up" id="snail" data-title="Door 1">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Door 1 · Story</div>
+          <h2>A snail walks a rope</h2>
+          <p class="lead">Press play. The snail takes one step at a time. Each step, the bird hovers above and rolls the dice — it might let the snail pass, or it might swoop. Run a hundred walks and count how often the snail makes it.</p>
+          <div class="note">Each step is independent. The snail's survival probability multiplies down: after one step it's <strong>(1−p)</strong>, after two it's <strong>(1−p)²</strong>, after n it's <strong>(1−p)ⁿ</strong>. Watch the survival number shrink as you slide n.</div>
+        </div>
+        <div class="visual-card">
+          <div class="sn-h2">A snail walks step by step. Each step, the bird might swoop.</div>
+          <svg id="sn-svg" width="100%" viewBox="0 0 540 260" style="display:block">
+            <rect x="0" y="0" width="540" height="260" fill="#fafbff" rx="12"/>
+            <g opacity=".55">
+              <ellipse cx="120" cy="40" rx="22" ry="9" fill="#fff"/>
+              <ellipse cx="138" cy="36" rx="16" ry="8" fill="#fff"/>
+              <ellipse cx="380" cy="50" rx="26" ry="10" fill="#fff"/>
+              <ellipse cx="402" cy="46" rx="18" ry="9" fill="#fff"/>
+            </g>
+            <circle cx="490" cy="36" r="16" fill="#fde68a"/>
+            <circle cx="490" cy="36" r="10" fill="#fbbf24"/>
+            <!-- Bird position group + bird visual group separately for clean swoop -->
+            <g id="sn-bird-wrap">
+              <g id="sn-bird" class="sn-bird-g" transform="translate(0,0)">
+                <ellipse cx="0" cy="0" rx="16" ry="8" fill="#7c3aed"/>
+                <path d="M-12,-2 Q -22,-10 -25,2 Q -16,2 -12,-2 Z" fill="#5b21b6"/>
+                <path d="M12,-2 Q 22,-10 25,2 Q 16,2 12,-2 Z" fill="#5b21b6"/>
+                <circle cx="11" cy="-2" r="2.2" fill="#fff"/>
+                <circle cx="11.5" cy="-2" r="1.1" fill="#1a1535"/>
+                <path d="M18,1 L24,2 L18,4 Z" fill="#f59e0b"/>
+              </g>
+            </g>
+            <line x1="40" y1="180" x2="500" y2="180" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+            <g id="sn-markers"></g>
+            <g id="sn-fx"></g>
+            <!-- Snail: outer wrapper handles position, inner handles bounce/gone animations -->
+            <g id="sn-snail-pos" transform="translate(40,150)">
+              <g id="sn-snail" class="sn-snail">
+                <ellipse cx="20" cy="22" rx="22" ry="6" fill="#000" opacity=".15"/>
+                <path d="M0,18 Q 0,30 12,30 L36,30 Q 42,30 42,22 L42,18 Z" fill="#a3e635"/>
+                <circle cx="22" cy="14" r="14" fill="#84cc16"/>
+                <circle cx="22" cy="14" r="14" fill="none" stroke="#65a30d" stroke-width="1.5"/>
+                <path d="M16,14 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0" fill="none" stroke="#365314" stroke-width="1.2"/>
+                <path d="M19,14 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" fill="none" stroke="#365314" stroke-width="1"/>
+                <line x1="0" y1="20" x2="-6" y2="14" stroke="#84cc16" stroke-width="2" stroke-linecap="round"/>
+                <line x1="0" y1="22" x2="-6" y2="22" stroke="#84cc16" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="-6" cy="14" r="2" fill="#1a1535"/>
+                <circle cx="-6" cy="22" r="2" fill="#1a1535"/>
+                <path d="M-7,12 Q -10,11 -10,13" stroke="#1a1535" stroke-width=".8" fill="none"/>
+                <circle cx="32" cy="11" r="2" fill="#fff" opacity=".7"/>
+              </g>
+            </g>
+            <line x1="0" y1="240" x2="540" y2="240" stroke="#cbd5e1" stroke-dasharray="3 4"/>
+          </svg>
+          <div class="sn-status" id="sn-status">Press play to start the walk.</div>
+          <div class="ctrl-card">
+            <label>Steps to walk</label>
+            <div class="ctrl-row">
+              <input type="range" id="sn-n" min="2" max="20" value="6" step="1">
+              <span class="val" id="sn-n-out">6</span>
+            </div>
+          </div>
+          <div class="ctrl-card">
+            <label>Swoop chance per step</label>
+            <div class="ctrl-row">
+              <input type="range" id="sn-p" min="5" max="50" value="17" step="1">
+              <span class="val" id="sn-p-out">17%</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="mini-stat"><div class="k">P(survives)</div><div class="v" id="sn-none">—</div></div>
+            <div class="mini-stat hl"><div class="k">P(at least one swoop)</div><div class="v" id="sn-any">—</div></div>
+          </div>
+          <div class="sn-btns">
+            <button class="primary" id="sn-play">Play one walk</button>
+            <button id="sn-fast">Run 100 walks</button>
+            <button id="sn-reset">Reset</button>
+          </div>
+          <div class="mini-stat" style="background:#ede9fe;border-color:#ddd6fe">
+            <div class="k">Walks so far</div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+              <div class="v" id="sn-played">0</div>
+              <div style="font-size:.78rem;font-weight:800;color:var(--purple)" id="sn-survived-text">survived: —</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOOR 2: GUMBALL -->
+    <section class="panel fade-up" id="gumball" data-title="Door 2">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Door 2 · Physical</div>
+          <h2>The gumball machine</h2>
+          <p class="lead">Same math, different feel. The jar holds 60 gumballs, 10 of them red — your "hit" rate is 1 in 6, exactly like rolling a die. Crank until you get a red, and watch the chute fill with the not-reds.</p>
+          <div class="note">The dashed bars show the theoretical distribution; the solid bars are your actual results. As you run more rounds, the solid bars converge to the dashed shape — that's the geometric distribution emerging from gameplay. Most reds arrive quickly, but the tail is long. Sometimes you'll crank 15+ times before a red shows up.</div>
+        </div>
+        <div class="visual-card">
+          <div class="gm-stack">
+            <div class="gm-machine-wrap" id="gm-machine">
+              <svg id="gm-svg" width="200" height="280" viewBox="0 0 220 300" style="display:block">
+                <defs>
+                  <clipPath id="gm-clip"><circle cx="110" cy="100" r="78"/></clipPath>
+                  <clipPath id="gm-chute-clip"><rect x="80" y="200" width="60" height="80" rx="8"/></clipPath>
+                </defs>
+                <circle cx="110" cy="100" r="86" fill="#fff" stroke="#7c3aed" stroke-width="2" opacity=".4"/>
+                <circle cx="110" cy="100" r="80" fill="#faf8ff" stroke="#7c3aed" stroke-width="1.2"/>
+                <g id="gm-jarballs" clip-path="url(#gm-clip)"></g>
+                <ellipse cx="84" cy="74" rx="22" ry="14" fill="#fff" opacity=".55"/>
+                <rect x="60" y="180" width="100" height="20" rx="4" fill="#7c3aed"/>
+                <rect x="80" y="200" width="60" height="80" rx="8" fill="#faf8ff" stroke="#7c3aed" stroke-width="1.2"/>
+                <g id="gm-chuteballs" clip-path="url(#gm-chute-clip)"></g>
+                <g class="gm-handle"><circle cx="26" cy="36" r="9" fill="#7c3aed"/><rect x="22" y="36" width="8" height="34" rx="3" fill="#7c3aed" transform="rotate(20 26 36)"/></g>
+              </svg>
+              <div class="sn-status" id="gm-status">Crank to begin.</div>
+              <div class="sn-btns">
+                <button class="primary" id="gm-crank">Crank</button>
+                <button id="gm-fast">Run 100</button>
+                <button id="gm-reset">Reset</button>
+              </div>
+            </div>
+            <div>
+              <div class="sn-h2">Cranks until first red</div>
+              <svg id="gm-hist" width="100%" viewBox="0 0 320 160" style="display:block"></svg>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+                <div class="mini-stat"><div class="k">Rounds played</div><div class="v" id="gm-rounds">0</div></div>
+                <div class="mini-stat hl"><div class="k">Avg cranks</div><div class="v" id="gm-avg">—</div></div>
+              </div>
+              <div style="font-size:.78rem;color:var(--muted);font-weight:700;line-height:1.5;margin-top:8px">
+                Theory: average wait is exactly <strong style="color:var(--text)">6 cranks</strong>. Run 100 rounds — your average will close in on it.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOOR 3: RINGS -->
+    <section class="panel fade-up" id="rings" data-title="Door 3">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Door 3 · Mathematical</div>
+          <h2>Rings collapsing inward</h2>
+          <p class="lead">Now the formula made visible. Start with the full circle — that's probability 1. Each trial peels off an outer ring (the ways "the first hit happens at this trial"). The gray center is what's left: still no hit. Drag n and watch it shrink.</p>
+          <div class="note gold">
+            Three doors, one idea: <strong>multiplication compounds.</strong> A 1-in-6 chance over 4 trials lands you at 52%, not 67%. A 1% chance over 100 trials lands you at 63%, not 100%. Tiny risks, given enough chances, are not tiny anymore.
+          </div>
+        </div>
+        <div class="visual-card">
+          <svg id="rg-svg" width="100%" viewBox="0 0 360 360" style="display:block;max-width:340px;margin:0 auto"></svg>
+          <div style="font-size:.78rem;color:var(--muted);font-weight:700;line-height:1.5;text-align:center">
+            Outer ring = "first hit at trial 1." Next ring inward = "first hit at trial 2." The gray center collapses as n grows.
+          </div>
+          <div class="ctrl-card">
+            <label>Roll a die n times</label>
+            <div class="ctrl-row">
+              <input type="range" id="rg-n" min="1" max="20" value="4" step="1">
+              <span class="val" id="rg-n-out">4</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="mini-stat"><div class="k">P(no six)</div><div class="v" id="rg-none">—</div></div>
+            <div class="mini-stat hl"><div class="k">P(at least one six)</div><div class="v" id="rg-any">—</div></div>
+          </div>
+          <div class="formula-pill">
+            P(at least one six) = 1 − <span class="hl">(5/6)<sup id="rg-exp">4</sup></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENN -->
+    <section class="panel fade-up" id="venn" data-title="Addition">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Addition · Why you can't just add</div>
+          <h2>The overlap gets counted twice</h2>
+          <p class="lead">If 30% of people are tall and 30% wear glasses, then 60% are tall <em>or</em> wear glasses? Only if no tall people wear glasses. Otherwise the overlap got counted in both groups — once too many.</p>
+          <div class="note">Drag either circle. Watch P(A) + P(B) drift apart from P(A ∪ B) every time the circles overlap. The gap between them is the overlap, exactly.</div>
+        </div>
+        <div class="visual-card">
+          <svg id="venn" width="100%" viewBox="0 0 680 360" role="img" style="display:block">
+            <title>Two overlapping events A and B</title>
+            <desc>Drag the circles to change overlap; probabilities update live</desc>
+            <rect x="20" y="20" width="640" height="320" rx="14" fill="none" stroke="rgba(124,58,237,.18)" stroke-width="1" stroke-dasharray="4 4"/>
+            <text x="40" y="44" font-size="12" fill="#7b72a8" font-family="DM Mono, monospace" letter-spacing=".1em">SAMPLE SPACE S</text>
+            <circle id="cA" class="event" cx="270" cy="190" r="100" fill="#7c3aed" fill-opacity="0.32" stroke="#7c3aed" stroke-width="1.5"/>
+            <circle id="cB" class="event" cx="410" cy="190" r="100" fill="#06d6a0" fill-opacity="0.32" stroke="#06d6a0" stroke-width="1.5"/>
+            <text id="lA" x="200" y="190" font-size="22" font-weight="900" fill="#7c3aed" text-anchor="middle" font-family="Nunito" pointer-events="none">A</text>
+            <text id="lB" x="480" y="190" font-size="22" font-weight="900" fill="#06d6a0" text-anchor="middle" font-family="Nunito" pointer-events="none">B</text>
+          </svg>
+          <div class="hint">Drag either circle. Probabilities update live.</div>
+          <div class="venn-stats">
+            <div class="stat"><span class="s1">P(A)</span><span class="s2" id="pA">—</span></div>
+            <div class="stat"><span class="s1">P(B)</span><span class="s2" id="pB">—</span></div>
+            <div class="stat"><span class="s1">P(A ∩ B)</span><span class="s2" id="pAB">—</span></div>
+            <div class="stat hl"><span class="s1">P(A ∪ B)</span><span class="s2" id="pUnion">—</span></div>
+          </div>
+          <div class="formula-pill">
+            P(A ∪ B) = P(A) + P(B) − <span class="hl">P(A ∩ B)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAYES FORMULA -->
+    <section class="panel fade-up" id="formula" data-title="Bayes formula">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Now the math makes sense</div>
+          <h2>Bayes' rule, visually</h2>
+          <p class="lead">When you slid the spam and accuracy sliders earlier, you were doing Bayesian reasoning. The formula on the right isn't algebra — it's a recipe for the picture you already saw.</p>
+          <div class="note">The whole rule is just "of the bordered tiles, what fraction are red?" That's it. Bayes' theorem is the bookkeeping for that question.</div>
+        </div>
+        <div class="visual-card">
+          <div class="formula-card">
+            <div style="font-family:var(--fm);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">The question you actually want answered</div>
+            <div class="formula-big">
+              P(spam | flagged) = <span class="num">P(flagged | spam) × P(spam)</span> ⁄ <span class="den">P(flagged)</span>
+            </div>
+            <div class="formula-meaning">
+              <div class="meaning"><strong>Numerator:</strong> real spam that got flagged — the red bordered tiles.</div>
+              <div class="meaning pink"><strong>Denominator:</strong> everything that got flagged — every bordered tile, pink or red.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="panel fade-up" id="summary" data-title="Summary">
+      <div class="wrap">
+        <div class="card">
+          <div class="eyebrow">Final synthesis</div>
+          <h2>Five things that survive this chapter</h2>
+          <p class="lead">Once these settle, you've got the whole conditional-probability toolkit — overlap, compounding, and reversed conditionals.</p>
+          <div class="button-row">
+            <button class="primary" onclick="window.location.href='/chapters/probability/'">← Chapter 1</button>
+            <button class="ghost" disabled>Chapter 3 · Coming soon</button>
+          </div>
+        </div>
+        <div class="visual-card">
+          <div class="takeaways">
+            <div class="takeaway"><div class="num">1</div><div>If events overlap, you can't just <strong>add</strong> their probabilities. Subtract the overlap once.</div></div>
+            <div class="takeaway"><div class="num">2</div><div>For "at least one," compute <strong>P(none)</strong> and subtract from 1. Tiny chances compound fast.</div></div>
+            <div class="takeaway"><div class="num">3</div><div>P(A given B) is <strong>not</strong> P(B given A). Reversing the conditional changes the answer.</div></div>
+            <div class="takeaway"><div class="num">4</div><div>Filter accuracy alone is not enough — <strong>base rates matter</strong>. A great filter for a rare event is mostly false alarms.</div></div>
+            <div class="takeaway"><div class="num">5</div><div>Bayes' rule is just bookkeeping for "of all the flags, what fraction are real?"</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* nav, dots, progress */
+    const sections = [...document.querySelectorAll('.panel')];
+    const dotNav = document.getElementById('dotNav');
+    sections.forEach((s, i) => {
+      const d = document.createElement('button');
+      d.className = 'dot';
+      d.title = s.dataset.title || ('Section ' + (i+1));
+      d.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+      dotNav.appendChild(d);
+    });
+    const dots = [...document.querySelectorAll('.dot')];
+    function updateProgress(){
+      const max = document.body.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? window.scrollY / max : 0;
+      document.getElementById('progressFill').style.width = `${pct*100}%`;
+      let active = 0;
+      sections.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        if (r.top < innerHeight * 0.45 && r.bottom > innerHeight * 0.45) active = i;
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, {threshold: .18});
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+    addEventListener('scroll', updateProgress, {passive:true}); updateProgress();
+
+    /* dropdown */
+    document.querySelectorAll('.dropdown > a').forEach(el => {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        const parent = this.parentElement;
+        document.querySelectorAll('.dropdown').forEach(d => {
+          if (d !== parent) d.classList.remove('open');
+        });
+        parent.classList.toggle('open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      document.querySelectorAll('.dropdown').forEach(d => {
+        if (!d.contains(e.target)) d.classList.remove('open');
+      });
+    });
+
+    /* HOOK */
+    const guessBtns = document.querySelectorAll('#guessRow .guess-btn');
+    const hookReveal = document.getElementById('hookReveal');
+    guessBtns.forEach(b => {
+      b.addEventListener('click', () => {
+        guessBtns.forEach(x => x.classList.remove('sel','correct'));
+        b.classList.add(b.dataset.g === '16' ? 'correct' : 'sel');
+        if (b.dataset.g !== '16') {
+          document.querySelector('.guess-btn[data-g="16"]').classList.add('correct');
+        }
+        hookReveal.classList.add('show');
+      });
+    });
+
+    /* BAYES GRID */
+    (function(){
+      const COLS = 100, ROWS = 50;
+      const N = COLS * ROWS;
+      const cellW = 656 / COLS;
+      const cellH = 328 / ROWS;
+      const colors = { healthyNeg:'#fbcfe8', healthyPos:'#f472b6', sickNeg:'#fecaca', sickPos:'#dc2626' };
+      function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+      const prevSlider = document.getElementById('bay-prev');
+      const accSlider = document.getElementById('bay-acc');
+      const svg = document.getElementById('bay-svg');
+      function render(){
+        const prev = +prevSlider.value / 100;
+        const acc = +accSlider.value / 100;
+        document.getElementById('bay-prev-out').textContent = (+prevSlider.value).toFixed(1) + '%';
+        document.getElementById('bay-acc-out').textContent = (+accSlider.value).toFixed(1) + '%';
+        const sickCount = Math.round(N * prev);
+        const healthyCount = N - sickCount;
+        const tp = Math.round(sickCount * acc);
+        const fn = sickCount - tp;
+        const fp = Math.round(healthyCount * (1 - acc));
+        const tn = healthyCount - fp;
+        const rng = mulberry32(42);
+        const order = Array.from({length:N}, (_,i) => i);
+        for (let i = N - 1; i > 0; i--) {
+          const j = Math.floor(rng() * (i + 1));
+          [order[i], order[j]] = [order[j], order[i]];
+        }
+        const status = new Array(N);
+        let k = 0;
+        for (let i = 0; i < tp; i++) status[order[k++]] = 'sickPos';
+        for (let i = 0; i < fn; i++) status[order[k++]] = 'sickNeg';
+        for (let i = 0; i < fp; i++) status[order[k++]] = 'healthyPos';
+        for (let i = 0; i < tn; i++) status[order[k++]] = 'healthyNeg';
+        let html = '';
+        for (let i = 0; i < N; i++) {
+          const r = Math.floor(i / COLS);
+          const c = i % COLS;
+          const x = (c * cellW).toFixed(2);
+          const y = (r * cellH).toFixed(2);
+          const w = cellW.toFixed(2);
+          const h = cellH.toFixed(2);
+          const s = status[i];
+          const fill = colors[s];
+          const border = (s === 'sickNeg' || s === 'healthyPos' || s === 'sickPos');
+          const stroke = border ? (s === 'sickNeg' ? '#7f1d1d' : '#1a1535') : 'none';
+          const sw = border ? 0.5 : 0;
+          html += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"${sw ? ` stroke="${stroke}" stroke-width="${sw}"` : ''}/>`;
+        }
+        svg.innerHTML = `<title>Bayes grid</title><desc>10000 emails</desc>` + html;
+        const totalPos = tp + fp;
+        const ppv = totalPos > 0 ? tp / totalPos : 0;
+        document.getElementById('bay-pos').textContent = totalPos.toLocaleString();
+        document.getElementById('bay-tp').textContent = tp.toLocaleString();
+        document.getElementById('bay-ppv').textContent = (ppv * 100).toFixed(1) + '%';
+        const head = document.getElementById('bay-headline');
+        if (totalPos === 0) {
+          head.innerHTML = 'Nothing gets flagged at these settings.';
+        } else if (ppv < 0.5) {
+          head.innerHTML = `Of <b>${totalPos.toLocaleString()}</b> flagged, only <b>${tp.toLocaleString()}</b> are real spam — <b>${(ppv*100).toFixed(0)}%</b>. Most flags are false alarms.`;
+        } else {
+          head.innerHTML = `Of <b>${totalPos.toLocaleString()}</b> flagged, <b>${tp.toLocaleString()}</b> are real spam — <b>${(ppv*100).toFixed(0)}%</b>. Higher base rate makes flags trustworthy.`;
+        }
+      }
+      prevSlider.addEventListener('input', render);
+      accSlider.addEventListener('input', render);
+      render();
+    })();
+
+    /* DOOR 1: SNAIL — animation fixed: position on outer wrapper, bounce/gone on inner */
+    (function(){
+      const snailPos = document.getElementById('sn-snail-pos');
+      const snail = document.getElementById('sn-snail');
+      const bird = document.getElementById('sn-bird');
+      const birdWrap = document.getElementById('sn-bird-wrap');
+      const markers = document.getElementById('sn-markers');
+      const fxLayer = document.getElementById('sn-fx');
+      const nSlider = document.getElementById('sn-n');
+      const pSlider = document.getElementById('sn-p');
+      const nOut = document.getElementById('sn-n-out');
+      const pOut = document.getElementById('sn-p-out');
+      const noneEl = document.getElementById('sn-none');
+      const anyEl = document.getElementById('sn-any');
+      const status = document.getElementById('sn-status');
+      const playBtn = document.getElementById('sn-play');
+      const fastBtn = document.getElementById('sn-fast');
+      const resetBtn = document.getElementById('sn-reset');
+      const playedEl = document.getElementById('sn-played');
+      const survivedTextEl = document.getElementById('sn-survived-text');
+
+      let played = 0, survived = 0, isPlaying = false;
+      const x0 = 60, x1 = 480;
+      const SNAIL_Y = 150; // snail position locked at this y; never changes during animation
+
+      function paintMarkers(){
+        const n = +nSlider.value;
+        const dx = (x1 - x0) / n;
+        let html = '';
+        for (let i = 0; i <= n; i++){
+          const x = x0 + i * dx;
+          html += `<circle cx="${x}" cy="180" r="3.5" fill="#cbd5e1"/>`;
+        }
+        markers.innerHTML = html;
+      }
+      function setSnailAt(stepIdx){
+        const n = +nSlider.value;
+        const dx = (x1 - x0) / n;
+        const x = x0 + stepIdx * dx - 22;
+        snailPos.setAttribute('transform', `translate(${x},${SNAIL_Y})`);
+      }
+      function setBirdAt(stepIdx){
+        const n = +nSlider.value;
+        const dx = (x1 - x0) / n;
+        const x = x0 + stepIdx * dx;
+        birdWrap.setAttribute('transform', `translate(${x},50)`);
+      }
+      function updateMath(){
+        const n = +nSlider.value;
+        const p = +pSlider.value / 100;
+        nOut.textContent = n;
+        pOut.textContent = (+pSlider.value) + '%';
+        const pSurv = Math.pow(1 - p, n);
+        noneEl.textContent = (pSurv * 100).toFixed(1) + '%';
+        anyEl.textContent = ((1 - pSurv) * 100).toFixed(1) + '%';
+      }
+      function clearFx(){ fxLayer.innerHTML = ''; }
+      function spawnSpark(x, y){
+        const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        el.setAttribute('cx', x); el.setAttribute('cy', y); el.setAttribute('r', 6);
+        el.setAttribute('fill', '#fbbf24'); el.setAttribute('class', 'sn-spark');
+        fxLayer.appendChild(el);
+        setTimeout(() => el.remove(), 700);
+      }
+      function spawnFeather(x, y){
+        const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        el.setAttribute('d', 'M0,0 Q 4,-6 8,0 Q 4,6 0,0 Z');
+        el.setAttribute('transform', `translate(${x},${y})`);
+        el.setAttribute('fill', '#7c3aed'); el.setAttribute('opacity', '.85');
+        el.setAttribute('class', 'sn-feather');
+        fxLayer.appendChild(el);
+        setTimeout(() => el.remove(), 1100);
+      }
+      async function playOnce(){
+        if (isPlaying) return;
+        isPlaying = true;
+        playBtn.disabled = true; fastBtn.disabled = true;
+        snail.classList.remove('gone');
+        snail.style.opacity = 1;
+        setSnailAt(0);
+        clearFx();
+        const n = +nSlider.value;
+        const p = +pSlider.value / 100;
+        let alive = true;
+        for (let step = 1; step <= n; step++){
+          setBirdAt(step);
+          status.innerHTML = `Step <b>${step}</b> of ${n}…`;
+          await new Promise(r => setTimeout(r, 280));
+          const swoops = Math.random() < p;
+          if (swoops){
+            bird.classList.remove('swoop'); void bird.getBoundingClientRect();
+            bird.classList.add('swoop');
+            await new Promise(r => setTimeout(r, 250));
+            const dx = (x1 - x0) / n;
+            const sx = x0 + step * dx;
+            spawnSpark(sx, 165);
+            spawnFeather(sx + 6, 165);
+            spawnFeather(sx - 4, 170);
+            snail.classList.add('gone');
+            status.innerHTML = `<span style="color:#dc2626">Swoop on step ${step}!</span> Snail caught.`;
+            await new Promise(r => setTimeout(r, 600));
+            alive = false; break;
+          } else {
+            setSnailAt(step);
+            snail.classList.remove('bounce'); void snail.getBoundingClientRect();
+            snail.classList.add('bounce');
+            await new Promise(r => setTimeout(r, 280));
+          }
+        }
+        played++;
+        if (alive){ survived++; status.innerHTML = `<span style="color:#16a34a">Made it! Snail survived all ${n} steps.</span>`; }
+        playedEl.textContent = played;
+        survivedTextEl.textContent = `survived: ${survived} (${(survived/played*100).toFixed(0)}%)`;
+        isPlaying = false;
+        playBtn.disabled = false; fastBtn.disabled = false;
+      }
+      function runMany(){
+        const n = +nSlider.value;
+        const p = +pSlider.value / 100;
+        let s = 0;
+        for (let i = 0; i < 100; i++){
+          let alive = true;
+          for (let step = 1; step <= n; step++){
+            if (Math.random() < p){ alive = false; break; }
+          }
+          if (alive) s++;
+          played++;
+          if (alive) survived++;
+        }
+        playedEl.textContent = played;
+        survivedTextEl.textContent = `survived: ${survived} (${(survived/played*100).toFixed(0)}%)`;
+        status.innerHTML = `Ran 100 walks. <b>${s}</b> survived (theory: <b>${Math.round(Math.pow(1-p,n)*100)}</b>).`;
+      }
+      function reset(){
+        played = 0; survived = 0;
+        playedEl.textContent = 0;
+        survivedTextEl.textContent = 'survived: —';
+        snail.classList.remove('gone'); snail.style.opacity = 1;
+        setSnailAt(0); setBirdAt(1);
+        clearFx();
+        status.textContent = 'Press play to start the walk.';
+      }
+      function refresh(){ paintMarkers(); updateMath(); setSnailAt(0); setBirdAt(1); }
+      nSlider.addEventListener('input', () => { refresh(); reset(); });
+      pSlider.addEventListener('input', updateMath);
+      playBtn.addEventListener('click', playOnce);
+      fastBtn.addEventListener('click', runMany);
+      resetBtn.addEventListener('click', reset);
+      refresh();
+    })();
+
+    /* DOOR 2: GUMBALL */
+    (function(){
+      const machine = document.getElementById('gm-machine');
+      const jar = document.getElementById('gm-jarballs');
+      const chute = document.getElementById('gm-chuteballs');
+      const status = document.getElementById('gm-status');
+      const hist = document.getElementById('gm-hist');
+      const roundsEl = document.getElementById('gm-rounds');
+      const avgEl = document.getElementById('gm-avg');
+      let chuteCount = 0;
+      const arrivals = [];
+      function paintJar(){
+        let s = 7;
+        function rng(){ s = (s * 9301 + 49297) % 233280; return s / 233280; }
+        const balls = [];
+        let attempts = 0;
+        const cx = 110, cy = 100, R = 76, r = 7;
+        while (balls.length < 60 && attempts < 5000){
+          attempts++;
+          const a = rng() * 2 * Math.PI;
+          const rad = Math.sqrt(rng()) * (R - r);
+          const x = cx + rad * Math.cos(a);
+          const y = cy + rad * Math.sin(a);
+          let ok = true;
+          for (const b of balls){
+            if (Math.hypot(x - b.x, y - b.y) < 2 * r + 1){ ok = false; break; }
+          }
+          if (ok) balls.push({ x, y, red: balls.length < 10 });
+        }
+        const palette = ['#fde68a','#bbf7d0','#bfdbfe','#fbcfe8','#ddd6fe','#fed7aa'];
+        let html = '';
+        for (let i = 0; i < balls.length; i++){
+          const b = balls[i];
+          const fill = b.red ? '#dc2626' : palette[i % palette.length];
+          html += `<circle cx="${b.x.toFixed(1)}" cy="${b.y.toFixed(1)}" r="7" fill="${fill}" stroke="rgba(0,0,0,.08)" stroke-width=".5"/>`;
+        }
+        jar.innerHTML = html;
+      }
+      function paintChute(){
+        const visible = Math.min(chuteCount, 7);
+        const overflow = chuteCount - visible;
+        let html = '';
+        const baseY = 270;
+        const palette = ['#fde68a','#bbf7d0','#bfdbfe','#fbcfe8','#ddd6fe','#fed7aa','#a7f3d0'];
+        for (let i = 0; i < visible; i++){
+          const cy = baseY - i * 9;
+          const cx = 110 + (i % 2 === 0 ? -7 : 7);
+          html += `<circle cx="${cx}" cy="${cy}" r="6" fill="${palette[i % palette.length]}" stroke="rgba(0,0,0,.1)" stroke-width=".5"/>`;
+        }
+        if (overflow > 0){
+          html += `<text x="110" y="216" text-anchor="middle" font-family="DM Mono, monospace" font-size="11" font-weight="700" fill="#7c3aed">+${overflow}</text>`;
+        }
+        chute.innerHTML = html;
+      }
+      function renderHist(){
+        if (arrivals.length === 0){ hist.innerHTML = ''; return; }
+        const W = 320, H = 160, padL = 26, padR = 8, padT = 8, padB = 22;
+        const maxBin = 24;
+        const bins = new Array(maxBin + 1).fill(0);
+        for (const a of arrivals){ if (a <= maxBin) bins[a]++; }
+        const maxCount = Math.max(1, ...bins);
+        const bw = (W - padL - padR) / maxBin;
+        let html = '';
+        const p = 1/6;
+        const total = arrivals.length;
+        for (let k = 1; k <= maxBin; k++){
+          const px = padL + (k - 1) * bw;
+          const expCount = total * p * Math.pow(1 - p, k - 1);
+          const expH = (expCount / maxCount) * (H - padT - padB);
+          const obs = bins[k];
+          const obsH = (obs / maxCount) * (H - padT - padB);
+          html += `<rect x="${px+0.5}" y="${H-padB-expH}" width="${bw-1}" height="${expH}" fill="none" stroke="rgba(124,58,237,.35)" stroke-width="1" stroke-dasharray="2 2"/>`;
+          if (obs > 0){
+            html += `<rect x="${px+0.5}" y="${H-padB-obsH}" width="${bw-1}" height="${obsH}" fill="#7c3aed" fill-opacity=".75"/>`;
+          }
+        }
+        html += `<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#cbd5e1" stroke-width="1"/>`;
+        [1, 6, 12, 18, 24].forEach(k => {
+          const x = padL + (k - 0.5) * bw;
+          html += `<text x="${x}" y="${H - 6}" font-family="DM Mono, monospace" font-size="9" fill="#7b72a8" text-anchor="middle">${k}</text>`;
+        });
+        html += `<text x="${(W)/2}" y="${H-1}" font-family="Nunito" font-size="10" fill="#7b72a8" text-anchor="middle" font-weight="700">Cranks until first red</text>`;
+        hist.innerHTML = html;
+      }
+      function crank(){
+        machine.classList.add('gm-rolling');
+        setTimeout(() => machine.classList.remove('gm-rolling'), 380);
+        chuteCount++;
+        const isRed = Math.random() < 1/6;
+        if (isRed){
+          arrivals.push(chuteCount);
+          status.innerHTML = `Red after <b>${chuteCount}</b> cranks. Chute resets.`;
+          const sum = arrivals.reduce((a,b) => a+b, 0);
+          avgEl.textContent = (sum / arrivals.length).toFixed(2);
+          roundsEl.textContent = arrivals.length;
+          chuteCount = 0;
+          paintChute(); renderHist();
+        } else {
+          status.innerHTML = `Still no red. Chute: <b>${chuteCount}</b>.`;
+          paintChute();
+        }
+      }
+      function runMany(){
+        for (let i = 0; i < 100; i++){
+          let c = 0;
+          while (true){
+            c++;
+            if (Math.random() < 1/6){ arrivals.push(c); break; }
+            if (c > 300) break;
+          }
+        }
+        const sum = arrivals.reduce((a,b) => a+b, 0);
+        avgEl.textContent = (sum / arrivals.length).toFixed(2);
+        roundsEl.textContent = arrivals.length;
+        status.innerHTML = `Ran 100 rounds. Avg: <b>${(sum/arrivals.length).toFixed(2)}</b> (theory: 6).`;
+        chuteCount = 0;
+        paintChute(); renderHist();
+      }
+      function reset(){
+        chuteCount = 0; arrivals.length = 0;
+        avgEl.textContent = '—'; roundsEl.textContent = 0;
+        status.textContent = 'Crank to begin.';
+        paintChute(); renderHist();
+      }
+      document.getElementById('gm-crank').addEventListener('click', crank);
+      document.getElementById('gm-fast').addEventListener('click', runMany);
+      document.getElementById('gm-reset').addEventListener('click', reset);
+      paintJar(); paintChute(); renderHist();
+    })();
+
+    /* DOOR 3: RINGS */
+    (function(){
+      const svg = document.getElementById('rg-svg');
+      const slider = document.getElementById('rg-n');
+      const out = document.getElementById('rg-n-out');
+      const noneEl = document.getElementById('rg-none');
+      const anyEl = document.getElementById('rg-any');
+      const expEl = document.getElementById('rg-exp');
+      const p = 1/6;
+      const cx = 180, cy = 180, R = 160;
+      function render(){
+        const n = +slider.value;
+        out.textContent = n;
+        expEl.textContent = n;
+        const pNone = Math.pow(1 - p, n);
+        const pAny = 1 - pNone;
+        noneEl.textContent = (pNone * 100).toFixed(2) + '%';
+        anyEl.textContent = (pAny * 100).toFixed(2) + '%';
+        let html = '';
+        html += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#faf8ff" stroke="rgba(124,58,237,.18)" stroke-width="1"/>`;
+        function radiusAt(k){ return Math.sqrt(Math.pow(1 - p, k)) * R; }
+        for (let k = 1; k <= n; k++){
+          const rOuter = radiusAt(k - 1);
+          const rInner = radiusAt(k);
+          const t = (k - 1) / Math.max(n - 1, 1);
+          const c1 = [196, 181, 253], c2 = [91, 33, 182];
+          const r = Math.round(c1[0] + (c2[0] - c1[0]) * t);
+          const g = Math.round(c1[1] + (c2[1] - c1[1]) * t);
+          const b = Math.round(c1[2] + (c2[2] - c1[2]) * t);
+          const fill = `rgb(${r},${g},${b})`;
+          html += `<path d="M ${cx - rOuter},${cy} a ${rOuter},${rOuter} 0 1,0 ${2*rOuter},0 a ${rOuter},${rOuter} 0 1,0 ${-2*rOuter},0 M ${cx - rInner},${cy} a ${rInner},${rInner} 0 1,1 ${2*rInner},0 a ${rInner},${rInner} 0 1,1 ${-2*rInner},0" fill="${fill}" fill-rule="evenodd" fill-opacity="0.85"/>`;
+        }
+        const rFinal = radiusAt(n);
+        html += `<circle cx="${cx}" cy="${cy}" r="${rFinal}" fill="#cbd5e1" stroke="rgba(0,0,0,.1)" stroke-width="1"/>`;
+        if (rFinal > 30){
+          html += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" font-family="Nunito" font-size="13" font-weight="900" fill="#1a1535">no six</text>`;
+          html += `<text x="${cx}" y="${cy + 14}" text-anchor="middle" font-family="DM Mono" font-size="13" font-weight="700" fill="#1a1535">${(pNone*100).toFixed(1)}%</text>`;
+        } else {
+          html += `<line x1="${cx}" y1="${cy}" x2="${cx + 70}" y2="${cy - 60}" stroke="#7b72a8" stroke-width="0.8" stroke-dasharray="2 2"/>`;
+          html += `<text x="${cx + 74}" y="${cy - 60}" font-family="Nunito" font-size="11" font-weight="800" fill="#1a1535">no six: ${(pNone*100).toFixed(2)}%</text>`;
+        }
+        html += `<text x="${cx}" y="${cy - R - 6}" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing=".1em" fill="#7b72a8">AT LEAST ONE SIX — ${(pAny*100).toFixed(1)}%</text>`;
+        svg.innerHTML = html;
+      }
+      slider.addEventListener('input', render);
+      render();
+    })();
+
+    /* VENN */
+    (function(){
+      const svg = document.getElementById('venn');
+      const cA = document.getElementById('cA');
+      const cB = document.getElementById('cB');
+      const lA = document.getElementById('lA');
+      const lB = document.getElementById('lB');
+      const SAMPLE_AREA = 640 * 320;
+      function update(){
+        const ax = +cA.getAttribute('cx'), ay = +cA.getAttribute('cy'), ar = +cA.getAttribute('r');
+        const bx = +cB.getAttribute('cx'), by = +cB.getAttribute('cy'), br = +cB.getAttribute('r');
+        const d = Math.hypot(ax - bx, ay - by);
+        let inter = 0;
+        if (d < ar + br){
+          if (d <= Math.abs(ar - br)){
+            inter = Math.PI * Math.min(ar, br) ** 2;
+          } else {
+            const a = ar*ar, b = br*br;
+            const x = (a - b + d*d) / (2*d);
+            const z = x*x;
+            const y = Math.sqrt(a - z);
+            inter = a * Math.acos(x/ar) - x*y + b * Math.acos((d-x)/br) - (d-x)*y;
+          }
+        }
+        const areaA = Math.PI * ar * ar;
+        const areaB = Math.PI * br * br;
+        const pA = areaA / SAMPLE_AREA;
+        const pB = areaB / SAMPLE_AREA;
+        const pAB = inter / SAMPLE_AREA;
+        const pU = pA + pB - pAB;
+        document.getElementById('pA').textContent = pA.toFixed(2);
+        document.getElementById('pB').textContent = pB.toFixed(2);
+        document.getElementById('pAB').textContent = pAB.toFixed(2);
+        document.getElementById('pUnion').textContent = pU.toFixed(2);
+        lA.setAttribute('x', ax - ar + 22);
+        lA.setAttribute('y', ay + 7);
+        lB.setAttribute('x', bx + br - 22);
+        lB.setAttribute('y', by + 7);
+      }
+      function makeDraggable(circle){
+        let dragging = false, offX = 0, offY = 0;
+        function pt(e){
+          const r = svg.getBoundingClientRect();
+          const t = e.touches ? e.touches[0] : e;
+          return {x: (t.clientX - r.left) * (680 / r.width), y: (t.clientY - r.top) * (360 / r.height)};
+        }
+        function down(e){
+          dragging = true;
+          const p = pt(e);
+          offX = p.x - +circle.getAttribute('cx');
+          offY = p.y - +circle.getAttribute('cy');
+          e.preventDefault();
+        }
+        function move(e){
+          if (!dragging) return;
+          const p = pt(e);
+          const r = +circle.getAttribute('r');
+          const nx = Math.max(20 + r, Math.min(660 - r, p.x - offX));
+          const ny = Math.max(20 + r, Math.min(340 - r, p.y - offY));
+          circle.setAttribute('cx', nx);
+          circle.setAttribute('cy', ny);
+          update();
+        }
+        function up(){ dragging = false; }
+        circle.addEventListener('mousedown', down);
+        circle.addEventListener('touchstart', down, {passive: false});
+        window.addEventListener('mousemove', move);
+        window.addEventListener('touchmove', move, {passive: false});
+        window.addEventListener('mouseup', up);
+        window.addEventListener('touchend', up);
+      }
+      makeDraggable(cA);
+      makeDraggable(cB);
+      update();
+    })();
+  </script>
+</body>
+</html>
