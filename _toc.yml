@@ -1,0 +1,36 @@
+# =============================================================
+# Jupyter Book table of contents.
+# This drives the sidebar navigation of the notebook surface.
+# Each entry corresponds to a notebook in /notebooks/.
+# Add/reorder chapters here; rebuild to update.
+# =============================================================
+
+format: jb-book
+root: intro
+
+parts:
+  - caption: Book I — Statistics
+    chapters:
+      - file: notebooks/01-probability
+      - file: notebooks/02-compound-probability
+      - file: notebooks/03-sampling-and-design
+      - file: notebooks/04-descriptive-stats
+      - file: notebooks/05-normal-curve
+      - file: notebooks/06-distributions
+      - file: notebooks/07-sampling-distributions-clt
+      - file: notebooks/08-confidence-intervals-bootstrap
+      - file: notebooks/09-hypothesis-testing
+      - file: notebooks/10-regression
+
+  - caption: Book II — Advanced Statistics
+    chapters:
+      - file: notebooks/11-categorical-chi-square
+      - file: notebooks/12-anova
+      - file: notebooks/13-bayesian-inference
+      - file: notebooks/14-multiple-testing
+
+  - caption: Book III — Machine Learning
+    chapters:
+      - file: notebooks/15-ml-foundations
+      - file: notebooks/16-deep-learning
+      - file: notebooks/17-llms

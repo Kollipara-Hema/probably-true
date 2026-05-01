@@ -1,0 +1,64 @@
+# =============================================================
+# Jupyter Book configuration for Probably True notebook surface.
+# Builds /notebooks/*.ipynb into static HTML at /_build/html/.
+# =============================================================
+
+title: "Probably True · Notebooks"
+author: "Probably True"
+copyright: "2025"
+logo: "_static/logo.png"   # 400x400 PNG, see _static/ folder
+
+# Force re-execution of notebooks on each build so outputs are fresh
+execute:
+  execute_notebooks: cache    # only re-run if .ipynb changed
+  timeout: 120
+  allow_errors: false
+
+# LaTeX support — important for stats notation
+parse:
+  myst_enable_extensions:
+    - amsmath
+    - dollarmath
+    - colon_fence
+    - linkify
+
+# Where the notebooks live
+only_build_toc_files: true
+
+# HTML theme settings
+html:
+  favicon: "_static/favicon.ico"
+  use_repository_button: true
+  use_issues_button: true
+  use_edit_page_button: true
+  home_page_in_navbar: true
+  baseurl: "https://probably-true.vercel.app/notebooks/"
+  extra_navbar: |
+    <a href="https://probably-true.vercel.app/" style="color:#7c3aed;font-weight:700;text-decoration:none">
+      ← Back to interactive chapters
+    </a>
+  extra_footer: |
+    <p style="text-align:center;color:#7b72a8;font-size:0.9rem">
+      Made with Jupyter Book · part of <a href="https://probably-true.vercel.app/" style="color:#7c3aed">Probably True</a>
+    </p>
+
+# Branded colors (Sphinx theme can pick these up)
+sphinx:
+  config:
+    html_theme_options:
+      logo:
+        text: "Probably True"
+      announcement: "📓 You're on the notebook surface — for math derivations and Python code. The interactive chapters are at <a href='https://probably-true.vercel.app/'>probably-true.vercel.app</a>."
+      pygment_light_style: "tango"
+    mathjax3_config:
+      tex:
+        macros:
+          "Var": "\\mathrm{Var}"
+          "Cov": "\\mathrm{Cov}"
+          "E": "\\mathbb{E}"
+
+# Repository info (so "edit on GitHub" works)
+repository:
+  url: https://github.com/Kollipara-Hema/probably-true
+  path_to_book: ""
+  branch: main
