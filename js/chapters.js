@@ -43,7 +43,7 @@ window.PT_CHAPTERS = [
     color: '#f9c74f',
     description: "Random vs stratified sampling, observation vs experiment, confounding, the placebo effect, and the logic of randomized controlled trials.",
     tags: ['Random Sampling', 'Bias', 'RCTs'],
-    status: { interactive: 'soon', notebook: 'soon' }
+    status: { interactive: 'live', notebook: 'soon' }
   },
   {
     id: 4, book: 'stats',
